@@ -24,7 +24,7 @@ CLEAN_SUBPROJECTS=${CLEAN_SUBPROJECTS_${SUBPROJECTS}}
 
 
 # Project Name
-PROJECTNAME=BN_Learning
+PROJECTNAME=BN_Solver
 
 # Active Configuration
 DEFAULTCONF=Release-Mac

@@ -52,7 +52,6 @@
         <itemPath>vary_node.h</itemPath>
       </logicalFolder>
       <itemPath>files.h</itemPath>
-      <itemPath>random.h</itemPath>
       <itemPath>typedefs.h</itemPath>
       <itemPath>utils.h</itemPath>
     </logicalFolder>
@@ -219,8 +218,6 @@
       </item>
       <item path="permutation_set.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="random.h" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="random_initializer.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="random_initializer.h" ex="false" tool="3" flavor2="0">
@@ -372,8 +369,6 @@
       <item path="permutation_set.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="permutation_set.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="random.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="random_initializer.cpp" ex="false" tool="1" flavor2="0">
       </item>
