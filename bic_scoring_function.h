@@ -8,7 +8,6 @@
 #ifndef MDL_SCORE_CALCULATOR_H
 #define	MDL_SCORE_CALCULATOR_H
 
-#define BOOST_DYNAMIC_BITSET_DONT_USE_FRIENDS
 #include <stdint.h>
 #include <vector>
 

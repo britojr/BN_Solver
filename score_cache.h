@@ -8,7 +8,6 @@
 #ifndef LONGFLOATSCORER_H
 #define	LONGFLOATSCORER_H
 
-#define BOOST_DYNAMIC_BITSET_DONT_USE_FRIENDS
 #include <vector>
 #include <string>
 

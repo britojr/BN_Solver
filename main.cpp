@@ -5,8 +5,6 @@
  * Created on 6 de diciembre de 2015, 10:32 AM
  */
 
-#define BOOST_DYNAMIC_BITSET_DONT_USE_FRIENDS
-
 #include <cstdlib>
 #include <ctime>
 #include <math.h>

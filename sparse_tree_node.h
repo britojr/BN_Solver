@@ -8,7 +8,6 @@
 #ifndef SPARSE_TREE_NODE_H
 #define	SPARSE_TREE_NODE_H
 
-#define BOOST_DYNAMIC_BITSET_DONT_USE_FRIENDS
 #include <algorithm>
 #include <vector>
 #include <boost/unordered_set.hpp>

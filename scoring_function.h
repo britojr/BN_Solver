@@ -8,7 +8,6 @@
 #ifndef SCORING_FUNCTION_H
 #define	SCORING_FUNCTION_H
 
-#define BOOST_DYNAMIC_BITSET_DONT_USE_FRIENDS
 #include "score_cache.h"
 #include "typedefs.h"
 

@@ -8,7 +8,6 @@
 #ifndef VARIABLE_H
 #define	VARIABLE_H
 
-#define BOOST_DYNAMIC_BITSET_DONT_USE_FRIENDS
 #include <string>
 #include <vector>
 #include <boost/unordered_map.hpp>

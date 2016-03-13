@@ -10,7 +10,6 @@
 
 #include <vector>
 
-#define BOOST_DYNAMIC_BITSET_DONT_USE_FRIENDS
 #include <boost/functional/hash.hpp>
 #include <boost/dynamic_bitset.hpp>
 
@@ -18,7 +17,6 @@
 namespace boost {
     template <typename B, typename A>
     std::size_t hash_value(const boost::dynamic_bitset<B, A>& bs) {     
-//        return boost::hash_value(bs.to_ulong());
 		return boost::hash_value( bs.m_bits ) ;
     }
 }
@@ -27,7 +25,6 @@ namespace boost {
 struct hasher
 {
   bool operator()(const boost::dynamic_bitset<>& bs) const {
-//        return boost::hash_value(bs.to_ulong());
 		return boost::hash_value( bs.m_bits ) ;
     }
 };

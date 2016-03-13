@@ -8,7 +8,6 @@
 #ifndef FILES_H
 #define	FILES_H
 
-#define BOOST_DYNAMIC_BITSET_DONT_USE_FRIENDS
 #include <fstream>
 #include <iostream>
 //#include <endian.h>

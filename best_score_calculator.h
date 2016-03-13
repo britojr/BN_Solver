@@ -8,7 +8,6 @@
 #ifndef BEST_SCORE_CALCULATOR_H
 #define	BEST_SCORE_CALCULATOR_H
 
-#define BOOST_DYNAMIC_BITSET_DONT_USE_FRIENDS
 #include "typedefs.h"
 #include "score_cache.h"
 

@@ -8,7 +8,6 @@
 #ifndef AD_TREE_NODE_H
 #define	AD_TREE_NODE_H
 
-#define BOOST_DYNAMIC_BITSET_DONT_USE_FRIENDS
 #include <vector>
 #include <boost/dynamic_bitset.hpp>
 

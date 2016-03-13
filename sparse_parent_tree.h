@@ -8,7 +8,6 @@
 #ifndef SPARSE_PARENT_TREE_H
 #define	SPARSE_PARENT_TREE_H
 
-#define BOOST_DYNAMIC_BITSET_DONT_USE_FRIENDS
 #include <vector>
 #include <stack>
 #include <stdexcept>

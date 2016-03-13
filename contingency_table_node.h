@@ -8,7 +8,6 @@
 #ifndef CONTINGENCY_TABLE_NODE_H
 #define	CONTINGENCY_TABLE_NODE_H
 
-#define BOOST_DYNAMIC_BITSET_DONT_USE_FRIENDS
 #include <vector>
 
 namespace scoring {

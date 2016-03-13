@@ -8,7 +8,6 @@
 #ifndef RECORD_H
 #define	RECORD_H
 
-#define BOOST_DYNAMIC_BITSET_DONT_USE_FRIENDS
 #include <string>
 #include <sstream>
 #include <algorithm>

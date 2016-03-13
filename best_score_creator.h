@@ -8,7 +8,6 @@
 #ifndef BEST_SCORE_CREATOR_H
 #define	BEST_SCORE_CREATOR_H
 
-#define BOOST_DYNAMIC_BITSET_DONT_USE_FRIENDS
 #include "score_cache.h"
 
 #include <stdexcept>

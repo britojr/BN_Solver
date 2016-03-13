@@ -8,7 +8,6 @@
 #ifndef LOG_LIKELIHOOD_CALCULATOR_H
 #define	LOG_LIKELIHOOD_CALCULATOR_H
 
-#define BOOST_DYNAMIC_BITSET_DONT_USE_FRIENDS
 #include "ad_tree.h"
 #include <boost/unordered_map.hpp>
 

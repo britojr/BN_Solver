@@ -8,7 +8,6 @@
 #ifndef PERMUTATIONSET_H
 #define	PERMUTATIONSET_H
 
-#define BOOST_DYNAMIC_BITSET_DONT_USE_FRIENDS
 #include <vector>
 
 #include "typedefs.h"

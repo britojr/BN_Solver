@@ -8,7 +8,6 @@
 #ifndef UTILS_H
 #define	UTILS_H
 
-#define BOOST_DYNAMIC_BITSET_DONT_USE_FRIENDS
 #include <string>
 #include <sys/stat.h>
 inline bool file_exists( std::string filePath ){
