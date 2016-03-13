@@ -17,68 +17,66 @@
 
 namespace datastructures {
 
-    class RecordFile {
-    public:
+	class RecordFile {
+		public:
 
-        RecordFile() {
-            filename = "";
-            delimiter = ',';
-            hasHeader = false;
-        }
+			RecordFile() {
+				filename = "";
+				delimiter = ',';
+				hasHeader = false;
+			}
 
-        RecordFile(std::string filename, char delimiter, bool hasHeader) {
-            this->filename = filename;
-            this->delimiter = delimiter;
-            this->hasHeader = hasHeader;
-        }
-        
-        ~RecordFile() {
-            records.clear();
-        }
+			RecordFile(std::string filename, char delimiter, bool hasHeader) {
+				this->filename = filename;
+				this->delimiter = delimiter;
+				this->hasHeader = hasHeader;
+			}
 
-        void read() {
-            std::ifstream file(filename);
+			~RecordFile() {
+				records.clear();
+			}
 
-            std::string line;
+			void read() {
+				std::ifstream file(filename);
 
-            if (hasHeader) {
-                std::getline(file, line);
-                boost::algorithm::trim(line);
-                header = Record(line, delimiter);
-            }
+				std::string line;
 
-            while (std::getline(file, line)) {
-                boost::algorithm::trim(line);
-                records.push_back(Record(line, delimiter));
-            }
-        }
+				if (hasHeader) {
+					std::getline(file, line);
+					boost::algorithm::trim(line);
+					header = Record(line, delimiter);
+				}
 
-        std::vector<Record> &getRecords() {
-            return records;
-        }
+				while (std::getline(file, line)) {
+					boost::algorithm::trim(line);
+					records.push_back(Record(line, delimiter));
+				}
+			}
 
-        bool getHasHeader() {
-            return hasHeader;
-        }
+			std::vector<Record> &getRecords() {
+				return records;
+			}
 
-        Record &getHeader() {
-            return header;
-        }
+			bool getHasHeader() {
+				return hasHeader;
+			}
 
-        int size() {
-            return records.size();
-        }
+			Record &getHeader() {
+				return header;
+			}
 
-    private:
-        std::string filename;
-        char delimiter;
-        bool hasHeader;
-        Record header;
-        std::vector<Record> records;
-    };
+			int size() {
+				return records.size();
+			}
 
+		private:
+			std::string filename;
+			char delimiter;
+			bool hasHeader;
+			Record header;
+			std::vector<Record> records;
+	} ;
 }
-
 
 #endif	/* RECORD_FILE_H */
 

@@ -20,43 +20,41 @@
 #include "record_file.h"
 #include "typedefs.h"
 
-namespace scoring {
-    
-    class ADTree {
-    public:
-        ADTree() {
-            // do nothing
-        }
-        ADTree(int rMin);
-        ~ADTree() {
-            if (root != NULL) {
-                delete root;
-            }
-            root = NULL;
-        }
+namespace scoring {    
+	class ADTree {
+		public:
+			ADTree() {
+				// do nothing
+			}
+			ADTree(int rMin);
+			~ADTree() {
+				if (root != NULL) {
+					delete root;
+				}
+				root = NULL;
+			}
 
-        void initialize(datastructures::BayesianNetwork &network, datastructures::RecordFile &recordFile);
-        void createTree();
-        
-        ContingencyTableNode* makeContab(varset variables);
+			void initialize(datastructures::BayesianNetwork &network, datastructures::RecordFile &recordFile);
+			void createTree();
 
-    private:
-        ADNode* makeADTree(int i, bitset &recordNums, int depth, varset variables);
-        VaryNode* makeVaryNode(int i, bitset &recordNums, int depth, varset variables);
-        
-        ContingencyTableNode* makeContab(varset remainingVariables, ADNode* node, int nodeIndex);
-        ContingencyTableNode* makeContabLeafList(varset variables, bitset &records);
+			ContingencyTableNode* makeContab(varset variables);
 
-        std::vector< std::vector< bitset > > consistentRecords;
+		private:
+			ADNode* makeADTree(int i, bitset &recordNums, int depth, varset variables);
+			VaryNode* makeVaryNode(int i, bitset &recordNums, int depth, varset variables);
 
-        datastructures::BayesianNetwork network;
-        int recordCount;
-        int rMin;
+			ContingencyTableNode* makeContab(varset remainingVariables, ADNode* node, int nodeIndex);
+			ContingencyTableNode* makeContabLeafList(varset variables, bitset &records);
 
-        ADNode *root;
-        varset zero;
-    };
+			std::vector< std::vector< bitset > > consistentRecords;
 
+			datastructures::BayesianNetwork network;
+			int recordCount;
+			int rMin;
+
+			ADNode *root;
+			varset zero;
+	} ;
 }
 
 #endif	/* AD_TREE_H */

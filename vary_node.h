@@ -13,42 +13,39 @@
 
 namespace scoring {
 
-    class ADNode;
+	class ADNode;
 
-    class VaryNode {
-    public:
-        VaryNode(int size) {
-            for(int i = 0; i < size; i++) {
-                children.push_back(NULL);
-            }
-        }
-        
-        ~VaryNode();
-        
-        void setMcv(int mcv) {
-            this->mcv = mcv;
-        }
-        
-        int getMcv() {
-            return mcv;
-        }
-        
-        void setChild(int index, ADNode *child) {
-            children[index] = child;
-        }
-        
-        ADNode *getChild(int index) {
-            return children[index];
-        }
+	class VaryNode {
+		public:
+			VaryNode(int size) {
+				for(int i = 0; i < size; i++) {
+					children.push_back(NULL);
+				}
+			}
 
-    private:
-        std::vector<ADNode*> children;
-        int mcv;
+			~VaryNode();
 
-    };
+			void setMcv(int mcv) {
+				this->mcv = mcv;
+			}
 
+			int getMcv() {
+				return mcv;
+			}
+
+			void setChild(int index, ADNode *child) {
+				children[index] = child;
+			}
+
+			ADNode *getChild(int index) {
+				return children[index];
+			}
+
+		private:
+			std::vector<ADNode*> children;
+			int mcv;
+	};
 }
-
 
 #endif	/* VARY_NODE_H */
 

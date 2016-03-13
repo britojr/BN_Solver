@@ -19,51 +19,50 @@
 
 namespace bestscorecalculators {
 
-    class SparseParentTree : public BestScoreCalculator {
-    public:
-        SparseParentTree(const int variable, const int variableCount);
-        ~SparseParentTree();
-        void initialize(const scoring::ScoreCache &scoreCache);
+	class SparseParentTree : public BestScoreCalculator {
+		public:
+			SparseParentTree(const int variable, const int variableCount);
+			~SparseParentTree();
+			void initialize(const scoring::ScoreCache &scoreCache);
 
-        float getBestScore() const {
-            return root->getScore();
-        }
-        float getScoreBestFirst(const varset &pars);
-        float getScore(varset &pars);
+			float getBestScore() const {
+				return root->getScore();
+			}
+			float getScoreBestFirst(const varset &pars);
+			float getScore(varset &pars);
 
-        varset &getParents() {
-            return bestParents;
-        }
+			varset &getParents() {
+				return bestParents;
+			}
 
-        int size() {
-            return root->getSize();
-        }
+			int size() {
+				return root->getSize();
+			}
 
-        void print() {
-            printf("Sparse Parent Tree, variable: %d\n", variable);
-            root->print(1);
-        }
+			void print() {
+				printf("Sparse Parent Tree, variable: %d\n", variable);
+				root->print(1);
+			}
 
-        float getScore(int index) {
-            throw std::runtime_error("Sparse parent trees do not support retrieving scores by index.");
-        }
-        
-        varset &getParents(int index) {
-            throw std::runtime_error("Sparse parent lists do not support retrieving parents by index.");
-        }
+			float getScore(int index) {
+				throw std::runtime_error("Sparse parent trees do not support retrieving scores by index.");
+			}
 
-    private:
-        int variableCount;
-        int variable;
-        SparseTreeNode* root;
-        std::vector<int> childIndices;
-        varset bestParents;
-        std::vector<SparseTreeNode*> open;
-        std::stack<SparseTreeNode*> stack;
-        CompareSparseTreeNodeStar cstns;
-        SparseTreeNode *temp;
-    };
+			varset &getParents(int index) {
+				throw std::runtime_error("Sparse parent lists do not support retrieving parents by index.");
+			}
 
+		private:
+			int variableCount;
+			int variable;
+			SparseTreeNode* root;
+			std::vector<int> childIndices;
+			varset bestParents;
+			std::vector<SparseTreeNode*> open;
+			std::stack<SparseTreeNode*> stack;
+			CompareSparseTreeNodeStar cstns;
+			SparseTreeNode *temp;
+	};
 }
 
 #endif	/* SPARSE_PARENT_TREE_H */

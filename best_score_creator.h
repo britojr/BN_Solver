@@ -21,30 +21,28 @@
 
 namespace bestscorecalculators {
     
-    static std::string bestScoreCalculatorString = "The data structure to use for BestScore calculations. [\"list\", \"tree\", \"bitwise\"]";
+	static std::string bestScoreCalculatorString = "The data structure to use for BestScore calculations. [\"list\", \"tree\", \"bitwise\"]";
 
-    inline std::vector<bestscorecalculators::BestScoreCalculator*> create(std::string type, scoring::ScoreCache &cache) {
-        std::vector<bestscorecalculators::BestScoreCalculator*> spgs;
-        for (int i = 0; i < cache.getVariableCount(); i++) {
-            bestscorecalculators::BestScoreCalculator *spg;
-            if (type == "tree") {
-                spg = new bestscorecalculators::SparseParentTree(i, cache.getVariableCount());
-            } else if (type == "bitwise") {
-                spg = new bestscorecalculators::SparseParentBitwise(i, cache.getVariableCount());
-            } else if (type == "list") {
-                spg = new bestscorecalculators::SparseParentList(i, cache.getVariableCount());
-            } else {
-                throw std::runtime_error("Invalid BestScore calculator type: '" + type + "'.  Valid options are 'tree', 'bitwise' and 'list'.");
-            }
+	inline std::vector<bestscorecalculators::BestScoreCalculator*> create(std::string type, scoring::ScoreCache &cache) {
+		std::vector<bestscorecalculators::BestScoreCalculator*> spgs;
+		for (int i = 0; i < cache.getVariableCount(); i++) {
+			bestscorecalculators::BestScoreCalculator *spg;
+			if (type == "tree") {
+				spg = new bestscorecalculators::SparseParentTree(i, cache.getVariableCount());
+			} else if (type == "bitwise") {
+				spg = new bestscorecalculators::SparseParentBitwise(i, cache.getVariableCount());
+			} else if (type == "list") {
+				spg = new bestscorecalculators::SparseParentList(i, cache.getVariableCount());
+			} else {
+				throw std::runtime_error("Invalid BestScore calculator type: '" + type + "'.  Valid options are 'tree', 'bitwise' and 'list'.");
+			}
 
-            spg->initialize(cache);
-            spgs.push_back(spg);
-        }
-        
-        return spgs;
-    }
+			spg->initialize(cache);
+			spgs.push_back(spg);
+		}
+		return spgs;
+	}
 }
-
 
 #endif	/* BEST_SCORE_CREATOR_H */
 

@@ -13,16 +13,15 @@
 
 namespace scoring {
 
-    class ScoringFunction {
-        
-    public:
-        virtual float calculateScore(int variable, varset parents, FloatMap &cache) = 0 ;
-		virtual approxStruct approximateScore(int variable, varset parents, FloatMap &cache) = 0 ;
-		virtual float getFromApproximation( int variable , varset &p1 , varset &p2 , float approxValue , FloatMap &cache ) = 0 ;
-        
-    };
-}
+	class ScoringFunction {
 
+		public:
+			virtual float calculateScore(int variable, varset parents, FloatMap &cache) = 0 ;
+			virtual approxStruct approximateScore(int variable, varset parents, FloatMap &cache) = 0 ;
+			virtual float getFromApproximation( int variable , varset &p1 , varset &p2 , float approxValue , FloatMap &cache ) = 0 ;
+
+	} ;
+}
 
 #endif	/* SCORING_FUNCTION_H */
 

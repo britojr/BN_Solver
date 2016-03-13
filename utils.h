@@ -11,17 +11,17 @@
 #include <string>
 #include <sys/stat.h>
 inline bool file_exists( std::string filePath ){
-	struct stat buffer ;
-	return (stat (filePath.c_str(), &buffer) == 0 ) ; 
+    struct stat buffer ;
+    return (stat (filePath.c_str(), &buffer) == 0 ) ; 
 }
 
 inline int compare( float a , float b = 0.0 ){
-	float EPS = 1e-7 ;
-	return ( a + EPS < b ? -1 : a - EPS > b ? 1 : 0 ) ;
+    float EPS = 1e-7 ;
+    return ( a + EPS < b ? -1 : a - EPS > b ? 1 : 0 ) ;
 }
 
 inline bool isZero( float a ){
-	return compare( a ) == 0 ;
+    return compare( a ) == 0 ;
 }
 
 inline int mod( int x , int m ){
@@ -32,7 +32,6 @@ inline int mod( int x , int m ){
 
 #include <boost/random.hpp>
 #include <boost/random/discrete_distribution.hpp>
-
 inline int random_generator( std::vector<float> weights , boost::mt19937 &gen ){
 	boost::random::discrete_distribution<> dist( weights ) ;
 	return dist( gen ) ;

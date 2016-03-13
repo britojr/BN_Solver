@@ -78,7 +78,7 @@ typedef boost::dynamic_bitset<> varset;
 #define VARSET_RESIZE( vs , size ) (vs.resize( size ))
 
 inline int cardinality(varset &vs) {
-    return vs.count();
+	return vs.count();
 }
 
 inline void printVarset( varset &vs ) ;
@@ -97,29 +97,29 @@ inline varset nextPermutation( varset &vs ){ // TODO: Need optmization
 }
 
 inline varset varsetClearCopy(const varset &vs, int index) {
-    varset cp(vs);
-    cp.set(index, false);
-    return cp;
+	varset cp(vs);
+	cp.set(index, false);
+	return cp;
 }
 
 inline int previousSetBit( varset &vs , int index ){
-    for( int i = index - 1 ; i >= 0 ; i--){
-        if( VARSET_GET( vs , i ) ){
-            return i ;
-        }
-    }
-    return -1 ;
+	for( int i = index - 1 ; i >= 0 ; i--){
+		if( VARSET_GET( vs , i ) ){
+			return i ;
+		}
+	}
+	return -1 ;
 }
 
 inline int lastSetBit(varset &vs) {
-    return previousSetBit( vs , vs.size() ) ;
+	return previousSetBit( vs , vs.size() ) ;
 }
 
 inline void printVarset( varset &vs ){
-    printf( "{" ) ;
-    for( int i = 0 ; i < vs.size() ; i++)
+	printf( "{" ) ;
+	for( int i = 0 ; i < vs.size() ; i++)
 		printf("%d" , VARSET_GET( vs , i ) ) ;
-    printf( "}" ) ;
+	printf( "}" ) ;
 	printf("\n" ) ;
 }
 
@@ -317,15 +317,15 @@ typedef std::unordered_map<varset, float> FloatMap;
 
 inline void init_map(FloatMap &map) {
 #if defined(GOOGLE_SPARSE_MAP) || defined(GOOGLE_DENSE_MAP)
-    map.set_deleted_key(-2);
-    map.set_empty_key(-1);
+	map.set_deleted_key(-2);
+	map.set_empty_key(-1);
 #endif
 }
 
 inline void init_map(FloatMap *map) {
 #if defined(GOOGLE_SPARSE_MAP) || defined(GOOGLE_DENSE_MAP)
-    map.set_deleted_key(-2);
-    map.set_empty_key(-1);
+	map.set_deleted_key(-2);
+	map.set_empty_key(-1);
 #endif
 }
 

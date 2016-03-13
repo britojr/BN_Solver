@@ -2,7 +2,7 @@
 #include "vary_node.h"
 
 scoring::ADNode::~ADNode() {
-    for (int i = 0; i < children.size(); i++) {
-        delete children[i];
-    }
+	for (int i = 0; i < children.size(); i++) {
+		delete children[i];
+	}
 }

@@ -11,78 +11,67 @@
 #include "utils.h"
 
 greedysearch::PermutationSet::PermutationSet(){
-    // Do nothing
+	// Do nothing
 }
 
 greedysearch::PermutationSet::PermutationSet( int size ){
-    boost::mt19937 gen( time( NULL ) ) ;
-    for(int i = 0 ; i < size ; i++)
-        permutation.push_back( i ) ;
-    permutation = shuffle( permutation , gen ) ;
-    score = 123456789. ; // TODO: Check this
+	boost::mt19937 gen( time( NULL ) ) ;
+	for(int i = 0 ; i < size ; i++)
+		permutation.push_back( i ) ;
+	permutation = shuffle( permutation , gen ) ;
+	score = 123456789. ; // TODO: Check this
 }
 
 greedysearch::PermutationSet::~PermutationSet(){
-    // Do nothing
+	// Do nothing
 }
 
 float greedysearch::PermutationSet::getScore(){
-    return score ;
+	return score ;
 }
 
 void greedysearch::PermutationSet::setScore( float score ){
-    this->score = score ;
+	this->score = score ;
 }
 
 bool greedysearch::PermutationSet::isBetter( greedysearch::PermutationSet other ){
-    return other.getScore() > score ; // TODO: Check this for other scores
+	return other.getScore() > score ; // TODO: Check this for other scores
 }
 
 void greedysearch::PermutationSet::setPermutation( std::vector<int> permutation ){
-    this->permutation = permutation ;
+	this->permutation = permutation ;
 }
 
 std::vector<int> greedysearch::PermutationSet::getPermutation(){
-    return permutation ;
+	return permutation ;
 }
 
 int greedysearch::PermutationSet::size(){
-    return permutation.size() ;
+	return permutation.size() ;
 }
 
 void greedysearch::PermutationSet::print(){
-    for(int i = 0 ; i < permutation.size() ; i++){
-        if( i ) printf(" " ) ;
-        printf("%d" , permutation[ i ] ) ;
-    }
-    printf("\n" ) ;
-    printf("Score = %.6f\n" , score ) ;
+	for(int i = 0 ; i < permutation.size() ; i++){
+		if( i ) printf(" " ) ;
+		printf("%d" , permutation[ i ] ) ;
+	}
+	printf("\n" ) ;
+	printf("Score = %.6f\n" , score ) ;
 }
 
-//bool greedysearch::PermutationSet::operator <( greedysearch::PermutationSet other ){
-//    return score < other.getScore() ;
-//}
-//
-//bool greedysearch::PermutationSet::operator == ( greedysearch::PermutationSet other ){
-//    if( permutation.size() != other.size() ) return false ;
-//    for(int i = 0 ; i < permutation.size() ; i++)
-//        if( other[ i ] != permutation[ i ] ) return false ;
-//    return true ;
-//}
-
 int greedysearch::PermutationSet::operator[]( int idx ){
-    return permutation[ idx ] ;
+	return permutation[ idx ] ;
 }
 
 void greedysearch::PermutationSet::swap( int idx1 , int idx2 ){
-    int aux = permutation[ idx1 ] ;
-    permutation[ idx1 ] = permutation[ idx2 ] ;
-    permutation[ idx2 ] = aux ;
+	int aux = permutation[ idx1 ] ;
+	permutation[ idx1 ] = permutation[ idx2 ] ;
+	permutation[ idx2 ] = aux ;
 }
 
 varset greedysearch::PermutationSet::getVarset( int index ){
-    VARSET_NEW( set , permutation.size() ) ;
-    for( int i = 0 ; i < index ; i++)
-        VARSET_SET( set , permutation[ i ] ) ;
-    return set ;
+	VARSET_NEW( set , permutation.size() ) ;
+	for( int i = 0 ; i < index ; i++)
+		VARSET_SET( set , permutation[ i ] ) ;
+	return set ;
 }

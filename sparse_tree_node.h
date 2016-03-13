@@ -16,204 +16,198 @@
 
 namespace bestscorecalculators {
 
-    class SparseTreeNode {
-    public:
+	class SparseTreeNode {
+	public:
 
-        SparseTreeNode(varset parents, float score, int variableCount) {
-            this->parents = parents;
-            this->score = score;
-            this->bound = 0;
-            this->lsb = lastSetBit(parents);
+		SparseTreeNode(varset parents, float score, int variableCount) {
+			this->parents = parents;
+			this->score = score;
+			this->bound = 0;
+			this->lsb = lastSetBit(parents);
 
-            for (int i = 0; i < variableCount; i++) {
-                children.push_back(NULL);
-            }
-        }
+			for (int i = 0; i < variableCount; i++) {
+				children.push_back(NULL);
+			}
+		}
 
-        ~SparseTreeNode() {
-            for (auto iter = children.begin(); iter != children.end(); iter++) {
-                delete *iter;
-            }
-        }
+		~SparseTreeNode() {
+			for (auto iter = children.begin(); iter != children.end(); iter++) {
+				delete *iter;
+			}
+		}
 
-        varset &getParents() {
-            return parents;
-        }
+		varset &getParents() {
+			return parents;
+		}
 
-        float getScore() {
-            return score;
-        }
+		float getScore() {
+			return score;
+		}
 
-        float getBound() {
-            return bound;
-        }
+		float getBound() {
+			return bound;
+		}
 
-        int getLastSetBit() {
-            return lsb;
-        }
+		int getLastSetBit() {
+			return lsb;
+		}
 
-        int getLastChild() {
-            return lastChild;
-        }
-        
-        varset &getBoundParents() {
-            return boundParents;
-        }
+		int getLastChild() {
+			return lastChild;
+		}
 
-        void setBound(float bound, varset &boundParents) {
-            this->bound = bound;
-            this->boundParents = boundParents;
-        }
+		varset &getBoundParents() {
+			return boundParents;
+		}
 
-        void setScore(float score) {
-            this->score = score;
-        }
-        
+		void setBound(float bound, varset &boundParents) {
+			this->bound = bound;
+			this->boundParents = boundParents;
+		}
 
-        /**
-         * Based on the score cache, add all of the present children to this node.
-         * Return the bound of this node (the min of the bounds of its children,
-         * or its score if it has no chidren).
-         * 
-         * @param scores
-         * @param variableCount
-         * @return 
-         */
-        float addChildren(FloatMap *scores, int variableCount, boost::unordered_set<varset> &usedScores) {
+		void setScore(float score) {
+			this->score = score;
+		}
 
-            bound = score;
-            boundParents = parents;
 
-            usedScores.insert(parents);
+		/**
+		 * Based on the score cache, add all of the present children to this node.
+		 * Return the bound of this node (the min of the bounds of its children,
+		 * or its score if it has no chidren).
+		 * 
+		 * @param scores
+		 * @param variableCount
+		 * @return 
+		 */
+		float addChildren(FloatMap *scores, int variableCount, boost::unordered_set<varset> &usedScores) {
 
-            // now, look for scores that have exactly one more bit set, after lsb
-            for (int x = lsb + 1; x < variableCount; x++) {
-                VARSET_SET(parents, x);
+			bound = score;
+			boundParents = parents;
 
-                // is this score in the cache?
-                auto it = scores->find(parents);
-                if (it == scores->end()) {
-                    VARSET_CLEAR(parents, x);
-                    continue;
-                }
-                float score = (*it).second;
-                if (score != 0) {
-                    SparseTreeNode *child = new SparseTreeNode(parents, score, variableCount);
-                    //children.push_back(child);
-                    children[x] = child;
-                    lastChild = x;
-                    childIndices.push_back(x);
-                    float b = child->addChildren(scores, variableCount, usedScores);
+			usedScores.insert(parents);
 
-                    if (b < bound) {
-                        bound = b;
-                        boundParents = child->getBoundParents();
-                    }
-                }
+			// now, look for scores that have exactly one more bit set, after lsb
+			for (int x = lsb + 1; x < variableCount; x++) {
+				VARSET_SET(parents, x);
 
-                VARSET_CLEAR(parents, x);
-            }
+				// is this score in the cache?
+				auto it = scores->find(parents);
+				if (it == scores->end()) {
+					VARSET_CLEAR(parents, x);
+					continue;
+				}
+				float score = (*it).second;
+				if (score != 0) {
+					SparseTreeNode *child = new SparseTreeNode(parents, score, variableCount);
+					//children.push_back(child);
+					children[x] = child;
+					lastChild = x;
+					childIndices.push_back(x);
+					float b = child->addChildren(scores, variableCount, usedScores);
 
-            return bound;
-        }
+					if (b < bound) {
+						bound = b;
+						boundParents = child->getBoundParents();
+					}
+				}
 
-        void addChild(SparseTreeNode *child, int index) {
-            //children.push_back(child);
-            children[index] = child;
+				VARSET_CLEAR(parents, x);
+			}
 
-            if (index > lastChild) {
-                lastChild = index;
-            }
+			return bound;
+		}
 
-            childIndices.push_back(index);
-            std::sort(childIndices.begin(), childIndices.end());
-        }
+		void addChild(SparseTreeNode *child, int index) {
+			//children.push_back(child);
+			children[index] = child;
 
-        SparseTreeNode* getChildByIndex(int index) {
-            return children[index];
-        }
+			if (index > lastChild) {
+				lastChild = index;
+			}
 
-        int getSize() {
-            int size = 1; // me
+			childIndices.push_back(index);
+			std::sort(childIndices.begin(), childIndices.end());
+		}
 
-            for (int i = 0; i < children.size(); i++) {
-                if (children[i] != NULL) {
-                    size += children[i]->getSize();
-                }
-            }
+		SparseTreeNode* getChildByIndex(int index) {
+			return children[index];
+		}
 
-            return size;
-        }
+		int getSize() {
+			int size = 1; // me
 
-        void print(int depth) {
-            for (int i = 0; i < depth; i++) {
-                printf("\t");
-            }
+			for (int i = 0; i < children.size(); i++) {
+				if (children[i] != NULL) {
+					size += children[i]->getSize();
+				}
+			}
 
-            printVarset(parents);
+			return size;
+		}
 
-            printf(": score: %f, bound: %f\n", score, bound);
+		void print(int depth) {
+			for (int i = 0; i < depth; i++) {
+				printf("\t");
+			}
 
-            for (int i = 0; i < children.size(); i++) {
-                if (children[i] != NULL) {
-                    children[i]->print(depth + 1);
-                }
-            }
-        }
+			printVarset(parents);
 
-        std::vector<SparseTreeNode*>::iterator childrenBegin() {
-            return children.begin();
-        }
+			printf(": score: %f, bound: %f\n", score, bound);
 
-        std::vector<SparseTreeNode*>::iterator childrenEnd() {
-            return children.end();
-        }
+			for (int i = 0; i < children.size(); i++) {
+				if (children[i] != NULL) {
+					children[i]->print(depth + 1);
+				}
+			}
+		}
 
-        SparseTreeNode *getChild(int nextIndex) {
-            for (auto succ = children.begin(); succ != children.end(); succ++) {
-                if (VARSET_GET((*succ)->getParents(), nextIndex)) {
-                    return *succ;
-                }
-            }
-            return NULL;
-        }
-        
-        int getChildCount() {
-            return childIndices.size();
-        }
-        
-        int getChildIndex(int i) {
-            return childIndices[i];
-        }
-        
-        SparseTreeNode* getChildByChildIndex(int i) {
-            return children[childIndices[i]];
-        }
+		std::vector<SparseTreeNode*>::iterator childrenBegin() {
+			return children.begin();
+		}
 
-    private:
-        varset parents;
-        varset boundParents;
-        float score;
-        float bound;
-        int lsb;
-        int lastChild;
-        std::vector<SparseTreeNode*> children;
-        std::vector<int> childIndices;
-    };
+		std::vector<SparseTreeNode*>::iterator childrenEnd() {
+			return children.end();
+		}
 
-    struct CompareSparseTreeNodeStar {
+		SparseTreeNode *getChild(int nextIndex) {
+			for (auto succ = children.begin(); succ != children.end(); succ++) {
+				if (VARSET_GET((*succ)->getParents(), nextIndex)) {
+					return *succ;
+				}
+			}
+			return NULL;
+		}
 
-        bool operator()(SparseTreeNode *a, SparseTreeNode * b) {
+		int getChildCount() {
+			return childIndices.size();
+		}
 
-            float diff = a->getBound() - b->getBound();
-            //        if (fabs(diff) < std::numeric_limits<float>::epsilon()) {
-            //            return (b->getScore() - a->getScore()) > 0;
-            //        }
+		int getChildIndex(int i) {
+			return childIndices[i];
+		}
 
-            return (diff > 0);
-        }
-    };
+		SparseTreeNode* getChildByChildIndex(int i) {
+			return children[childIndices[i]];
+		}
 
+	private:
+		varset parents;
+		varset boundParents;
+		float score;
+		float bound;
+		int lsb;
+		int lastChild;
+		std::vector<SparseTreeNode*> children;
+		std::vector<int> childIndices;
+	};
+
+	struct CompareSparseTreeNodeStar {
+
+		bool operator()(SparseTreeNode *a, SparseTreeNode * b) {
+			float diff = a->getBound() - b->getBound();
+			return (diff > 0);
+		}
+	} ;
 }
 
 #endif	/* SPARSE_TREE_NODE_H */
