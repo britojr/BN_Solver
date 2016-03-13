@@ -150,70 +150,67 @@ void scoringThread( int thread ){
 		std::string varFilename = outputFile + "." + TO_STRING(variable);
 		if( file_exists( varFilename ) ) continue ;
 
-		printf("Thread: %d, Variable: %d, Time: %s\n", thread, variable, getTime().c_str());
+		printf( "Thread: %d , Variable: %d , Time: %s\n" , thread , variable , getTime().c_str() ) ;
 
 		FloatMap sc ;
-		init_map(sc) ;
-		scoreCalculator.calculateScores(variable, sc);
+		init_map( sc ) ;
+		scoreCalculator.calculateScores( variable , sc ) ;
 
-		int size = sc.size();
-		printf("Thread: %d, Variable: %d, Size before pruning: %d, Time: %s\n", thread, variable, size, getTime().c_str());
+		int size = sc.size() ;
+		printf( "Thread: %d , Variable: %d , Size before pruning: %d , Time: %s\n" , thread , variable , size , getTime().c_str() ) ;
 
-		if (prune) {
-			scoreCalculator.prune(sc);
-			int prunedSize = sc.size();
-			printf("Thread: %d, Variable: %d, Size after pruning: %d, Time: %s\n", thread, variable, prunedSize, getTime().c_str());
+		if( prune ){
+			scoreCalculator.prune( sc ) ;
+			int prunedSize = sc.size() ;
+			printf( "Thread: %d , Variable: %d , Size after pruning: %d , Time: %s\n" , thread , variable , prunedSize , getTime().c_str() ) ;
 		}
 
-		FILE *varOut = fopen(varFilename.c_str(), "w");
+		FILE *varOut = fopen( varFilename.c_str() , "w" ) ;
 
-		datastructures::Variable *var = network.get(variable);
-		fprintf(varOut, "VAR %s\n", var->getName().c_str());
-		fprintf(varOut, "META arity=%d\n", var->getCardinality());
+		datastructures::Variable *var = network.get( variable ) ;
+		fprintf( varOut , "VAR %s\n" , var->getName().c_str() ) ;
+		fprintf( varOut , "META arity=%d\n" , var->getCardinality() ) ;
 
-		fprintf(varOut, "META values=");
-		for (int i = 0; i < var->getCardinality(); i++) {
-			fprintf(varOut, "%s ", var->getValue(i).c_str());
-		}
-		fprintf(varOut, "\n");
+		fprintf( varOut , "META values=" ) ;
+		for( int i = 0 ; i < var->getCardinality() ; i++)
+			fprintf( varOut , "%s " , var->getValue( i ).c_str() ) ;
+		fprintf( varOut , "\n" ) ;
 
+		for( auto score = sc.begin() ; score != sc.end() ; score++){
+			varset parentSet = ( *score ).first ;
+			float s = ( *score ).second ;
 
-		for (auto score = sc.begin(); score != sc.end(); score++) {
-			varset parentSet = (*score).first;
-			float s = (*score).second;
+			fprintf( varOut , "%f " , s ) ;
 
-			fprintf(varOut, "%f ", s);
-
-			for (int p = 0; p < network.size(); p++) {
-				if (VARSET_GET(parentSet, p)) {
-					fprintf(varOut, "%s ", network.get(p)->getName().c_str());
+			for( int p = 0; p < network.size(); p++){
+				if( VARSET_GET( parentSet , p ) ){
+					fprintf( varOut , "%s ", network.get( p )->getName().c_str() ) ;
 				}
 			}
 
-			fprintf(varOut, "\n");
+			fprintf( varOut , "\n" ) ;
 		}
 
-		fprintf(varOut, "\n");
-		fclose(varOut);
-
-		sc.clear();
+		fprintf( varOut , "\n" ) ;
+		fclose( varOut ) ;
+		sc.clear() ;
 	}
 }
 
 void calculateScore(){
-	printf("Parsing input file.\n");
+	printf( "Parsing input file.\n" ) ;
 	datastructures::RecordFile recordFile( inputFile , delimiter , hasHeader ) ;
-	recordFile.read();
+	recordFile.read() ;
 
-	printf("Initializing data specifications.\n");
-	network.initialize(recordFile);
+	printf( "Initializing data specifications.\n" ) ;
+	network.initialize( recordFile ) ;
 
-	printf("Creating AD-tree.\n");
-	scoring::ADTree *adTree = new scoring::ADTree(rMin);
-	adTree->initialize(network, recordFile);
-	adTree->createTree();
+	printf( "Creating AD-tree.\n" ) ;
+	scoring::ADTree *adTree = new scoring::ADTree( rMin ) ;
+	adTree->initialize( network , recordFile ) ;
+	adTree->createTree() ;
 
-	boost::algorithm::to_lower(sf);
+	boost::algorithm::to_lower( sf ) ;
 
 	if( maxParents > network.size() || maxParents < 1 ){
 		maxParents = network.size() - 1 ;
@@ -224,58 +221,56 @@ void calculateScore(){
 		if( maxParentCount < maxParents ){
 			maxParents = maxParentCount ;
 		}
-	}else if( sf.compare( "fnml" ) == 0 ){
-	}else if( sf.compare( "bdeu" ) == 0 ){
 	}else{
 		throw std::runtime_error( "Invalid scoring function.  Options are: 'BIC', 'Fnml' or 'BDeu'." ) ;
 	}
 
-	constraints = NULL;
-	if (constraintsFile.length() > 0) {
-		constraints = scoring::parseConstraints(constraintsFile, network);
+	constraints = NULL ;
+	if( constraintsFile.length() > 0 ){
+		constraints = scoring::parseConstraints( constraintsFile , network ) ;
 	}
 
-	scoringFunction = NULL;
+	scoringFunction = NULL ;
 
-	std::vector<float> ilogi = scoring::LogLikelihoodCalculator::getLogCache(recordFile.size());
-	scoring::LogLikelihoodCalculator *llc = new scoring::LogLikelihoodCalculator(adTree, network, ilogi);
+	std::vector<float> ilogi = scoring::LogLikelihoodCalculator::getLogCache( recordFile.size() ) ;
+	scoring::LogLikelihoodCalculator *llc = new scoring::LogLikelihoodCalculator( adTree , network , ilogi ) ;
 
-	if (sf.compare("bic") == 0) {
-		scoringFunction = new scoring::BICScoringFunction(network, recordFile, llc, constraints, enableDeCamposPruning);
-	} else if (sf.compare("fnml") == 0) {
-	} else if (sf.compare("bdeu") == 0) {
+	if( sf.compare( "bic" ) == 0 ){
+		scoringFunction = new scoring::BICScoringFunction( network , recordFile , llc , constraints , enableDeCamposPruning ) ;
+	}else if( sf.compare( "fnml" ) == 0 ){
+	}else if( sf.compare( "bdeu" ) == 0 ){
 	}
 
-	std::vector<boost::thread*> threads;
-	for (int thread = 0; thread < threadCount; thread++) {
-		boost::thread *workerThread = new boost::thread(scoringThread, thread);
-		threads.push_back(workerThread);
+	std::vector<boost::thread*> threads ;
+	for( int thread = 0 ; thread < threadCount ; thread++){
+		boost::thread *workerThread = new boost::thread( scoringThread , thread ) ;
+		threads.push_back( workerThread ) ;
 	}
 
-	for (auto it = threads.begin(); it != threads.end(); it++) {
-		(*it)->join();
+	for( auto it = threads.begin() ; it != threads.end() ; it++){
+		( *it )->join() ;
 	}
 
 	// concatenate all of the files together
-	std::ofstream out(outputFile, std::ios_base::out | std::ios_base::binary);
+	std::ofstream out( outputFile , std::ios_base::out | std::ios_base::binary ) ;
 
 	// first, the header information
-	std::string header = "META pss_version = 0.1\nMETA input_file=" + inputFile + "\nMETA num_records=" + TO_STRING(recordFile.size()) + "\n";
-	header += "META parent_limit=" + TO_STRING(maxParents) + "\nMETA score_type=" + sf + "\n\n";
-	out.write(header.c_str(), header.size());
+	std::string header = "META pss_version = 0.1\nMETA input_file=" + inputFile + "\nMETA num_records=" + TO_STRING(recordFile.size()) + "\n" ;
+	header += "META parent_limit=" + TO_STRING( maxParents ) + "\nMETA score_type=" + sf + "\n\n" ;
+	out.write( header.c_str() , header.size() ) ;
 
-	for (int variable = 0; variable < network.size(); variable++) {
-		std::string varFilename = outputFile + "." + TO_STRING(variable);
-		std::ofstream varFile(varFilename, std::ios_base::in | std::ios_base::binary);
+	for( int variable = 0 ; variable < network.size() ; variable++){
+		std::string varFilename = outputFile + "." + TO_STRING( variable ) ;
+		std::ofstream varFile( varFilename , std::ios_base::in | std::ios_base::binary ) ;
 
-		out << varFile.rdbuf();
-		varFile.close();
+		out << varFile.rdbuf() ;
+		varFile.close() ;
 
 		// and remove the variable file
-		remove(varFilename.c_str());
+		remove( varFilename.c_str() ) ;
 	}
 
-	out.close();
+	out.close() ;
 }
 
 void greedySearch(){
@@ -328,42 +323,42 @@ int main( int argc , char** argv ){
 			( "help,h" , "Show this help message." )
 			;
 
-	po::positional_options_description positionalOptions;
-	positionalOptions.add("input", 1);
-	positionalOptions.add("output", 1);
+	po::positional_options_description positionalOptions ;
+	positionalOptions.add( "input" , 1 ) ;
+	positionalOptions.add( "output" , 1 ) ;
 
-	po::variables_map vm;
-	po::store(po::command_line_parser(argc, argv).options(desc)
-			.positional(positionalOptions).run(),
-			vm);
+	po::variables_map vm ;
+	po::store( po::command_line_parser( argc , argv ).options( desc )
+				.positional( positionalOptions ).run() ,
+				vm ) ;
 
-	if (vm.count("help") || argc == 1) {
-		std::cout << desc;
-		return 0;
+	if( vm.count( "help" ) || argc == 1 ){
+		std::cout << desc ;
+		return 0 ;
 	}
 
-	po::notify(vm);
+	po::notify( vm ) ;
 
-	hasHeader = vm.count("hasHeader");
-	prune = (vm.count("doNotPrune") == 0);
-	enableDeCamposPruning = vm.count("enableDeCamposPruning");
+	hasHeader = vm.count( "hasHeader" ) ;
+	prune = ( vm.count( "doNotPrune" ) == 0 ) ;
+	enableDeCamposPruning = vm.count( "enableDeCamposPruning" ) ;
 
-	if (threadCount < 1) {
-		threadCount = 1;
+	if( threadCount < 1 ){
+		threadCount = 1 ;
 	}
 
-	printf("URLearning, Score Calculator\n");
-	printf("Input file: '%s'\n", inputFile.c_str());
-	printf("Output file: '%s'\n", outputFile.c_str());
-	printf("Delimiter: '%c'\n", delimiter);
-	printf("r_min: '%d'\n", rMin);
-	printf("Scoring function: '%s'\n", sf.c_str());
-	printf("Maximum parents: '%d'\n", maxParents);
-	printf("Threads: '%d'\n", threadCount);
-	printf("Running time (per variable): '%d'\n", runningTime);
-	printf("Has header: '%s'\n", (hasHeader ? "true" : "false"));
-	printf("Enable end-of-scoring pruning: '%s'\n", (prune ? "true" : "false"));
-	printf("Enable DeCampos pruning: '%s'\n", (enableDeCamposPruning ? "true" : "false"));
+	printf( "URLearning, Score Calculator\n" ) ;
+	printf( "Input file: '%s'\n" , inputFile.c_str() ) ;
+	printf( "Output file: '%s'\n" , outputFile.c_str() ) ;
+	printf( "Delimiter: '%c'\n" , delimiter ) ;
+	printf( "r_min: '%d'\n" , rMin ) ;
+	printf( "Scoring function: '%s'\n" , sf.c_str() ) ;
+	printf( "Maximum parents: '%d'\n" , maxParents ) ;
+	printf( "Threads: '%d'\n" , threadCount ) ;
+	printf( "Running time (per variable): '%d'\n" , runningTime ) ;
+	printf( "Has header: '%s'\n" , ( hasHeader ? "true" : "false" ) ) ;
+	printf( "Enable end-of-scoring pruning: '%s'\n" , ( prune ? "true" : "false" ) ) ;
+	printf( "Enable DeCampos pruning: '%s'\n" , ( enableDeCamposPruning ? "true" : "false" ) ) ;
 
 	//    srand( time( NULL ) ) ;
 	if( !file_exists( outputFile ) )
