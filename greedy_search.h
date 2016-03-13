@@ -20,10 +20,10 @@ namespace greedysearch {
 		public :
 			GreedySearch() ;
 			GreedySearch( initializers::Initializer* initializer ,
-						std::vector<bestscorecalculators::BestScoreCalculator*> bestScoreCalculator ) ;
+						std::vector<bestscorecalculators::BestScoreCalculator*> bestScoreCalculator , int maxIterations ) ;
 			~GreedySearch() ;
 		
-			std::vector<greedysearch::Node*> search( int numSolutions = 1 ) ;
+			std::vector<greedysearch::Node*> search( int numSolutions ) ;
 		
 		private :
 			greedysearch::PermutationSet findBestNeighbor( greedysearch::PermutationSet set ) ;
@@ -33,7 +33,7 @@ namespace greedysearch {
 			
 			initializers::Initializer* initializer ;
 			std::vector<bestscorecalculators::BestScoreCalculator*> bestScoreCalculator ;
-			int maxIterations ; // TODO: Set a limit (e.g 100))
+			int maxIterations ;
 			int numIterations ;
 			int variableCount ;
 	} ;

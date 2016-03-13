@@ -80,7 +80,7 @@ approxStruct scoring::BICScoringFunction::approximateScore( int variable , varse
 	VARSET_NEW( p1 , variableCount ) ;
 	VARSET_NEW( p2 , variableCount ) ;
 	bool canApproximate = false ; // TODO: Delete this. Only for debug
-//    printf("BEFORE Looking for " ) ; printVarset( parents ) ;
+
 	for( auto node = cache.begin() ; node != cache.end() ; node++){
 		VARSET_NEW( auxP , network.size() ) ;
 		auxP = node->first ;
@@ -117,7 +117,6 @@ approxStruct scoring::BICScoringFunction::approximateScore( int variable , varse
 	return PAIR( approxScore , PAIR( p1 , p2 ) ) ;
 }
 
-// TODO: Implement interaction information in LLC
 float scoring::BICScoringFunction::getFromApproximation( int variable , varset &p1 , varset &p2 , float approxValue , FloatMap &cache ){
 	VARSET_NEW( parents , network.size() ) ;
 	VARSET_OR( parents , p1 ) ;

@@ -100,10 +100,10 @@ namespace scoring {
 			}
 
 			void read(std::string filename);
-			void readUrlBinary(std::string filename);
 			void write(std::string filename);
-			int writeExclude(std::string filename, varset exclude);
-
+			
+			float getEmptyNetworkScore() ;
+			
 		private:
 			int variableCount;
 			datastructures::BayesianNetwork *network;

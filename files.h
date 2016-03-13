@@ -10,7 +10,6 @@
 
 #include <fstream>
 #include <iostream>
-//#include <endian.h>
 #include <boost/dynamic_bitset.hpp>
 
 inline std::string readString(std::ifstream& in) {
@@ -96,5 +95,66 @@ inline boost::dynamic_bitset<> readBitset(std::ifstream& in, int n) {
 	return value;
 }
 
-#endif	/* FILES_H */
+#include <map>
 
+#include "bayesian_network.h"
+#include "variable.h"
+inline void concatenateScoreFiles( std::string outputFile , std::map<std::string,std::string> metadata ){
+	std::ofstream out( outputFile , std::ios_base::out | std::ios_base::binary ) ;
+
+	// first, the header information
+	std::string header = "META pss_version = 0.1\n" ;
+	header += "META input_file=" + metadata[ "inputFile" ] + "\n" ;
+	header += "META num_records=" + metadata[ "numRecords" ] + "\n" ;
+	header += "META parent_limit=" + metadata[ "maxParents" ] + "\n" ;
+	header += "META score_type=" + metadata[ "scoringFunction" ] + "\n\n" ;
+	out.write( header.c_str() , header.size() ) ;
+
+	int variableCount ;
+	sscanf( metadata[ "variableCount" ].c_str() , "%d" , &variableCount ) ;
+	for( int variable = 0 ; variable < variableCount ; variable++){
+		std::string varFilename = outputFile + "." + TO_STRING( variable ) ;
+		std::ofstream varFile( varFilename , std::ios_base::in | std::ios_base::binary ) ;
+
+		out << varFile.rdbuf() ;
+		varFile.close() ;
+
+		// and remove the variable file
+		remove( varFilename.c_str() ) ;
+	}
+
+	out.close() ;
+}
+
+inline void createVariableScoreFile( std::string varFilename , datastructures::BayesianNetwork &network , int variable , FloatMap &sc ){
+	FILE *varOut = fopen( varFilename.c_str() , "w" ) ;
+
+	datastructures::Variable *var = network.get( variable ) ;
+	fprintf( varOut , "VAR %s\n" , var->getName().c_str() ) ;
+	fprintf( varOut , "META arity=%d\n" , var->getCardinality() ) ;
+
+	fprintf( varOut , "META values=" ) ;
+	for( int i = 0 ; i < var->getCardinality() ; i++)
+		fprintf( varOut , "%s " , var->getValue( i ).c_str() ) ;
+	fprintf( varOut , "\n" ) ;
+
+	for( auto score = sc.begin() ; score != sc.end() ; score++){
+		varset parentSet = ( *score ).first ;
+		float s = ( *score ).second ;
+
+		fprintf( varOut , "%f " , s ) ;
+
+		for( int p = 0; p < network.size() ; p++){
+			if( VARSET_GET( parentSet , p ) ){
+				fprintf( varOut , "%s ", network.get( p )->getName().c_str() ) ;
+			}
+		}
+
+		fprintf( varOut , "\n" ) ;
+	}
+
+	fprintf( varOut , "\n" ) ;
+	fclose( varOut ) ;
+}
+
+#endif	/* FILES_H */

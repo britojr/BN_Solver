@@ -37,8 +37,8 @@ namespace bestscorecalculators {
 				throw std::runtime_error("Invalid BestScore calculator type: '" + type + "'.  Valid options are 'tree', 'bitwise' and 'list'.");
 			}
 
-			spg->initialize(cache);
-			spgs.push_back(spg);
+			spg->initialize( cache ) ;
+			spgs.push_back( spg ) ;
 		}
 		return spgs;
 	}

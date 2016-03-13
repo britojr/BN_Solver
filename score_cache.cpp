@@ -10,15 +10,6 @@
 
 #include <boost/algorithm/string.hpp>
 #include <boost/algorithm/string/trim.hpp>
-//
-//scoring::ScoreCache::ScoreCache(int variableCount) {
-//    this->variableCount = variableCount;
-//
-//    for (int i = 0; i < variableCount; i++) {
-//        cache.push_back(new FloatMap());
-//    }
-//}
-
 
 void scoring::ScoreCache::setVariableCount(int variableCount) {
 	this->variableCount = variableCount;
@@ -160,121 +151,16 @@ void scoring::ScoreCache::read(std::string filename) {
 	}
 
 	in.close();
+	printf("sc( empty ) = %.6lf\n" , getEmptyNetworkScore() ) ;
 }
 
-void scoring::ScoreCache::readUrlBinary(std::string filename) {
-	std::ifstream in(filename.c_str(), std::ios::in | std::ios::binary);
-
-	byte version = readByte(in);
-	int maxParentCount = readInt(in);
-	int recordCount = readInt(in);
-	variableCount = readInt(in);
-
-	network = new datastructures::BayesianNetwork(variableCount);
-
-	for (int variable = 0; variable < variableCount; variable++) {
-		/*   nameLength: int
-		 *      name: String, where each character is a byte
-		 *      cardinality: int
-		 *          value names: length, then String
-		 *      count: int
-		 *      scores: long, float
-		 */
-		std::string name = readString(in);
-		int cardinality = readInt(in);
-
-		std::vector<std::string> values;
-		for (int i = 0; i < cardinality; i++) {
-			std::string value = readString(in);
-			values.push_back(value);
-		}
-
-		datastructures::Variable *var = network->get(variable);
-		var->setName(name);
-		var->setValues(values);
-
-		FloatMap *map = new FloatMap();
-		init_map(map);
-		cache.push_back(map);
-
-		int count = readInt(in);
-		for (int i = 0; i < count; i++) {
-			// TODO: properly read and bitsets
-			uint64_t l = readLong(in);
-			VARSET_NEW_INIT(parents, network->size(), l);
-			float score = readFloat(in);
-			(*cache[variable])[parents] = score;
-		}
-	}
-
-	in.close();
-}
-
-int scoring::ScoreCache::writeExclude(std::string filename, varset exclude) {
-
-	FILE *out = fopen(filename.c_str(), "w");
-
-	// we do not really need the header information
-//    std::string header = "META pss_version = 0.1\nMETA input_file=" + getMetaInformation("input_file") + "\nMETA num_records=" + getMetaInformation("num_records") + "\n";
-//    header += "META parent_limit=" + getMetaInformation("parent_limit") + "\nMETA score_type=" + getMetaInformation("score_type") + "\nMETA ess=" + getMetaInformation("ess") + "\n\n";
-//    fprintf(out, header.c_str());
-
-	int count = 0;
-
-	for (int variable = 0; variable < variableCount; variable++) {
-
-
-
-		datastructures::Variable *var = network->get(variable);
-		fprintf(out, "VAR %s\n", var->getName().c_str());
-//        fprintf(out, "META arity=%d\n", var->getCardinality());
-//
-//        fprintf(out, "META values=");
-//        for (int i = 0; i < var->getCardinality(); i++) {
-//            fprintf(out, "%s ", var->getValue(i).c_str());
-//        }
-//        fprintf(out, "\n");
-//        
-		// skip anything that we are excluding
-		// we still have to write the variable information because others can use it as a parent
-		if (VARSET_GET(exclude, variable)) {
-			fprintf(out, "0\n\n");
-			continue;
-		}
-
-
-		for (auto score = cache[variable]->begin(); score != cache[variable]->end(); score++) {
-			varset parentSet = (*score).first;
-			float s = (*score).second;
-
-			if (s > 0) {
-				s = -s;
-			}
-
-//            // if the parent set contains something than has been excluded
-//            // then skip this parent set
-//            if (VARSET_AND(parentSet, exclude) != 0) {
-//                continue;
-//            }
-
-			fprintf(out, "%f ", s);
-
-			for (int p = 0; p < network->size(); p++) {
-				if (VARSET_GET(parentSet, p)) {
-					fprintf(out, "%s ", network->get(p)->getName().c_str());
-				}
-			}
-
-			fprintf(out, "\n");
-			count++;
-		}
-
-		fprintf(out, "\n");
-
-	}
-
-	fclose(out);
-	return count;
+float scoring::ScoreCache::getEmptyNetworkScore(){
+	float sc = 0. ;
+	VARSET_NEW( empty , network->size() ) ;
+	VARSET_CLEAR_ALL( empty ) ;
+	for(int var = 0 ; var < network->size() ; var++)
+		sc += getScore( var , empty ) ;
+	return sc ;
 }
 
 scoring::ScoreCache::~ScoreCache() {

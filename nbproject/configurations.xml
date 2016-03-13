@@ -38,6 +38,7 @@
         <itemPath>weighted_path_initializer.h</itemPath>
       </logicalFolder>
       <logicalFolder name="f4" displayName="parentselection" projectFiles="true">
+        <itemPath>parent_set_selection.h</itemPath>
       </logicalFolder>
       <logicalFolder name="f2" displayName="scoring" projectFiles="true">
         <itemPath>ad_node.h</itemPath>
@@ -214,6 +215,8 @@
       </item>
       <item path="node.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="parent_set_selection.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="permutation_set.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="permutation_set.h" ex="false" tool="3" flavor2="0">
@@ -365,6 +368,8 @@
       <item path="main.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="node.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="parent_set_selection.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="permutation_set.cpp" ex="false" tool="1" flavor2="0">
       </item>

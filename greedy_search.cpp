@@ -14,10 +14,11 @@ greedysearch::GreedySearch::GreedySearch(){
 }
 
 greedysearch::GreedySearch::GreedySearch( initializers::Initializer* initializer ,
-										std::vector<bestscorecalculators::BestScoreCalculator*> bestScoreCalculator ){
+										std::vector<bestscorecalculators::BestScoreCalculator*> bestScoreCalculator ,
+										int maxIterations ){
 	this->initializer = initializer ;
 	this->bestScoreCalculator = bestScoreCalculator ;
-	this->maxIterations = 500 ; // TODO: Check this
+	this->maxIterations = maxIterations ;
 	this->numIterations = 0 ;
 	this->variableCount = bestScoreCalculator.size() ;
 }

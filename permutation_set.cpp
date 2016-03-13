@@ -5,6 +5,8 @@
  * Created on 26 de enero de 2016, 05:22 PM
  */
 
+#include <limits>
+
 #include <boost/random.hpp>
 
 #include "permutation_set.h"
@@ -19,7 +21,7 @@ greedysearch::PermutationSet::PermutationSet( int size ){
 	for(int i = 0 ; i < size ; i++)
 		permutation.push_back( i ) ;
 	permutation = shuffle( permutation , gen ) ;
-	score = 123456789. ; // TODO: Check this
+	score = std::numeric_limits<float>::max() ;
 }
 
 greedysearch::PermutationSet::~PermutationSet(){
@@ -34,8 +36,9 @@ void greedysearch::PermutationSet::setScore( float score ){
 	this->score = score ;
 }
 
+// Considering that minimizing is better
 bool greedysearch::PermutationSet::isBetter( greedysearch::PermutationSet other ){
-	return other.getScore() > score ; // TODO: Check this for other scores
+	return other.getScore() > score ;
 }
 
 void greedysearch::PermutationSet::setPermutation( std::vector<int> permutation ){

@@ -32,6 +32,7 @@
 #include "best_score_creator.h"
 #include "node.h"
 #include "utils.h"
+#include "files.h"
 
 namespace po = boost::program_options ;
 
@@ -99,7 +100,12 @@ std::string initializerType ;
 /**
  * Number of solutions to be generated with initializer.
  */
-int numSolutions = 1000 ;
+int numSolutions = 1 ;
+
+/**
+ * Number of iterations for greedy search until stopping
+ */
+int maxIterations = 500 ;
 
 /*
  * Method to select parent sets
@@ -147,7 +153,7 @@ void scoringThread( int thread ){
 			continue ;
 		}
 
-		std::string varFilename = outputFile + "." + TO_STRING(variable);
+		std::string varFilename = outputFile + "." + TO_STRING( variable ) ;
 		if( file_exists( varFilename ) ) continue ;
 
 		printf( "Thread: %d , Variable: %d , Time: %s\n" , thread , variable , getTime().c_str() ) ;
@@ -165,34 +171,8 @@ void scoringThread( int thread ){
 			printf( "Thread: %d , Variable: %d , Size after pruning: %d , Time: %s\n" , thread , variable , prunedSize , getTime().c_str() ) ;
 		}
 
-		FILE *varOut = fopen( varFilename.c_str() , "w" ) ;
-
-		datastructures::Variable *var = network.get( variable ) ;
-		fprintf( varOut , "VAR %s\n" , var->getName().c_str() ) ;
-		fprintf( varOut , "META arity=%d\n" , var->getCardinality() ) ;
-
-		fprintf( varOut , "META values=" ) ;
-		for( int i = 0 ; i < var->getCardinality() ; i++)
-			fprintf( varOut , "%s " , var->getValue( i ).c_str() ) ;
-		fprintf( varOut , "\n" ) ;
-
-		for( auto score = sc.begin() ; score != sc.end() ; score++){
-			varset parentSet = ( *score ).first ;
-			float s = ( *score ).second ;
-
-			fprintf( varOut , "%f " , s ) ;
-
-			for( int p = 0; p < network.size(); p++){
-				if( VARSET_GET( parentSet , p ) ){
-					fprintf( varOut , "%s ", network.get( p )->getName().c_str() ) ;
-				}
-			}
-
-			fprintf( varOut , "\n" ) ;
-		}
-
-		fprintf( varOut , "\n" ) ;
-		fclose( varOut ) ;
+		createVariableScoreFile( varFilename , network , variable , sc ) ;
+		
 		sc.clear() ;
 	}
 }
@@ -252,25 +232,13 @@ void calculateScore(){
 	}
 
 	// concatenate all of the files together
-	std::ofstream out( outputFile , std::ios_base::out | std::ios_base::binary ) ;
-
-	// first, the header information
-	std::string header = "META pss_version = 0.1\nMETA input_file=" + inputFile + "\nMETA num_records=" + TO_STRING(recordFile.size()) + "\n" ;
-	header += "META parent_limit=" + TO_STRING( maxParents ) + "\nMETA score_type=" + sf + "\n\n" ;
-	out.write( header.c_str() , header.size() ) ;
-
-	for( int variable = 0 ; variable < network.size() ; variable++){
-		std::string varFilename = outputFile + "." + TO_STRING( variable ) ;
-		std::ofstream varFile( varFilename , std::ios_base::in | std::ios_base::binary ) ;
-
-		out << varFile.rdbuf() ;
-		varFile.close() ;
-
-		// and remove the variable file
-		remove( varFilename.c_str() ) ;
-	}
-
-	out.close() ;
+	std::map<std::string,std::string> metadata ;
+	metadata[ "inputFile" ] = inputFile ;
+	metadata[ "numRecords" ] = TO_STRING( recordFile.size() ) ;
+	metadata[ "maxParents" ] = TO_STRING( maxParents ) ;
+	metadata[ "scoringFunction" ] = sf ;
+	metadata[ "variableCount" ] = TO_STRING( network.size() ) ;
+	concatenateScoreFiles( outputFile , metadata ) ;
 }
 
 void greedySearch(){
@@ -282,12 +250,6 @@ void greedySearch(){
 	printf( "Reading score cache.\n" ) ;
 	scoring::ScoreCache cache ;
 	cache.read( outputFile ) ;
-	int variableCount = cache.getVariableCount() ;
-	float gg = 0. ;
-	VARSET_NEW( empty , variableCount ) ;
-	VARSET_CLEAR_ALL( empty ) ;
-	for(int i = 0 ; i < variableCount ; i++) gg += cache.getScore( i , empty ) ;
-	printf("EMPTY NET = %.6f\n" , gg ) ;
 
 	printf( "Creating Best score calculators.\n" ) ;
 	std::vector<bestscorecalculators::BestScoreCalculator*> bestScCalc = bestscorecalculators::create( bestScoreCalculator , cache ) ;
@@ -295,7 +257,7 @@ void greedySearch(){
 	printf( "Creating Initialization heuristic.\n" ) ;
 	initializers::Initializer* initializer = initializers::create( initializerType , bestScCalc ) ;
 
-	greedysearch::GreedySearch* algorithm = new greedysearch::GreedySearch( initializer , bestScCalc ) ;
+	greedysearch::GreedySearch* algorithm = new greedysearch::GreedySearch( initializer , bestScCalc , maxIterations ) ;
 	std::vector<greedysearch::Node*> solution = algorithm->search( numSolutions ) ;
 }
 
@@ -306,8 +268,8 @@ int main( int argc , char** argv ){
 	po::options_description desc( description ) ;
 
 	desc.add_options()
-		( "input" , po::value<std::string > (&inputFile)->required(), "The input file. First positional argument." )
-			( "output" , po::value<std::string > (&outputFile)->required(), "The output file. Second positional argument." )
+		( "input" , po::value<std::string > (&inputFile)->required(), "The data set file. First positional argument." )
+			( "output" , po::value<std::string > (&outputFile)->required(), "The score file. Second positional argument." )
 			( "delimiter,d" , po::value<char> (&delimiter)->required()->default_value(','), "The delimiter of the input file." )
 			( "rMin,m" , po::value<int> (&rMin)->default_value(5), "The minimum number of records in the AD-tree nodes." )
 			( "maxParents,p" , po::value<int> (&maxParents)->default_value(0), "The maximum number of parents for any variable. A value less than 1 means no limit." )
@@ -319,7 +281,8 @@ int main( int argc , char** argv ){
 			( "parentSelectionType,q" ,po::value<std::string>(&selectionType)->default_value("sequential"),"Method to select parent sets ('Sequential', 'Greedy' or 'Independence')." )
 			( "bestScore,b" , po::value<std::string > (&bestScoreCalculator)->default_value( "list") , bestscorecalculators::bestScoreCalculatorString.c_str() )
 			( "initializer,z" , po::value<std::string > (&initializerType)->default_value("random"), initializers::initializerTypeString.c_str() )
-			( "numSolutions,n" , po::value<int> (&numSolutions)->default_value(1000), "Num of solutions to be generated." )
+			( "numSolutions,n" , po::value<int> (&numSolutions)->default_value(1), "Number of initial solutions to be generated." )
+			( "maxIterations,k" , po::value<int> (&maxIterations)->default_value(100), "Max number of iterations in greedy search." )
 			( "help,h" , "Show this help message." )
 			;
 
@@ -328,9 +291,9 @@ int main( int argc , char** argv ){
 	positionalOptions.add( "output" , 1 ) ;
 
 	po::variables_map vm ;
-	po::store( po::command_line_parser( argc , argv ).options( desc )
-				.positional( positionalOptions ).run() ,
-				vm ) ;
+	po::store( po::command_line_parser( argc , argv )
+				.options( desc )
+				.positional( positionalOptions ).run() , vm ) ;
 
 	if( vm.count( "help" ) || argc == 1 ){
 		std::cout << desc ;

@@ -118,11 +118,8 @@ void scoring::ScoreCalculator::calculateScores_sequential(int variable, FloatMap
 
 		while (VARSET_LESS_THAN(variables, max) && !outOfTime) {
 			VARSET_RESIZE( variables , variableCount ) ;
-//            variables.resize( variableCount ) ; // TODO: Add in typedefs.h
 			if (!VARSET_GET(variables, variable)) {
 
-//                printf( "score( %d | " , variable ) ;
-//                printVarset( variables ) ;
 				score = scoringFunction->calculateScore(variable, variables, cache);
 
 				// only store the score if it was not pruned
@@ -134,7 +131,6 @@ void scoring::ScoreCalculator::calculateScores_sequential(int variable, FloatMap
 
 			}
 			VARSET_RESIZE( variables , variableCount + 1 ) ;
-//            variables.resize( variableCount+1 ) ; // TODO: Add in typedefs.h
 			// find the next combination
 			variables = nextPermutation(variables);
 		}
@@ -171,7 +167,7 @@ void scoring::ScoreCalculator::calculateScores_greedy( int variable , FloatMap &
 	}
 
 	// Add parent set of size 1
-	int prunedCount = 0 ; // TODO: Check if needed
+	int prunedCount = 0 ;
 	std::vector<std::pair<varset,float> > open ;
 	for(int i = 0 ; i < variableCount && !outOfTime ; i++){
 		if( i == variable ) continue ;
@@ -187,7 +183,7 @@ void scoring::ScoreCalculator::calculateScores_greedy( int variable , FloatMap &
 	}
 
 	while( !open.empty() && !outOfTime ){
-		sort( open.begin() , open.end() , comparator ) ;
+		std::sort( open.begin() , open.end() , comparator ) ;
 		std::pair<varset,float> node = open[ 0 ] ;
 		open.erase( open.begin() ) ;
 		VARSET_NEW( best , variableCount ) ;
@@ -231,8 +227,7 @@ void scoring::ScoreCalculator::calculateScores_independence( int variable , Floa
 	}
 
 	// Add parent set of size 1
-	int prunedCount = 0 ; // TODO: Check if needed
-//    std::vector<std::pair<varset,float> > closed ;
+	int prunedCount = 0 ;
 	for(int i = 0 ; i < variableCount && !outOfTime ; i++){
 		if( i == variable ) continue ;
 		VARSET_NEW( parents , variableCount ) ;
@@ -240,7 +235,6 @@ void scoring::ScoreCalculator::calculateScores_independence( int variable , Floa
 		float score = scoringFunction->calculateScore( variable , parents , cache ) ;
 		if( compare( score ) < 0 ){
 			cache[ parents ] = score ;
-//            closed.push_back( PAIR( parents , score ) ) ; // Closed is the score cache
 		}else{
 			prunedCount++ ;
 		}

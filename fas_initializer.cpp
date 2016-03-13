@@ -86,7 +86,7 @@ void initializers::FASInitializer::initialize(){
 		for(int j = 0 ; j < variableCount ; j++){
 			if( !VARSET_GET( parents , j ) ) continue ;
 			VARSET_CLEAR( parents , j ) ;
-			float weight = score - bestScoreCalculators[ i ]->getScore( parents ) ; // TODO: Check this
+			float weight = score - bestScoreCalculators[ i ]->getScore( parents ) ;
 			nodes[ j ]->addChild( i , weight ) ;
 			VARSET_SET( parents , j ) ;
 		}
