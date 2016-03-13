@@ -41,60 +41,19 @@ namespace po = boost::program_options ;
 std::string inputFile ;
 
 /**
- * The delimiter in each line.
- */
-char delimiter = ',' ;
-
-/**
  * The file to write the scores.
  */
 std::string outputFile ;
 
 /**
- * File specifying constraints on the scores.
+ * The delimiter in each line of data file.
  */
-std::string constraintsFile ;
+char delimiter = ',' ;
 
 /**
  * The minimum number of records in the AD-tree.
  */
 int rMin = 5 ;
-
-/**
- * The scoring function to use.
- */
-std::string sf = "BIC" ;
-
-/**
- * A reference to the scoring function object.
- */
-scoring::ScoringFunction *scoringFunction ;
-
-/*
- * Method to select parent sets
- */
-std::string selectionType = "sequential" ;
-
-/**
- * The data structure to use to calculate best parent set scores.
- * "tree", "list", "bitwise"
- */
-std::string bestScoreCalculator ;
-
-/**
- * The type of initializer to use.
- */
-std::string initializerType ;
-
-/**
- * Number of solutions to be generated with initializer.
- */
-int numSolutions = 1000 ;
-
-/**
- * The ess to use for BDeu.
- */
-float equivalentSampleSize = 1.0f ;
 
 /**
  * A hard limit on the size of parent sets.
@@ -125,6 +84,42 @@ bool prune = true ;
  * Whether to use deCampos-style pruning.
  */
 bool enableDeCamposPruning = false ;
+
+/**
+ * The data structure to use to calculate best parent set scores.
+ * "tree", "list", "bitwise"
+ */
+std::string bestScoreCalculator ;
+
+/**
+ * The type of initializer to use.
+ */
+std::string initializerType ;
+
+/**
+ * Number of solutions to be generated with initializer.
+ */
+int numSolutions = 1000 ;
+
+/*
+ * Method to select parent sets
+ */
+std::string selectionType = "sequential" ;
+
+/**
+ * File specifying constraints on the scores.
+ */
+std::string constraintsFile ;
+
+/**
+ * The scoring function to use.
+ */
+std::string sf = "BIC" ;
+
+/**
+ * A reference to the scoring function object.
+ */
+scoring::ScoringFunction *scoringFunction ;
 
 /**
  * The network information.
@@ -266,7 +261,7 @@ void calculateScore(){
 
     // first, the header information
     std::string header = "META pss_version = 0.1\nMETA input_file=" + inputFile + "\nMETA num_records=" + TO_STRING(recordFile.size()) + "\n";
-    header += "META parent_limit=" + TO_STRING(maxParents) + "\nMETA score_type=" + sf + "\nMETA ess=" + TO_STRING(equivalentSampleSize) + "\n\n";
+    header += "META parent_limit=" + TO_STRING(maxParents) + "\nMETA score_type=" + sf + "\n\n";
     out.write(header.c_str(), header.size());
 
     for (int variable = 0; variable < network.size(); variable++) {
@@ -364,7 +359,6 @@ int main( int argc , char** argv ){
     printf("Delimiter: '%c'\n", delimiter);
     printf("r_min: '%d'\n", rMin);
     printf("Scoring function: '%s'\n", sf.c_str());
-    printf("ESS: '%f'\n", equivalentSampleSize);
     printf("Maximum parents: '%d'\n", maxParents);
     printf("Threads: '%d'\n", threadCount);
     printf("Running time (per variable): '%d'\n", runningTime);
