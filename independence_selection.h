@@ -19,7 +19,7 @@ namespace parentselection {
 			void calculateScores( int variable , FloatMap &cache ) ;
 
 		private :
-			void calculateScores_internal( int variable , FloatMap &cache ) ;
+			void calculateScores_internal( int variable , FloatMap &pruned , FloatMap &cache ) ;
 
 	} ;
 }

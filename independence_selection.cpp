@@ -44,9 +44,11 @@ void parentselection::IndependenceSelection::calculateScores( int variable , Flo
 		t->async_wait( boost::bind( &parentselection::ParentSetSelection::timeout, this, boost::asio::placeholders::error ) ) ;
 		boost::thread workerThread ;
 
+		FloatMap pruned ;
+		init_map( pruned ) ;
 		workerThread = boost::thread( 
 				boost::bind( &parentselection::IndependenceSelection::calculateScores_internal ,
-							this , variable , boost::ref( cache )
+							this , variable , boost::ref( pruned ) , boost::ref( cache )
 				) 
 		) ;
 		io_t.run() ;
@@ -55,15 +57,17 @@ void parentselection::IndependenceSelection::calculateScores( int variable , Flo
 		t->cancel() ;
 	}else{
 		printf("I am executing without time limit\n" ) ;
-		calculateScores_internal( variable , cache ) ;
+		FloatMap pruned ;
+		init_map( pruned ) ;
+		calculateScores_internal( variable , pruned , cache ) ;
 	}
 }
 
-void parentselection::IndependenceSelection::calculateScores_internal( int variable , FloatMap& cache ){
+void parentselection::IndependenceSelection::calculateScores_internal( int variable , FloatMap &pruned , FloatMap& cache ){
 	// calculate the initial score
 	VARSET_NEW( empty , variableCount ) ;
 	VARSET_CLEAR_ALL( empty ) ;
-	float score = scoringFunction->calculateScore( variable , empty , cache ) ;
+	float score = scoringFunction->calculateScore( variable , empty , pruned , cache ) ;
 
 	if( score < 1 ){
 		cache[ empty ] = score ;
@@ -75,7 +79,7 @@ void parentselection::IndependenceSelection::calculateScores_internal( int varia
 		if( i == variable ) continue ;
 		VARSET_NEW( parents , variableCount ) ;
 		VARSET_SET( parents , i ) ;
-		float score = scoringFunction->calculateScore( variable , parents , cache ) ;
+		float score = scoringFunction->calculateScore( variable , parents , pruned , cache ) ;
 		if( compare( score ) < 0 ){
 			cache[ parents ] = score ;
 		}else{
@@ -95,7 +99,7 @@ void parentselection::IndependenceSelection::calculateScores_internal( int varia
 		for(int j = i+1 ; j < variableCount && !outOfTime ; j++){
 			if( j == variable ) continue ;
 			VARSET_SET( parents , j ) ;
-			approxStruct approximation = scoringFunction->approximateScore( variable , parents , cache ) ;
+			approxStruct approximation = scoringFunction->approximateScore( variable , parents , pruned , cache ) ;
 			if( compare( approximation.first ) < 0 ){
 				open.push( approximation ) ;
 				openCache[ parents ] = 0.0 ;
@@ -116,7 +120,7 @@ void parentselection::IndependenceSelection::calculateScores_internal( int varia
 		VARSET_NEW( parents , variableCount ) ;
 		VARSET_OR( parents , p1 ) ;
 		VARSET_OR( parents , p2 ) ;
-		float score = scoringFunction->getFromApproximation( variable , p1 , p2 , approxValue , cache ) ;
+		float score = scoringFunction->getFromApproximation( variable , p1 , p2 , approxValue , pruned , cache ) ;
 		if( compare( score ) < 0 ){
 			cache[ parents ] = score ;
 		}
@@ -131,7 +135,7 @@ void parentselection::IndependenceSelection::calculateScores_internal( int varia
 			VARSET_SET( superset , i ) ;
 			// Expand only if it is not already visited/calculated
 			if( !cache.count( superset ) && !openCache.count( superset ) ){
-				approxStruct approximation = scoringFunction->approximateScore( variable , superset , cache ) ;
+				approxStruct approximation = scoringFunction->approximateScore( variable , superset , pruned , cache ) ;
 				open.push( approximation ) ;
 				openCache[ superset ] = 0.0 ;
 			}

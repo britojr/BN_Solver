@@ -43,9 +43,11 @@ void parentselection::GreedySelection::calculateScores( int variable , FloatMap 
 		t->async_wait( boost::bind( &parentselection::ParentSetSelection::timeout, this, boost::asio::placeholders::error ) ) ;
 		boost::thread workerThread ;
 
+		FloatMap pruned ;
+		init_map( pruned ) ;
 		workerThread = boost::thread( 
 				boost::bind( &parentselection::GreedySelection::calculateScores_internal ,
-							this , variable , boost::ref( cache )
+							this , variable , boost::ref( pruned ) , boost::ref( cache )
 				) 
 		) ;
 		io_t.run() ;
@@ -54,14 +56,16 @@ void parentselection::GreedySelection::calculateScores( int variable , FloatMap 
 		t->cancel() ;
 	}else{
 		printf("I am executing without time limit\n" ) ;
-		calculateScores_internal( variable , cache ) ;
+		FloatMap pruned ;
+		init_map( pruned ) ;
+		calculateScores_internal( variable , pruned , cache ) ;
 	}
 }
 
-void parentselection::GreedySelection::calculateScores_internal( int variable , FloatMap& cache ){
+void parentselection::GreedySelection::calculateScores_internal( int variable , FloatMap &pruned , FloatMap& cache ){
 	// calculate the initial score
 	VARSET_NEW( empty , variableCount ) ;
-	float score = scoringFunction->calculateScore( variable , empty , cache ) ;
+	float score = scoringFunction->calculateScore( variable , empty , pruned , cache ) ;
 
 	if( score < 1 ){
 		cache[ empty ] = score ;
@@ -75,7 +79,7 @@ void parentselection::GreedySelection::calculateScores_internal( int variable , 
 		if( i == variable ) continue ;
 		VARSET_NEW( parents , variableCount ) ;
 		VARSET_SET( parents , i ) ;
-		float score = scoringFunction->calculateScore( variable , parents , cache ) ;
+		float score = scoringFunction->calculateScore( variable , parents , pruned , cache ) ;
 		if( score < 0 ){
 			cache[ parents ] = score ;
 			open.push( PAIR( parents , score ) ) ;
@@ -97,7 +101,7 @@ void parentselection::GreedySelection::calculateScores_internal( int variable , 
 			if( j == variable ) continue ;
 			VARSET_SET( superset , j ) ;
 			if( !cache.count( superset ) && !openCache.count( superset ) ){
-				float score = scoringFunction->calculateScore( variable , superset , cache ) ;
+				float score = scoringFunction->calculateScore( variable , superset , pruned , cache ) ;
 				if( score < 0 ){
 					cache[ superset ] = score ;
 					open.push( PAIR( superset , score ) ) ;

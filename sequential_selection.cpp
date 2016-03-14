@@ -31,9 +31,11 @@ void parentselection::SequentialSelection::calculateScores( int variable , Float
 		t->async_wait( boost::bind( &parentselection::ParentSetSelection::timeout, this, boost::asio::placeholders::error ) ) ;
 		boost::thread workerThread ;
 
+		FloatMap pruned ;
+		init_map( pruned ) ;
 		workerThread = boost::thread( 
 				boost::bind( &parentselection::SequentialSelection::calculateScores_internal ,
-							this , variable , boost::ref( cache )
+							this , variable , boost::ref( pruned ) , boost::ref( cache )
 				) 
 		) ;
 		io_t.run() ;
@@ -42,14 +44,16 @@ void parentselection::SequentialSelection::calculateScores( int variable , Float
 		t->cancel() ;
 	}else{
 		printf("I am executing without time limit\n" ) ;
-		calculateScores_internal( variable , cache ) ;
+		FloatMap pruned ;
+		init_map( pruned ) ;
+		calculateScores_internal( variable , pruned , cache ) ;
 	}
 }
 
-void parentselection::SequentialSelection::calculateScores_internal( int variable , FloatMap& cache ){
+void parentselection::SequentialSelection::calculateScores_internal( int variable , FloatMap &pruned , FloatMap& cache ){
 	// calculate the initial score
 	VARSET_NEW( empty , variableCount ) ;
-	float score = scoringFunction->calculateScore( variable , empty , cache ) ;
+	float score = scoringFunction->calculateScore( variable , empty , pruned , cache ) ;
 
 	if(score < 1 ){
 		cache[ empty ] = score ;
@@ -69,7 +73,7 @@ void parentselection::SequentialSelection::calculateScores_internal( int variabl
 		while( VARSET_LESS_THAN( variables , max ) && !outOfTime ){
 			VARSET_RESIZE( variables , variableCount ) ;
 			if( !VARSET_GET( variables , variable ) ){
-				score = scoringFunction->calculateScore( variable , variables , cache ) ;
+				score = scoringFunction->calculateScore( variable , variables , pruned , cache ) ;
 
 				// only store the score if it was not pruned
 				if( score < 0 ){

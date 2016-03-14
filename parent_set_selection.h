@@ -20,7 +20,9 @@ namespace parentselection {
 			void timeout( const boost::system::error_code& /*e*/ ) ;
 
 			virtual void calculateScores( int variable , FloatMap &cache ) = 0 ;
-			virtual void calculateScores_internal( int variable , FloatMap &cache ) = 0 ;
+			virtual void calculateScores_internal( int variable , 
+													FloatMap &pruned ,
+													FloatMap &cache ) = 0 ;
 
 			boost::asio::io_service io ;
 			boost::asio::deadline_timer *t ;
