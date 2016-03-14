@@ -224,7 +224,7 @@ int main( int argc , char** argv ){
 			( "doNotPrune,o" , pruneString.c_str() )
 			( "enableDeCamposPruning,c" , deCamposPruningString.c_str() )
 			( "parentSelectionType,q" ,po::value<std::string>(&selectionType)->default_value("sequential"), parentselection::parentSetSelectionString.c_str() )
-			( "bestScore,b" , po::value<std::string > (&bestScoreCalculator)->default_value( "list") , bestscorecalculators::bestScoreCalculatorString.c_str() )
+			( "bestScore,b" , po::value<std::string > (&bestScoreCalculator)->default_value("list") , bestscorecalculators::bestScoreCalculatorString.c_str() )
 			( "initializer,z" , po::value<std::string > (&initializerType)->default_value("random"), initializers::initializerTypeString.c_str() )
 			( "numSolutions,n" , po::value<int> (&numSolutions)->default_value(1), numSolutionsString.c_str() )
 			( "maxIterations,k" , po::value<int> (&maxIterations)->default_value(100), maxIterationsString.c_str() )
