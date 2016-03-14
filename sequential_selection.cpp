@@ -6,6 +6,9 @@
  */
 #include <boost/thread.hpp>
 
+#include <queue>
+
+#include "utils.h"
 #include "sequential_selection.h"
 
 parentselection::SequentialSelection::SequentialSelection( scoring::ScoringFunction *scoringFunction ,
@@ -53,41 +56,41 @@ void parentselection::SequentialSelection::calculateScores( int variable , Float
 void parentselection::SequentialSelection::calculateScores_internal( int variable , FloatMap &pruned , FloatMap& cache ){
 	// calculate the initial score
 	VARSET_NEW( empty , variableCount ) ;
+	VARSET_CLEAR_ALL( empty ) ;
 	float score = scoringFunction->calculateScore( variable , empty , pruned , cache ) ;
 
-	if(score < 1 ){
+	if( score < 1 ){
 		cache[ empty ] = score ;
 	}
 
 	int prunedCount = 0 ;
-
-	for( int layer = 1 ; layer <= maxParents && !outOfTime ; layer++){
-		VARSET_NEW( variables , variableCount+1 ) ;
-		for( int i = 0 ; i < layer ; i++){
-			VARSET_SET( variables , i ) ;
+	std::queue<varset> open ;
+	FloatMap openCache ;
+	open.push( empty ) ;
+	while( !open.empty() && !outOfTime ){
+		varset parents = open.front() ; open.pop() ;
+		float score = scoringFunction->calculateScore( variable , parents , pruned , cache ) ;
+		if( compare( score ) < 0 ){
+			cache[ parents ] = score ;
+		}else{
+			prunedCount++ ;
 		}
-
-		VARSET_NEW( max , variableCount + 1 ) ;
-		VARSET_SET( max , variableCount ) ;
-
-		while( VARSET_LESS_THAN( variables , max ) && !outOfTime ){
-			VARSET_RESIZE( variables , variableCount ) ;
-			if( !VARSET_GET( variables , variable ) ){
-				score = scoringFunction->calculateScore( variable , variables , pruned , cache ) ;
-
-				// only store the score if it was not pruned
-				if( score < 0 ){
-					cache[ variables ] = score ;
-				}else{
-					prunedCount++ ;
-				}
+		
+		if( cardinality( parents ) >= maxParents ) continue ;
+		
+		// Expand parent set
+		VARSET_NEW( superset , variableCount ) ;
+		superset = parents ;
+		for(int i = 0 ; i < variableCount && !outOfTime ; i++){
+			if( i == variable ) continue ;
+			VARSET_SET( superset , i ) ;
+			// Expand only if it is not already visited/calculated
+			if( !cache.count( superset ) && !openCache.count( superset ) ){
+				open.push( superset ) ;
+				openCache[ superset ] = 0.0 ;
 			}
-			VARSET_RESIZE( variables , variableCount + 1 ) ;
-			// find the next combination
-			variables = nextPermutation( variables ) ;
+			VARSET_CLEAR( superset , i ) ;
 		}
-
-		if( !outOfTime ) highestCompletedLayer = layer ;
 	}
 
 	io.stop() ;
