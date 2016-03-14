@@ -240,8 +240,6 @@ void greedySearch(){
 }
 
 int main( int argc , char** argv ){
-	boost::timer::auto_cpu_timer t;
-
 	std::string description = std::string( "Compute the scores for a csv file.  Example usage: " ) + argv[ 0 ] + " iris.csv iris.pss" ;
 	po::options_description desc( description ) ;
 
@@ -256,7 +254,7 @@ int main( int argc , char** argv ){
 			( "hasHeader,s" , "Add this flag if the first line of the input file gives the variable names." )
 			( "doNotPrune,o" , "Add this flag if the scores should NOT be pruned at the end of the search." )
 			( "enableDeCamposPruning,c" , "Add this flag if the scores should be pruned while calculating." )
-			( "parentSelectionType,q" ,po::value<std::string>(&selectionType)->default_value("sequential"),"Method to select parent sets ('Sequential', 'Greedy' or 'Independence')." )
+			( "parentSelectionType,q" ,po::value<std::string>(&selectionType)->default_value("sequential"), parentselection::parentSetSelectionString.c_str() )
 			( "bestScore,b" , po::value<std::string > (&bestScoreCalculator)->default_value( "list") , bestscorecalculators::bestScoreCalculatorString.c_str() )
 			( "initializer,z" , po::value<std::string > (&initializerType)->default_value("random"), initializers::initializerTypeString.c_str() )
 			( "numSolutions,n" , po::value<int> (&numSolutions)->default_value(1), "Number of initial solutions to be generated." )
