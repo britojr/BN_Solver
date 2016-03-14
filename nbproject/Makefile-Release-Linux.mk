@@ -43,15 +43,21 @@ OBJECTFILES= \
 	${OBJECTDIR}/ad_tree.o \
 	${OBJECTDIR}/bayesian_network.o \
 	${OBJECTDIR}/bic_scoring_function.o \
+	${OBJECTDIR}/dfs_2.o \
+	${OBJECTDIR}/dfs_3.o \
+	${OBJECTDIR}/dfs_4.o \
 	${OBJECTDIR}/dfs_initializer.o \
 	${OBJECTDIR}/fas_initializer.o \
 	${OBJECTDIR}/greedy_search.o \
+	${OBJECTDIR}/greedy_selection.o \
+	${OBJECTDIR}/independence_selection.o \
 	${OBJECTDIR}/log_likelihood_calculator.o \
 	${OBJECTDIR}/main.o \
+	${OBJECTDIR}/parent_set_selection.o \
 	${OBJECTDIR}/permutation_set.o \
 	${OBJECTDIR}/random_initializer.o \
 	${OBJECTDIR}/score_cache.o \
-	${OBJECTDIR}/score_calculator.o \
+	${OBJECTDIR}/sequential_selection.o \
 	${OBJECTDIR}/sparse_parent_bitwise.o \
 	${OBJECTDIR}/sparse_parent_list.o \
 	${OBJECTDIR}/sparse_parent_tree.o \
@@ -73,7 +79,7 @@ FFLAGS=
 ASFLAGS=
 
 # Link Libraries and Options
-LDLIBSOPTIONS=-L${LIBRARY_DIR} -lboost_system -lboost_thread -lboost_chrono -lboost_timer -lboost_program_options -lboost_serialization
+LDLIBSOPTIONS=-L${LIBRARY_DIR} -lboost_system -lboost_thread-mt -lboost_chrono -lboost_timer -lboost_program_options -lboost_container -lboost_serialization
 
 # Build Targets
 .build-conf: ${BUILD_SUBPROJECTS}
@@ -103,6 +109,21 @@ ${OBJECTDIR}/bic_scoring_function.o: bic_scoring_function.cpp
 	${RM} "$@.d"
 	$(COMPILE.cc) -O3 -s -I${INCLUDE_DIR} -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/bic_scoring_function.o bic_scoring_function.cpp
 
+${OBJECTDIR}/dfs_2.o: dfs_2.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O3 -s -I${INCLUDE_DIR} -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/dfs_2.o dfs_2.cpp
+
+${OBJECTDIR}/dfs_3.o: dfs_3.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O3 -s -I${INCLUDE_DIR} -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/dfs_3.o dfs_3.cpp
+
+${OBJECTDIR}/dfs_4.o: dfs_4.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O3 -s -I${INCLUDE_DIR} -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/dfs_4.o dfs_4.cpp
+
 ${OBJECTDIR}/dfs_initializer.o: dfs_initializer.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
@@ -118,6 +139,16 @@ ${OBJECTDIR}/greedy_search.o: greedy_search.cpp
 	${RM} "$@.d"
 	$(COMPILE.cc) -O3 -s -I${INCLUDE_DIR} -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/greedy_search.o greedy_search.cpp
 
+${OBJECTDIR}/greedy_selection.o: greedy_selection.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O3 -s -I${INCLUDE_DIR} -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/greedy_selection.o greedy_selection.cpp
+
+${OBJECTDIR}/independence_selection.o: independence_selection.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O3 -s -I${INCLUDE_DIR} -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/independence_selection.o independence_selection.cpp
+
 ${OBJECTDIR}/log_likelihood_calculator.o: log_likelihood_calculator.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
@@ -127,6 +158,11 @@ ${OBJECTDIR}/main.o: main.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -O3 -s -I${INCLUDE_DIR} -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/main.o main.cpp
+
+${OBJECTDIR}/parent_set_selection.o: parent_set_selection.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O3 -s -I${INCLUDE_DIR} -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/parent_set_selection.o parent_set_selection.cpp
 
 ${OBJECTDIR}/permutation_set.o: permutation_set.cpp 
 	${MKDIR} -p ${OBJECTDIR}
@@ -143,10 +179,10 @@ ${OBJECTDIR}/score_cache.o: score_cache.cpp
 	${RM} "$@.d"
 	$(COMPILE.cc) -O3 -s -I${INCLUDE_DIR} -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/score_cache.o score_cache.cpp
 
-${OBJECTDIR}/score_calculator.o: score_calculator.cpp 
+${OBJECTDIR}/sequential_selection.o: sequential_selection.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O3 -s -I${INCLUDE_DIR} -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/score_calculator.o score_calculator.cpp
+	$(COMPILE.cc) -O3 -s -I${INCLUDE_DIR} -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/sequential_selection.o sequential_selection.cpp
 
 ${OBJECTDIR}/sparse_parent_bitwise.o: sparse_parent_bitwise.cpp 
 	${MKDIR} -p ${OBJECTDIR}
