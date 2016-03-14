@@ -18,14 +18,11 @@
 
 #include "record_file.h"
 #include "bayesian_network.h"
-#include "variable.h"
-#include "bic_scoring_function.h"
-#include "ad_node.h"
 #include "ad_tree.h"
-#include "scoring_function.h"
-//#include "score_calculator.h"
 #include "score_cache.h"
 #include "greedy_search.h"
+#include "scoring_function.h"
+#include "scoring_function_creator.h"
 #include "initializer.h"
 #include "initializer_creator.h"
 #include "best_score_calculator.h"
@@ -137,7 +134,7 @@ datastructures::BayesianNetwork network ;
 /**
  * The constraints information
  */
-scoring::Constraints * constraints ;
+scoring::Constraints *constraints ;
 
 inline std::string getTime(){
 	time_t now = time( 0 ) ;
@@ -194,36 +191,12 @@ void calculateScore(){
 	adTree->initialize( network , recordFile ) ;
 	adTree->createTree() ;
 
-	boost::algorithm::to_lower( sf ) ;
-
-	if( maxParents > network.size() || maxParents < 1 ){
-		maxParents = network.size() - 1 ;
-	}
-
-	if( sf.compare( "bic" ) == 0 ){
-		int maxParentCount = log( 2 * recordFile.size() / log( recordFile.size() ) ) ;
-		if( maxParentCount < maxParents ){
-			maxParents = maxParentCount ;
-		}
-	}else{
-		throw std::runtime_error( "Invalid scoring function.  Options are: 'BIC', 'Fnml' or 'BDeu'." ) ;
-	}
-
 	constraints = NULL ;
-	if( constraintsFile.length() > 0 ){
+	if( constraintsFile.length() > 0 )
 		constraints = scoring::parseConstraints( constraintsFile , network ) ;
-	}
 
-	scoringFunction = NULL ;
-
-	std::vector<float> ilogi = scoring::LogLikelihoodCalculator::getLogCache( recordFile.size() ) ;
-	scoring::LogLikelihoodCalculator *llc = new scoring::LogLikelihoodCalculator( adTree , network , ilogi ) ;
-
-	if( sf.compare( "bic" ) == 0 ){
-		scoringFunction = new scoring::BICScoringFunction( network , recordFile , llc , constraints , enableDeCamposPruning ) ;
-	}else if( sf.compare( "fnml" ) == 0 ){
-	}else if( sf.compare( "bdeu" ) == 0 ){
-	}
+	scoringFunction = scoring::create( sf , adTree , network , recordFile , constraints , enableDeCamposPruning ) ;
+	maxParents = scoring::parentsize( sf, maxParents , network , recordFile ) ;
 	
 	std::vector<boost::thread*> threads ;
 	for( int thread = 0 ; thread < threadCount ; thread++){
