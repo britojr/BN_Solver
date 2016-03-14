@@ -6,24 +6,23 @@
  */
 #include <boost/thread.hpp>
 
+#include <queue>
+#include <vector>
+
 #include "greedy_selection.h"
+#include "utils.h"
+#include "typedefs.h"
 
 struct compareSecond {
-
-	bool operator()(std::pair<varset, float> lhs, std::pair<varset, float> rhs) const {
-		float val = lhs.second - rhs.second;
-
-		if (fabs(val) > 2 * std::numeric_limits<float>::epsilon()) {
-			return val > 0;
-		}
-
-		return lhs.first < rhs.first;
+	bool operator()( pqelem lhs , pqelem rhs ) const {
+		float val = lhs.second - rhs.second ;
+		return compare( val ) <= 0 ;
 	}
-} comparatorGreedy ;
+} ;
 
 parentselection::GreedySelection::GreedySelection( scoring::ScoringFunction *scoringFunction ,
-														int maxParents , int variableCount ,
-														int runningTime , scoring::Constraints *constraints ){
+													int maxParents , int variableCount ,
+													int runningTime , scoring::Constraints *constraints ){
 	this->scoringFunction = scoringFunction ;
 	this->maxParents = maxParents ;
 	this->variableCount = variableCount ;
@@ -70,7 +69,8 @@ void parentselection::GreedySelection::calculateScores_internal( int variable , 
 
 	// Add parent set of size 1
 	int prunedCount = 0 ;
-	std::vector<std::pair<varset,float> > open ;
+	std::priority_queue<pqelem,std::vector<pqelem>,compareSecond> open ;
+	FloatMap openCache ;
 	for(int i = 0 ; i < variableCount && !outOfTime ; i++){
 		if( i == variable ) continue ;
 		VARSET_NEW( parents , variableCount ) ;
@@ -78,16 +78,16 @@ void parentselection::GreedySelection::calculateScores_internal( int variable , 
 		float score = scoringFunction->calculateScore( variable , parents , cache ) ;
 		if( score < 0 ){
 			cache[ parents ] = score ;
-			open.push_back( PAIR( parents , score ) ) ;
+			open.push( PAIR( parents , score ) ) ;
+			openCache[ parents ] = 0.0 ;
 		}else{
 			prunedCount++ ;
 		}
 	}
-
+	
 	while( !open.empty() && !outOfTime ){
-		std::sort( open.begin() , open.end() , comparatorGreedy ) ;
-		std::pair<varset,float> node = open[ 0 ] ;
-		open.erase( open.begin() ) ;
+		pqelem node = open.top() ; open.pop() ;
+		
 		VARSET_NEW( best , variableCount ) ;
 		best = node.first ;
 		if( cardinality( best ) >= maxParents ) break ;
@@ -96,22 +96,20 @@ void parentselection::GreedySelection::calculateScores_internal( int variable , 
 		for(int j = 0 ; j < variableCount && !outOfTime ; j++){
 			if( j == variable ) continue ;
 			VARSET_SET( superset , j ) ;
-			float score = scoringFunction->calculateScore( variable , superset , cache ) ;
-			if( score < 0 ){
-				cache[ superset ] = score ;
-				open.push_back( PAIR( superset , score ) ) ;
-			}else{
-				prunedCount++ ;
+			if( !cache.count( superset ) && !openCache.count( superset ) ){
+				float score = scoringFunction->calculateScore( variable , superset , cache ) ;
+				if( score < 0 ){
+					cache[ superset ] = score ;
+					open.push( PAIR( superset , score ) ) ;
+					openCache[ superset ] = 0.0 ;
+				}else{
+					prunedCount++ ;
+				}
 			}
 			VARSET_CLEAR( superset , j ) ;
 		}
 	}
 
-	// Set in cache all other scores not explored
-	for(int i = 0 ; i < open.size() ; i++){
-		std::pair<varset,float> node = open[ i ] ;
-		cache[ node.first ] = node.second ;
-	}
 	// TODO: Check this lines for time limit
 	io.stop();
 //    t->cancel();

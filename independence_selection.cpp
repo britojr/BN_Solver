@@ -7,21 +7,19 @@
 
 #include <boost/thread.hpp>
 
+#include <queue>
+#include <vector>
+
 #include "independence_selection.h"
 #include "utils.h"
+#include "typedefs.h"
 
-struct compareSecond {
-
-	bool operator()(std::pair<varset, float> lhs, std::pair<varset, float> rhs) const {
-		float val = lhs.second - rhs.second;
-
-		if (fabs(val) > 2 * std::numeric_limits<float>::epsilon()) {
-			return val > 0;
-		}
-
-		return lhs.first < rhs.first;
+struct compareStruct {
+	bool operator()( approxStruct lhs , approxStruct rhs ) const {
+		float val = lhs.first - rhs.first ;
+		return compare( val ) <= 0 ;
 	}
-} comparatorIndependence ;
+} ;
 
 parentselection::IndependenceSelection::IndependenceSelection( scoring::ScoringFunction *scoringFunction ,
 														int maxParents , int variableCount ,
@@ -88,7 +86,7 @@ void parentselection::IndependenceSelection::calculateScores_internal( int varia
 	if( maxParents == 1 ) return ;
 
 	// Add parent sets of size 2 to open (with BIC* score)
-	std::vector<approxStruct> open ;
+	std::priority_queue<approxStruct,std::vector<approxStruct>,compareStruct> open ;
 	FloatMap openCache ;
 	for(int i = 0 ; i < variableCount - 1 && !outOfTime ; i++){
 		if( i == variable ) continue ;
@@ -99,7 +97,7 @@ void parentselection::IndependenceSelection::calculateScores_internal( int varia
 			VARSET_SET( parents , j ) ;
 			approxStruct approximation = scoringFunction->approximateScore( variable , parents , cache ) ;
 			if( compare( approximation.first ) < 0 ){
-				open.push_back( approximation ) ;
+				open.push( approximation ) ;
 				openCache[ parents ] = 0.0 ;
 			}
 			VARSET_CLEAR( parents , j ) ;
@@ -108,11 +106,8 @@ void parentselection::IndependenceSelection::calculateScores_internal( int varia
 	}
 
 	while( !open.empty() && !outOfTime ){
-		std::sort( open.begin() , open.end() ) ;
-
 		// Get best approx score
-		approxStruct best = open.back() ;
-		open.pop_back() ;
+		approxStruct best = open.top() ; open.pop() ;
 		varset p1 = best.second.first ;
 		varset p2 = best.second.second ;
 		float approxValue = best.first ;
@@ -137,7 +132,7 @@ void parentselection::IndependenceSelection::calculateScores_internal( int varia
 			// Expand only if it is not already visited/calculated
 			if( !cache.count( superset ) && !openCache.count( superset ) ){
 				approxStruct approximation = scoringFunction->approximateScore( variable , superset , cache ) ;
-				open.push_back( approximation ) ;
+				open.push( approximation ) ;
 				openCache[ superset ] = 0.0 ;
 			}
 			VARSET_CLEAR( superset , i ) ;
