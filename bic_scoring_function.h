@@ -25,28 +25,36 @@ namespace scoring {
 
 	class BICScoringFunction : public ScoringFunction {
 		public:
-			BICScoringFunction(datastructures::BayesianNetwork &network, datastructures::RecordFile &recordFile, LogLikelihoodCalculator *llc, Constraints *constraints, bool enableDeCamposPruning);
+			BICScoringFunction( datastructures::BayesianNetwork &network ,
+								datastructures::RecordFile &recordFile ,
+								LogLikelihoodCalculator *llc ,
+								Constraints *constraints ,
+								bool enableDeCamposPruning ) ;
 
-			~BICScoringFunction() {
-				// no pointers 
+			~BICScoringFunction(){
+				// no pointers
 			}
 
-			float calculateScore(int variable, varset parents, FloatMap &cache);
-			approxStruct approximateScore( int variable , varset parents , FloatMap &cache ) ;
-			float getFromApproximation( int variable , varset &p1 , varset &p2 , float approxValue , FloatMap &cache ) ;
+			float calculateScore( int variable , varset parents , 
+									FloatMap &pruned , FloatMap &cache ) ;
+			approxStruct approximateScore( int variable , varset parents ,
+											FloatMap &pruned , FloatMap &cache ) ;
+			float getFromApproximation( int variable , varset &p1 , varset &p2 ,
+										float approxValue , FloatMap &pruned ,
+										FloatMap &cache ) ;
 
 		private:
-			float t(int variable, varset parents);
+			float t( int variable , varset parents ) ;
 
-			datastructures::BayesianNetwork network;
-			Constraints *constraints;
-			boost::unordered_set<varset> invalidParents;
-			LogLikelihoodCalculator *llc;
+			datastructures::BayesianNetwork network ;
+			Constraints *constraints ;
+			boost::unordered_set<varset> invalidParents ;
+			LogLikelihoodCalculator *llc ;
 
 
-			float baseComplexityPenalty;
+			float baseComplexityPenalty ;
 			int recordFileSize ;
-			bool enableDeCamposPruning;
+			bool enableDeCamposPruning ;
 	} ;
 }
 

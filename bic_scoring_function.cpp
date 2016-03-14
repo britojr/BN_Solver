@@ -5,6 +5,7 @@
  * Created on November 23, 2012, 9:15 PM
  */
 
+#include "typedefs.h"
 #include "bic_scoring_function.h"
 #include "log_likelihood_calculator.h"
 
@@ -30,39 +31,50 @@ float scoring::BICScoringFunction::t(int variable, varset parents) {
 	return penalty;
 }
 
-float scoring::BICScoringFunction::calculateScore(int variable, varset parents, FloatMap &cache) {
+float scoring::BICScoringFunction::calculateScore( int variable , varset parents ,
+													FloatMap &pruned , FloatMap &cache) {
+	// Check if it was already calculated
+	auto s = cache.find( parents ) ;
+	if( s != cache.end() ) return cache[ parents ] ;
+	
 	// check if this violates the constraints
-	if (constraints != NULL && !constraints->satisfiesConstraints(variable, parents)) {
-		invalidParents.insert(parents);
-		return 1;
+	if( constraints != NULL && !constraints->satisfiesConstraints( variable , parents ) ){
+		invalidParents.insert( parents ) ;
+		return 1 ;
 	}
 
 	// check for pruning
-	float tVal = t(variable, parents);
+	float tVal = t( variable , parents ) ;
 
-	if (enableDeCamposPruning) {
-		for (int x = 0; x < network.size(); x++) {
-			if (VARSET_GET(parents, x)) {
-				VARSET_CLEAR(parents, x);
-
+	if( enableDeCamposPruning ){
+		auto s = pruned.find( parents ) ;
+		// Check if it was already pruned
+		if( s != pruned.end() ) return 0 ;
+		for( int x = 0 ; x < network.size() ; x++){
+			if( VARSET_GET( parents , x ) ){
+				VARSET_CLEAR( parents , x ) ;
 				// check the constraints
-				if (invalidParents.size() > 0 && invalidParents.count(parents) > 0) {
+				if( invalidParents.size() > 0 && invalidParents.count( parents ) > 0 ){
 					// we cannot say anything if we skipped this because of constraints
-					VARSET_SET(parents, x);
-					continue;
+					VARSET_SET( parents , x ) ;
+					continue ;
 				}
 
-				auto s = cache.find(parents);
+				auto s = cache.find( parents ) ;
 
-				if (s == cache.end()) {
-					return 0;
+				if( s == cache.end() ){
+					VARSET_SET( parents , x ) ;
+					pruned[ parents ] = 0. ;
+					return 0 ;
 				}
 
-				if (s->second + tVal > 0) {
-					return 0;
+				if( s->second + tVal > 0 ){
+					VARSET_SET( parents , x ) ;
+					pruned[ parents ] = 0. ;
+					return 0 ;
 				}
 
-				VARSET_SET(parents, x);
+				VARSET_SET( parents , x ) ;
 			}
 		}
 	}
@@ -74,12 +86,19 @@ float scoring::BICScoringFunction::calculateScore(int variable, varset parents, 
 	return score;
 }
 
-approxStruct scoring::BICScoringFunction::approximateScore( int variable , varset parents , FloatMap &cache ){
+approxStruct scoring::BICScoringFunction::approximateScore( int variable , varset parents ,
+															FloatMap &pruned , FloatMap &cache ){
+	
 	// Find p1 and p2
 	int variableCount = this->network.size() ;
 	VARSET_NEW( p1 , variableCount ) ;
 	VARSET_NEW( p2 , variableCount ) ;
-	bool canApproximate = false ; // TODO: Delete this. Only for debug
+	
+	// Check if it was already pruned
+	auto s = pruned.find( parents ) ;
+	if( s != pruned.end() ) return PAIR( 1 , PAIR( p1 , p2 ) ) ;
+
+	bool canApproximate = false ;
 
 	for( auto node = cache.begin() ; node != cache.end() ; node++){
 		VARSET_NEW( auxP , network.size() ) ;
@@ -117,11 +136,13 @@ approxStruct scoring::BICScoringFunction::approximateScore( int variable , varse
 	return PAIR( approxScore , PAIR( p1 , p2 ) ) ;
 }
 
-float scoring::BICScoringFunction::getFromApproximation( int variable , varset &p1 , varset &p2 , float approxValue , FloatMap &cache ){
+float scoring::BICScoringFunction::getFromApproximation( int variable , varset &p1 , varset &p2 , 
+														float approxValue , FloatMap &pruned ,
+														FloatMap &cache ){
 	VARSET_NEW( parents , network.size() ) ;
 	VARSET_OR( parents , p1 ) ;
 	VARSET_OR( parents , p2 ) ;
-	return calculateScore( variable , parents , cache ) ;
+	return calculateScore( variable , parents , pruned , cache ) ;
 	// BIC( X , p1 U p2 ) = BIC*( X , p1 , p2 ) + N * ii( p1 , p2 , X )
 //    float interInfo = llc->interactionInformation( p1 , p2 , variable ) ;
 //    float N = recordFileSize ;
