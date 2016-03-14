@@ -334,6 +334,8 @@ inline void init_map(FloatMap *map) {
  */
 #define PAIR( x , y ) std::make_pair( x , y )
 
+typedef std::pair<varset,float> pqelem ;
+
 typedef std::pair<int,int> pii ;
 typedef std::pair<float,pii> edge ;
 
