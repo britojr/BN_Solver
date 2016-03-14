@@ -107,7 +107,9 @@ inline void concatenateScoreFiles( std::string outputFile , std::map<std::string
 	header += "META input_file=" + metadata[ "inputFile" ] + "\n" ;
 	header += "META num_records=" + metadata[ "numRecords" ] + "\n" ;
 	header += "META parent_limit=" + metadata[ "maxParents" ] + "\n" ;
-	header += "META score_type=" + metadata[ "scoringFunction" ] + "\n\n" ;
+	header += "META score_type=" + metadata[ "scoringFunction" ] + "\n" ;
+	header += "META parent_selection=" + metadata[ "parentSelection" ] + "\n" ;
+	header += "\n" ;
 	out.write( header.c_str() , header.size() ) ;
 
 	int variableCount ;

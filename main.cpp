@@ -23,13 +23,15 @@
 #include "ad_node.h"
 #include "ad_tree.h"
 #include "scoring_function.h"
-#include "score_calculator.h"
+//#include "score_calculator.h"
 #include "score_cache.h"
 #include "greedy_search.h"
 #include "initializer.h"
 #include "initializer_creator.h"
 #include "best_score_calculator.h"
 #include "best_score_creator.h"
+#include "parent_set_selection.h"
+#include "parent_set_selection_creator.h"
 #include "node.h"
 #include "utils.h"
 #include "files.h"
@@ -146,8 +148,10 @@ inline std::string getTime(){
 }
 
 void scoringThread( int thread ){
-	scoring::ScoreCalculator scoreCalculator( scoringFunction , maxParents , network.size() , runningTime , constraints , selectionType ) ;
-
+	parentselection::ParentSetSelection* pss = 
+			parentselection::create( selectionType , scoringFunction ,
+									maxParents , network.size() ,
+									runningTime , constraints ) ;
 	for( int variable = 0 ; variable < network.size() ; variable++ ){
 		if( variable % threadCount != thread ){
 			continue ;
@@ -160,13 +164,13 @@ void scoringThread( int thread ){
 
 		FloatMap sc ;
 		init_map( sc ) ;
-		scoreCalculator.calculateScores( variable , sc ) ;
+		pss->calculateScores( variable , sc ) ;
 
 		int size = sc.size() ;
 		printf( "Thread: %d , Variable: %d , Size before pruning: %d , Time: %s\n" , thread , variable , size , getTime().c_str() ) ;
 
 		if( prune ){
-			scoreCalculator.prune( sc ) ;
+			pss->prune( sc ) ;
 			int prunedSize = sc.size() ;
 			printf( "Thread: %d , Variable: %d , Size after pruning: %d , Time: %s\n" , thread , variable , prunedSize , getTime().c_str() ) ;
 		}
@@ -220,7 +224,7 @@ void calculateScore(){
 	}else if( sf.compare( "fnml" ) == 0 ){
 	}else if( sf.compare( "bdeu" ) == 0 ){
 	}
-
+	
 	std::vector<boost::thread*> threads ;
 	for( int thread = 0 ; thread < threadCount ; thread++){
 		boost::thread *workerThread = new boost::thread( scoringThread , thread ) ;
@@ -238,6 +242,7 @@ void calculateScore(){
 	metadata[ "maxParents" ] = TO_STRING( maxParents ) ;
 	metadata[ "scoringFunction" ] = sf ;
 	metadata[ "variableCount" ] = TO_STRING( network.size() ) ;
+	metadata[ "parentSelection" ] = selectionType ;
 	concatenateScoreFiles( outputFile , metadata ) ;
 }
 
