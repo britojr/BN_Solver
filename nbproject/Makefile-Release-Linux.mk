@@ -79,7 +79,7 @@ FFLAGS=
 ASFLAGS=
 
 # Link Libraries and Options
-LDLIBSOPTIONS=-L${LIBRARY_DIR} -lboost_system -lboost_thread-mt -lboost_chrono -lboost_timer -lboost_program_options -lboost_container -lboost_serialization
+LDLIBSOPTIONS=-L${LIBRARY_DIR} -lboost_system -lboost_thread -lboost_chrono -lboost_timer -lboost_program_options -lboost_container -lboost_serialization
 
 # Build Targets
 .build-conf: ${BUILD_SUBPROJECTS}
