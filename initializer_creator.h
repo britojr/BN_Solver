@@ -18,9 +18,6 @@
 #include "dfs_initializer.h"
 #include "fas_initializer.h"
 #include "weighted_path_initializer.h"
-#include "dfs_2.h"
-#include "dfs_3.h"
-#include "dfs_4.h"
 #include "best_score_calculator.h"
 
 namespace initializers {
@@ -38,12 +35,6 @@ namespace initializers {
 			init = new initializers::FASInitializer( bestScoreCalculator ) ;
 		}else if( type == "path" ){
 			init = new initializers::WPathInitializer( bestScoreCalculator ) ;
-		}else if( type == "dfs2" ){
-			init = new initializers::DFS2Initializer( bestScoreCalculator ) ;
-		}else if( type == "dfs3" ){
-			init = new initializers::DFS3Initializer( bestScoreCalculator ) ;
-		}else if( type == "dfs4" ){
-			init = new initializers::DFS4Initializer( bestScoreCalculator ) ;
 		}else{
 			throw std::runtime_error( "Invalid Initializer type: '" + type + "'.  Valid options are 'random', 'dfs' and 'fas'.");
         }

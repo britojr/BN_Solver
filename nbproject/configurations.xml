@@ -27,9 +27,6 @@
         <itemPath>permutation_set.h</itemPath>
       </logicalFolder>
       <logicalFolder name="f9" displayName="initializers" projectFiles="true">
-        <itemPath>dfs_2.h</itemPath>
-        <itemPath>dfs_3.h</itemPath>
-        <itemPath>dfs_4.h</itemPath>
         <itemPath>dfs_initializer.h</itemPath>
         <itemPath>fas_initializer.h</itemPath>
         <itemPath>initializer.h</itemPath>
@@ -82,9 +79,6 @@
         <itemPath>permutation_set.cpp</itemPath>
       </logicalFolder>
       <logicalFolder name="f15" displayName="initializers" projectFiles="true">
-        <itemPath>dfs_2.cpp</itemPath>
-        <itemPath>dfs_3.cpp</itemPath>
-        <itemPath>dfs_4.cpp</itemPath>
         <itemPath>dfs_initializer.cpp</itemPath>
         <itemPath>fas_initializer.cpp</itemPath>
         <itemPath>random_initializer.cpp</itemPath>
@@ -181,18 +175,6 @@
       <item path="constraints.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="contingency_table_node.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="dfs_2.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="dfs_2.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="dfs_3.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="dfs_3.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="dfs_4.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="dfs_4.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="dfs_initializer.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -349,18 +331,6 @@
       <item path="constraints.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="contingency_table_node.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="dfs_2.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="dfs_2.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="dfs_3.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="dfs_3.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="dfs_4.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="dfs_4.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="dfs_initializer.cpp" ex="false" tool="1" flavor2="0">
       </item>

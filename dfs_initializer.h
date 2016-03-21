@@ -30,11 +30,17 @@ namespace initializers {
 
 		private :
 			std::vector<int> traverse( int index ) ;
+			void updateNodeWeights() ;
+			void updateNodeWeights( std::vector<int> options ) ;
+			int getUnvisitedInDegree( int n ) ;
 			
 			varset unvisitedVariables ;
 			int variableCount ;
 			std::vector<greedysearch::Node*> nodes ;
 			std::vector<bestscorecalculators::BestScoreCalculator*> bestScoreCalculators ;
+			
+			std::vector<float> unvisitedWeights ;
+			std::vector<int> unvisitedNodes ;
 			boost::mt19937 gen ;
 	} ;
 }
