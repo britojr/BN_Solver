@@ -43,9 +43,6 @@ OBJECTFILES= \
 	${OBJECTDIR}/ad_tree.o \
 	${OBJECTDIR}/bayesian_network.o \
 	${OBJECTDIR}/bic_scoring_function.o \
-	${OBJECTDIR}/dfs_2.o \
-	${OBJECTDIR}/dfs_3.o \
-	${OBJECTDIR}/dfs_4.o \
 	${OBJECTDIR}/dfs_initializer.o \
 	${OBJECTDIR}/fas_initializer.o \
 	${OBJECTDIR}/greedy_search.o \
@@ -108,21 +105,6 @@ ${OBJECTDIR}/bic_scoring_function.o: bic_scoring_function.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -O3 -s -I${INCLUDE_DIR} -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/bic_scoring_function.o bic_scoring_function.cpp
-
-${OBJECTDIR}/dfs_2.o: dfs_2.cpp 
-	${MKDIR} -p ${OBJECTDIR}
-	${RM} "$@.d"
-	$(COMPILE.cc) -O3 -s -I${INCLUDE_DIR} -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/dfs_2.o dfs_2.cpp
-
-${OBJECTDIR}/dfs_3.o: dfs_3.cpp 
-	${MKDIR} -p ${OBJECTDIR}
-	${RM} "$@.d"
-	$(COMPILE.cc) -O3 -s -I${INCLUDE_DIR} -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/dfs_3.o dfs_3.cpp
-
-${OBJECTDIR}/dfs_4.o: dfs_4.cpp 
-	${MKDIR} -p ${OBJECTDIR}
-	${RM} "$@.d"
-	$(COMPILE.cc) -O3 -s -I${INCLUDE_DIR} -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/dfs_4.o dfs_4.cpp
 
 ${OBJECTDIR}/dfs_initializer.o: dfs_initializer.cpp 
 	${MKDIR} -p ${OBJECTDIR}
