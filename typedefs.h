@@ -338,6 +338,7 @@ typedef std::pair<varset,float> pqelem ;
 
 typedef std::pair<int,int> pii ;
 typedef std::pair<float,pii> edge ;
+typedef std::pair<int,pii> hnode ; // ID node, in-degree, product of children's in-degrees
 
 typedef std::pair<float,std::pair<varset,varset> > approxStruct ;
 
