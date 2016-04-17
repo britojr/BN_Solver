@@ -94,7 +94,7 @@ void parentselection::GreedySelection::calculateScores_internal( int variable , 
 		
 		VARSET_NEW( best , variableCount ) ;
 		best = node.first ;
-		if( cardinality( best ) >= maxParents ) break ;
+		if( cardinality( best ) >= maxParents ) continue ;
 		VARSET_NEW( superset , variableCount ) ;
 		superset = best ;
 		for(int j = 0 ; j < variableCount && !outOfTime ; j++){
