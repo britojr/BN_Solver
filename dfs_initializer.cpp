@@ -6,6 +6,7 @@
  */
 
 #include <stack>
+#include <algorithm>
 
 #include "node.h"
 #include "dfs_initializer.h"
@@ -34,7 +35,6 @@ void initializers::DFSInitializer::initialize(){
 	}
 
 	printf("Getting best possible parents for every variable\n" ) ;
-	// Get best possible parents for every variable
 	VARSET_NEW( all , variableCount ) ;
 	VARSET_SET_ALL( all , variableCount ) ;
 	float totalScore = 0. , indegree = 0. ;
@@ -46,19 +46,26 @@ void initializers::DFSInitializer::initialize(){
 		varset parents = bestScoreCalculators[ i ]->getParents() ;
 		nodes[ i ]->setParents( parents ) ;
 		indegree += cardinality( parents ) ;
-//		printf("\tNode: %2d\tParents:" , i ) ;
 		for(int j = 0 ; j < variableCount ; j++){
 			if( !VARSET_GET( parents , j ) ) continue ;
 			nodes[ j ]->addChild( i ) ;
-//			printf( " %2d" , j ) ;
 		}
-//		printf("\n" ) ;
 		totalScore += score ;
 
 		VARSET_SET( all , i ) ;
 	}
 	printf("sc( H^* ) = %.3f\n" , -totalScore ) ;
 	printf("m/n = %.2f\n" , indegree / variableCount ) ;
+}
+
+bool cmpNodes( hnode node1 , hnode node2 ){
+	// Check in-degree
+	if( node1.second.first != node2.second.first )
+		return node1.second.first < node2.second.first ;
+	// Check product of children's in-degre
+	if( node1.second.second != node2.second.second )
+		return node1.second.second < node2.second.second ;
+	return node1.first < node2.first ;
 }
 
 greedysearch::PermutationSet initializers::DFSInitializer::generate(){
@@ -69,11 +76,16 @@ greedysearch::PermutationSet initializers::DFSInitializer::generate(){
 	std::vector<int> order ;
 	while( !unvisitedVariables.none() ){
 		updateNodeWeights() ;
-		int rIndex = random_generator( unvisitedWeights , gen ) ;
-//		printf("\tChoose node %d\n" , unvisitedNodes[ rIndex ] ) ;
-		std::vector<int> visited = traverse( unvisitedNodes[ rIndex ] ) ;
-		for(int i = 0 ; i < visited.size() ; i++)
-			order.push_back( visited[ i ] ) ;
+		std::sort( unvisitedNodes.begin() , unvisitedNodes.end() , cmpNodes ) ;
+		std::vector<int> options ;
+		hnode bestOption = unvisitedNodes[ 0 ] ;
+		for(int i = 0 ; i < unvisitedNodes.size() ; i++)
+			if( bestOption.second == unvisitedNodes[ i ].second )
+				options.push_back( unvisitedNodes[ i ].first ) ;
+		int rIndex = random_generator( options.size() , gen ) ;
+		int rNode = options[ rIndex ] ;
+		order.push_back( rNode ) ;
+		VARSET_CLEAR( unvisitedVariables , rNode ) ;
 	}
 	
 	// Build the permutation set
@@ -89,76 +101,22 @@ greedysearch::PermutationSet initializers::DFSInitializer::generate(){
 	return set ;
 }
 
-std::vector<int> initializers::DFSInitializer::traverse( int index ){
-	std::vector<int> visited ;
-	visited.push_back( index ) ;
-	VARSET_CLEAR( unvisitedVariables , index ) ;
-	std::vector<int> children = nodes[ index ]->getChildrenVector() ;
-	std::vector<int> options ;
-	for(int i = 0 ; i < children.size() ; i++){
-		if( !VARSET_GET( unvisitedVariables , children[ i ] ) ) continue ;
-		options.push_back( children[ i ] ) ;
-	}
-	if( !options.empty() ){
-//		printf("\tOptions:" ) ;
-//		for(int i = 0 ; i < options.size() ; i++) printf(" %2d" , options[ i ] ) ;
-//		printf("\n" ) ;
-		updateNodeWeights( options ) ;
-		int idx = random_generator( unvisitedWeights , gen ) ;
-//		printf("\tChoose node %d\n" , unvisitedNodes[ idx ] ) ;
-		std::vector<int> next = traverse( unvisitedNodes[ idx ] ) ;
-		for(int i = 0 ; i < next.size() ; i++)
-			visited.push_back( next[ i ] ) ;
-	}
-	return visited ;
-}
-
 void initializers::DFSInitializer::updateNodeWeights(){
 	unvisitedNodes.clear() ;
-	unvisitedWeights.clear() ;
-	std::map<int,int> indegreeM ;
-	int mxInDegree = -1 ;
+	std::vector<int> indegree( variableCount ) ;
+	for(int i = 0 ; i < variableCount ; i++)
+		indegree.push_back( getUnvisitedInDegree( i ) ) ;
 	for(int i = 0 ; i < variableCount ; i++){
 		if( VARSET_GET( unvisitedVariables , i ) ){
-			int indegree = getUnvisitedInDegree( i ) ;
-			unvisitedNodes.push_back( i ) ;
-			unvisitedWeights.push_back( indegree ) ;
-			indegreeM[ indegree ]++ ;
-			mxInDegree = std::max( indegree , mxInDegree ) ;
+			std::vector<int> children = nodes[ i ]->getChildrenVector() ;
+			int h = 1 ;
+			for(int j = 0 ; j < children.size() ; j++){
+				if( indegree[ children[ j ] ] == 0 ) continue ;
+				h *= ( indegree[ children[ j ] ] - 1 ) ;
+			}
+			unvisitedNodes.push_back( PAIR( i , PAIR( indegree[ i ] , h ) ) ) ;
 		}
 	}
-	float C = unvisitedNodes.size() ;
-//	printf("All Unvisited\n" ) ;
-	for(int i = 0 ; i < C ; i++){
-		int indegree = unvisitedWeights[ i ] + 1 ;
-		unvisitedWeights[ i ] = ( float( mxInDegree ) / indegree ) * ( 1. / indegree ) ;
-//		printf( "\tNode: %2d\t weight: %.6f (%d)\n" , unvisitedNodes[ i ] , unvisitedWeights[ i ] , indegree - 1 ) ;
-	}
-	indegreeM.clear() ;
-}
-
-void initializers::DFSInitializer::updateNodeWeights( std::vector<int> options ){
-	unvisitedNodes.clear() ;
-	unvisitedWeights.clear() ;
-	int n = options.size() ;
-	std::map<int,int> indegreeM ;
-	int mxInDegree = -1 ;
-	for(int i = 0 ; i < n ; i++){
-		int indegree = getUnvisitedInDegree( options[ i ] ) ;
-		unvisitedNodes.push_back( options[ i ] ) ;
-		unvisitedWeights.push_back( indegree ) ;
-		indegreeM[ indegree ]++ ;
-		mxInDegree = std::max( indegree , mxInDegree ) ;
-	}
-	mxInDegree++ ;
-	float C = options.size() ;
-//	printf("Unvisited childs\n" ) ;
-	for(int i = 0 ; i < C ; i++){
-		int indegree = unvisitedWeights[ i ] + 1 ;
-		unvisitedWeights[ i ] = ( float( mxInDegree ) / indegree ) * ( 1. / indegree ) ;
-//		printf( "\tNode: %2d\t weight: %.6f (%d)\n" , unvisitedNodes[ i ] , unvisitedWeights[ i ] , indegree - 1 ) ;
-	}
-	indegreeM.clear() ;
 }
 
 int initializers::DFSInitializer::getUnvisitedInDegree( int n ){
