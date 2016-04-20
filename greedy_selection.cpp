@@ -13,12 +13,7 @@
 #include "utils.h"
 #include "typedefs.h"
 
-struct compareSecond {
-	bool operator()( pqelem lhs , pqelem rhs ) const {
-		float val = lhs.second - rhs.second ;
-		return compare( val ) <= 0 ;
-	}
-} ;
+
 
 parentselection::GreedySelection::GreedySelection( scoring::ScoringFunction *scoringFunction ,
 													int maxParents , int variableCount ,
@@ -37,14 +32,16 @@ void parentselection::GreedySelection::calculateScores( int variable , FloatMap 
 	boost::asio::deadline_timer *t ;
 	boost::asio::io_service io_t ;
 	t = new boost::asio::deadline_timer( io_t ) ;
+	
+	FloatMap pruned ;
+	init_map( pruned ) ;
+	initialize( variable , pruned , cache ) ;
 	if( runningTime > 0 ){
 		printf( "I am using a timer in the calculation function.\n" ) ;
 		t->expires_from_now( boost::posix_time::seconds( runningTime ) ) ;
 		t->async_wait( boost::bind( &parentselection::ParentSetSelection::timeout, this, boost::asio::placeholders::error ) ) ;
 		boost::thread workerThread ;
 
-		FloatMap pruned ;
-		init_map( pruned ) ;
 		workerThread = boost::thread( 
 				boost::bind( &parentselection::GreedySelection::calculateScores_internal ,
 							this , variable , boost::ref( pruned ) , boost::ref( cache )
@@ -56,39 +53,12 @@ void parentselection::GreedySelection::calculateScores( int variable , FloatMap 
 		t->cancel() ;
 	}else{
 		printf("I am executing without time limit\n" ) ;
-		FloatMap pruned ;
-		init_map( pruned ) ;
 		calculateScores_internal( variable , pruned , cache ) ;
 	}
 }
 
 void parentselection::GreedySelection::calculateScores_internal( int variable , FloatMap &pruned , FloatMap& cache ){
-	// calculate the initial score
-	VARSET_NEW( empty , variableCount ) ;
-	float score = scoringFunction->calculateScore( variable , empty , pruned , cache ) ;
-
-	if( score < 1 ){
-		cache[ empty ] = score ;
-	}
-
-	// Add parent set of size 1
-	int prunedCount = 0 ;
-	std::priority_queue<pqelem,std::vector<pqelem>,compareSecond> open ;
-	FloatMap openCache ;
-	for(int i = 0 ; i < variableCount && !outOfTime ; i++){
-		if( i == variable ) continue ;
-		VARSET_NEW( parents , variableCount ) ;
-		VARSET_SET( parents , i ) ;
-		float score = scoringFunction->calculateScore( variable , parents , pruned , cache ) ;
-		if( score < 0 ){
-			cache[ parents ] = score ;
-			open.push( PAIR( parents , score ) ) ;
-			openCache[ parents ] = 0.0 ;
-		}else{
-			prunedCount++ ;
-		}
-	}
-	
+	int prunedCount ;
 	while( !open.empty() && !outOfTime ){
 		pqelem node = open.top() ; open.pop() ;
 		
@@ -118,4 +88,30 @@ void parentselection::GreedySelection::calculateScores_internal( int variable , 
 	io.stop();
 //    t->cancel();
 	io.reset();
+}
+
+void parentselection::GreedySelection::initialize( int variable , FloatMap &pruned , FloatMap &cache ){
+	// Initialize closed
+	VARSET_NEW( empty , variableCount ) ;
+	float score = scoringFunction->calculateScore( variable , empty , pruned , cache ) ;
+
+	if( score < 1 ){
+		cache[ empty ] = score ;
+	}
+
+	// Initialize open
+	std::priority_queue<pqelem,std::vector<pqelem>,compareGreedy> aux ;
+	open = aux ;
+	openCache.clear() ;
+	for(int i = 0 ; i < variableCount && !outOfTime ; i++){
+		if( i == variable ) continue ;
+		VARSET_NEW( parents , variableCount ) ;
+		VARSET_SET( parents , i ) ;
+		float score = scoringFunction->calculateScore( variable , parents , pruned , cache ) ;
+		if( score < 0 ){
+			cache[ parents ] = score ;
+			open.push( PAIR( parents , score ) ) ;
+			openCache[ parents ] = 0.0 ;
+		}
+	}	
 }

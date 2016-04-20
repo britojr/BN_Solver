@@ -14,13 +14,6 @@
 #include "utils.h"
 #include "typedefs.h"
 
-struct compareStruct {
-	bool operator()( approxStruct lhs , approxStruct rhs ) const {
-		float val = lhs.first - rhs.first ;
-		return compare( val ) <= 0 ;
-	}
-} ;
-
 parentselection::IndependenceSelection::IndependenceSelection( scoring::ScoringFunction *scoringFunction ,
 														int maxParents , int variableCount ,
 														int runningTime , scoring::Constraints *constraints ){
@@ -38,14 +31,16 @@ void parentselection::IndependenceSelection::calculateScores( int variable , Flo
 	boost::asio::deadline_timer *t ;
 	boost::asio::io_service io_t ;
 	t = new boost::asio::deadline_timer( io_t ) ;
+	
+	FloatMap pruned ;
+	init_map( pruned ) ;
+	initialize( variable , pruned , cache ) ;
 	if( runningTime > 0 ){
 		printf( "I am using a timer in the calculation function.\n" ) ;
 		t->expires_from_now( boost::posix_time::seconds( runningTime ) ) ;
 		t->async_wait( boost::bind( &parentselection::ParentSetSelection::timeout, this, boost::asio::placeholders::error ) ) ;
 		boost::thread workerThread ;
 
-		FloatMap pruned ;
-		init_map( pruned ) ;
 		workerThread = boost::thread( 
 				boost::bind( &parentselection::IndependenceSelection::calculateScores_internal ,
 							this , variable , boost::ref( pruned ) , boost::ref( cache )
@@ -57,58 +52,11 @@ void parentselection::IndependenceSelection::calculateScores( int variable , Flo
 		t->cancel() ;
 	}else{
 		printf("I am executing without time limit\n" ) ;
-		FloatMap pruned ;
-		init_map( pruned ) ;
 		calculateScores_internal( variable , pruned , cache ) ;
 	}
 }
 
 void parentselection::IndependenceSelection::calculateScores_internal( int variable , FloatMap &pruned , FloatMap& cache ){
-	// calculate the initial score
-	VARSET_NEW( empty , variableCount ) ;
-	VARSET_CLEAR_ALL( empty ) ;
-	float score = scoringFunction->calculateScore( variable , empty , pruned , cache ) ;
-
-	if( score < 1 ){
-		cache[ empty ] = score ;
-	}
-
-	// Add parent set of size 1
-	int prunedCount = 0 ;
-	for(int i = 0 ; i < variableCount && !outOfTime ; i++){
-		if( i == variable ) continue ;
-		VARSET_NEW( parents , variableCount ) ;
-		VARSET_SET( parents , i ) ;
-		float score = scoringFunction->calculateScore( variable , parents , pruned , cache ) ;
-		if( compare( score ) < 0 ){
-			cache[ parents ] = score ;
-		}else{
-			prunedCount++ ;
-		}
-	}
-
-	if( maxParents == 1 ) return ;
-
-	// Add parent sets of size 2 to open (with BIC* score)
-	std::priority_queue<approxStruct,std::vector<approxStruct>,compareStruct> open ;
-	FloatMap openCache ;
-	for(int i = 0 ; i < variableCount - 1 && !outOfTime ; i++){
-		if( i == variable ) continue ;
-		VARSET_NEW( parents , variableCount ) ;
-		VARSET_SET( parents , i ) ;
-		for(int j = i+1 ; j < variableCount && !outOfTime ; j++){
-			if( j == variable ) continue ;
-			VARSET_SET( parents , j ) ;
-			approxStruct approximation = scoringFunction->approximateScore( variable , parents , pruned , cache ) ;
-			if( compare( approximation.first ) < 0 ){
-				open.push( approximation ) ;
-				openCache[ parents ] = 0.0 ;
-			}
-			VARSET_CLEAR( parents , j ) ;
-		}
-		VARSET_CLEAR( parents , i ) ;
-	}
-
 	while( !open.empty() && !outOfTime ){
 		// Get best approx score
 		approxStruct best = open.top() ; open.pop() ;
@@ -146,4 +94,52 @@ void parentselection::IndependenceSelection::calculateScores_internal( int varia
 	io.stop();
 //    t->cancel();
 	io.reset();
+}
+
+void parentselection::IndependenceSelection::initialize( int variable , FloatMap &pruned , FloatMap &cache ){
+	// Initialize closed
+	VARSET_NEW( empty , variableCount ) ;
+	VARSET_CLEAR_ALL( empty ) ;
+	float score = scoringFunction->calculateScore( variable , empty , pruned , cache ) ;
+
+	if( score < 1 ){
+		cache[ empty ] = score ;
+	}
+
+	// Add parent set of size 1
+	int prunedCount = 0 ;
+	for(int i = 0 ; i < variableCount && !outOfTime ; i++){
+		if( i == variable ) continue ;
+		VARSET_NEW( parents , variableCount ) ;
+		VARSET_SET( parents , i ) ;
+		float score = scoringFunction->calculateScore( variable , parents , pruned , cache ) ;
+		if( compare( score ) < 0 ){
+			cache[ parents ] = score ;
+		}else{
+			prunedCount++ ;
+		}
+	}
+
+	if( maxParents == 1 ) return ;
+
+	// Initialize open
+	std::priority_queue<approxStruct,std::vector<approxStruct>,compareIndependence> aux ;
+	open = aux ;
+	openCache.clear() ;
+	for(int i = 0 ; i < variableCount - 1 && !outOfTime ; i++){
+		if( i == variable ) continue ;
+		VARSET_NEW( parents , variableCount ) ;
+		VARSET_SET( parents , i ) ;
+		for(int j = i+1 ; j < variableCount && !outOfTime ; j++){
+			if( j == variable ) continue ;
+			VARSET_SET( parents , j ) ;
+			approxStruct approximation = scoringFunction->approximateScore( variable , parents , pruned , cache ) ;
+			if( compare( approximation.first ) < 0 ){
+				open.push( approximation ) ;
+				openCache[ parents ] = 0.0 ;
+			}
+			VARSET_CLEAR( parents , j ) ;
+		}
+		VARSET_CLEAR( parents , i ) ;
+	}
 }

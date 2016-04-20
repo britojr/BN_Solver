@@ -9,6 +9,14 @@
 #define	INDEPENDENCE_SELECTION_H
 
 #include "parent_set_selection.h"
+#include "utils.h"
+
+struct compareIndependence {
+	bool operator()( approxStruct lhs , approxStruct rhs ) const {
+		float val = lhs.first - rhs.first ;
+		return compare( val ) <= 0 ;
+	}
+} ;
 
 namespace parentselection {
 	class IndependenceSelection : public parentselection::ParentSetSelection {
@@ -20,9 +28,11 @@ namespace parentselection {
 
 		private :
 			void calculateScores_internal( int variable , FloatMap &pruned , FloatMap &cache ) ;
+			void initialize( int variable , FloatMap &pruned , FloatMap &cache ) ;
 
+			std::priority_queue<approxStruct,std::vector<approxStruct>,compareIndependence> open ;
+			FloatMap openCache ;
 	} ;
 }
 
 #endif	/* INDEPENDENCE_SELECTION_H */
-

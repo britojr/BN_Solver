@@ -9,6 +9,14 @@
 #define	GREEDY_SELECTION_H
 
 #include "parent_set_selection.h"
+#include "utils.h"
+
+struct compareGreedy {
+	bool operator()( pqelem lhs , pqelem rhs ) const {
+		float val = lhs.second - rhs.second ;
+		return compare( val ) <= 0 ;
+	}
+} ;
 
 namespace parentselection {
 	class GreedySelection : public parentselection::ParentSetSelection {
@@ -20,7 +28,10 @@ namespace parentselection {
 
 		private :
 			void calculateScores_internal( int variable , FloatMap &pruned , FloatMap &cache ) ;
+			void initialize( int variable , FloatMap &pruned , FloatMap &cache ) ;
 
+			std::priority_queue<pqelem,std::vector<pqelem>,compareGreedy> open ;
+			FloatMap openCache ;
 	} ;
 }
 

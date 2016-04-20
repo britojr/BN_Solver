@@ -8,6 +8,8 @@
 #ifndef SEQUENTIALSELECTION_H
 #define	SEQUENTIALSELECTION_H
 
+#include <queue>
+
 #include "parent_set_selection.h"
 
 namespace parentselection {
@@ -19,8 +21,11 @@ namespace parentselection {
 			void calculateScores( int variable , FloatMap &cache ) ;
 
 		private :
+			void initialize( int variable , FloatMap &pruned , FloatMap &cache ) ;
 			void calculateScores_internal( int variable , FloatMap &pruned , FloatMap &cache ) ;
 
+			std::queue<varset> open ;
+			FloatMap openCache ;
 	} ;
 }
 

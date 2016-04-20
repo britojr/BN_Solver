@@ -28,18 +28,20 @@ void parentselection::SequentialSelection::calculateScores( int variable , Float
 	boost::asio::deadline_timer *t ;
 	boost::asio::io_service io_t ;
 	t = new boost::asio::deadline_timer( io_t ) ;
+	
+	FloatMap pruned ;
+	init_map( pruned ) ;
+	initialize( variable , pruned , cache ) ;
 	if( runningTime > 0 ){
 		printf( "I am using a timer in the calculation function.\n" ) ;
 		t->expires_from_now( boost::posix_time::seconds( runningTime ) ) ;
 		t->async_wait( boost::bind( &parentselection::ParentSetSelection::timeout, this, boost::asio::placeholders::error ) ) ;
 		boost::thread workerThread ;
 
-		FloatMap pruned ;
-		init_map( pruned ) ;
-		workerThread = boost::thread( 
+		workerThread = boost::thread(
 				boost::bind( &parentselection::SequentialSelection::calculateScores_internal ,
 							this , variable , boost::ref( pruned ) , boost::ref( cache )
-				) 
+				)
 		) ;
 		io_t.run() ;
 		workerThread.join() ;
@@ -47,26 +49,13 @@ void parentselection::SequentialSelection::calculateScores( int variable , Float
 		t->cancel() ;
 	}else{
 		printf("I am executing without time limit\n" ) ;
-		FloatMap pruned ;
-		init_map( pruned ) ;
 		calculateScores_internal( variable , pruned , cache ) ;
 	}
 }
 
 void parentselection::SequentialSelection::calculateScores_internal( int variable , FloatMap &pruned , FloatMap& cache ){
-	// calculate the initial score
-	VARSET_NEW( empty , variableCount ) ;
-	VARSET_CLEAR_ALL( empty ) ;
-	float score = scoringFunction->calculateScore( variable , empty , pruned , cache ) ;
-
-	if( score < 1 ){
-		cache[ empty ] = score ;
-	}
-
+	// Perform sequential selection
 	int prunedCount = 0 ;
-	std::queue<varset> open ;
-	FloatMap openCache ;
-	open.push( empty ) ;
 	while( !open.empty() && !outOfTime ){
 		varset parents = open.front() ; open.pop() ;
 		float score = scoringFunction->calculateScore( variable , parents , pruned , cache ) ;
@@ -96,4 +85,20 @@ void parentselection::SequentialSelection::calculateScores_internal( int variabl
 	io.stop() ;
 //    t->cancel();
 	io.reset() ;
+}
+
+void parentselection::SequentialSelection::initialize( int variable , FloatMap &pruned , FloatMap &cache ){
+	// Initialize closed
+	VARSET_NEW( empty , variableCount ) ;
+	VARSET_CLEAR_ALL( empty ) ;
+	float score = scoringFunction->calculateScore( variable , empty , pruned , cache ) ;
+	if( score < 1 ){
+		cache[ empty ] = score ;
+	}
+
+	// Initialize open
+	std::queue<varset> aux ;
+	open = aux ;
+	open.push( empty ) ;
+	openCache.clear() ;
 }
