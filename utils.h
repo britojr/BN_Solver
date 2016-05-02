@@ -46,10 +46,10 @@ inline int random_generator( int n , boost::mt19937 &gen ){
 template<typename T>
 std::vector<T> shuffle( std::vector<T> v , boost::mt19937 &gen ){
 	int n = v.size() ;
-	for(int i = 0 ; i < n - 2 ; i++){
-		int idx = random_generator( i + 1 , gen ) ;
-		T aux = v[ idx ] ;
-		v[ idx ] = v[ i ] ;
+	for(int i = 0 ; i <= n - 2 ; i++){
+		int j = random_generator( n - i , gen ) ;
+		T aux = v[ i + j ] ;
+		v[ i + j ] = v[ i ] ;
 		v[ i ] = aux ;
 	}
 	return v ;
