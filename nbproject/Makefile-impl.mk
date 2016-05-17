@@ -27,11 +27,11 @@ CLEAN_SUBPROJECTS=${CLEAN_SUBPROJECTS_${SUBPROJECTS}}
 PROJECTNAME=BN_Solver
 
 # Active Configuration
-DEFAULTCONF=Release-Mac
+DEFAULTCONF=Learner-Mac
 CONF=${DEFAULTCONF}
 
 # All Configurations
-ALLCONFS=Release-Mac Release-Linux 
+ALLCONFS=Learner-Mac Release-Linux ScoreCalculator-Mac StructureOptimizer-Mac 
 
 
 # build

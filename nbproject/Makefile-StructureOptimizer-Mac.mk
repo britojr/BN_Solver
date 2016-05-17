@@ -23,7 +23,7 @@ AS=as
 # Macros
 CND_PLATFORM=GNU-MacOSX
 CND_DLIB_EXT=dylib
-CND_CONF=Release-Mac
+CND_CONF=StructureOptimizer-Mac
 CND_DISTDIR=dist
 CND_BUILDDIR=build
 
@@ -35,26 +35,17 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
-	${OBJECTDIR}/ad_node.o \
-	${OBJECTDIR}/ad_tree.o \
 	${OBJECTDIR}/bayesian_network.o \
-	${OBJECTDIR}/bic_scoring_function.o \
 	${OBJECTDIR}/dfs_initializer.o \
 	${OBJECTDIR}/fas_initializer.o \
 	${OBJECTDIR}/greedy_search.o \
-	${OBJECTDIR}/greedy_selection.o \
-	${OBJECTDIR}/independence_selection.o \
-	${OBJECTDIR}/log_likelihood_calculator.o \
-	${OBJECTDIR}/main.o \
-	${OBJECTDIR}/parent_set_selection.o \
+	${OBJECTDIR}/main_structure.o \
 	${OBJECTDIR}/permutation_set.o \
 	${OBJECTDIR}/random_initializer.o \
 	${OBJECTDIR}/score_cache.o \
-	${OBJECTDIR}/sequential_selection.o \
 	${OBJECTDIR}/sparse_parent_bitwise.o \
 	${OBJECTDIR}/sparse_parent_list.o \
 	${OBJECTDIR}/sparse_parent_tree.o \
-	${OBJECTDIR}/vary_node.o \
 	${OBJECTDIR}/weighted_path_initializer.o
 
 
@@ -76,31 +67,16 @@ LDLIBSOPTIONS=-L/usr/local/lib -lboost_system -lboost_thread-mt -lboost_chrono -
 
 # Build Targets
 .build-conf: ${BUILD_SUBPROJECTS}
-	"${MAKE}"  -f nbproject/Makefile-${CND_CONF}.mk ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/bn_learning
+	"${MAKE}"  -f nbproject/Makefile-${CND_CONF}.mk ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/bn_structure
 
-${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/bn_learning: ${OBJECTFILES}
+${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/bn_structure: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
-	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/bn_learning ${OBJECTFILES} ${LDLIBSOPTIONS}
-
-${OBJECTDIR}/ad_node.o: ad_node.cpp 
-	${MKDIR} -p ${OBJECTDIR}
-	${RM} "$@.d"
-	$(COMPILE.cc) -O3 -s -I/usr/local/include -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/ad_node.o ad_node.cpp
-
-${OBJECTDIR}/ad_tree.o: ad_tree.cpp 
-	${MKDIR} -p ${OBJECTDIR}
-	${RM} "$@.d"
-	$(COMPILE.cc) -O3 -s -I/usr/local/include -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/ad_tree.o ad_tree.cpp
+	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/bn_structure ${OBJECTFILES} ${LDLIBSOPTIONS}
 
 ${OBJECTDIR}/bayesian_network.o: bayesian_network.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -O3 -s -I/usr/local/include -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/bayesian_network.o bayesian_network.cpp
-
-${OBJECTDIR}/bic_scoring_function.o: bic_scoring_function.cpp 
-	${MKDIR} -p ${OBJECTDIR}
-	${RM} "$@.d"
-	$(COMPILE.cc) -O3 -s -I/usr/local/include -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/bic_scoring_function.o bic_scoring_function.cpp
 
 ${OBJECTDIR}/dfs_initializer.o: dfs_initializer.cpp 
 	${MKDIR} -p ${OBJECTDIR}
@@ -117,30 +93,10 @@ ${OBJECTDIR}/greedy_search.o: greedy_search.cpp
 	${RM} "$@.d"
 	$(COMPILE.cc) -O3 -s -I/usr/local/include -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/greedy_search.o greedy_search.cpp
 
-${OBJECTDIR}/greedy_selection.o: greedy_selection.cpp 
+${OBJECTDIR}/main_structure.o: main_structure.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O3 -s -I/usr/local/include -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/greedy_selection.o greedy_selection.cpp
-
-${OBJECTDIR}/independence_selection.o: independence_selection.cpp 
-	${MKDIR} -p ${OBJECTDIR}
-	${RM} "$@.d"
-	$(COMPILE.cc) -O3 -s -I/usr/local/include -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/independence_selection.o independence_selection.cpp
-
-${OBJECTDIR}/log_likelihood_calculator.o: log_likelihood_calculator.cpp 
-	${MKDIR} -p ${OBJECTDIR}
-	${RM} "$@.d"
-	$(COMPILE.cc) -O3 -s -I/usr/local/include -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/log_likelihood_calculator.o log_likelihood_calculator.cpp
-
-${OBJECTDIR}/main.o: main.cpp 
-	${MKDIR} -p ${OBJECTDIR}
-	${RM} "$@.d"
-	$(COMPILE.cc) -O3 -s -I/usr/local/include -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/main.o main.cpp
-
-${OBJECTDIR}/parent_set_selection.o: parent_set_selection.cpp 
-	${MKDIR} -p ${OBJECTDIR}
-	${RM} "$@.d"
-	$(COMPILE.cc) -O3 -s -I/usr/local/include -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/parent_set_selection.o parent_set_selection.cpp
+	$(COMPILE.cc) -O3 -s -I/usr/local/include -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/main_structure.o main_structure.cpp
 
 ${OBJECTDIR}/permutation_set.o: permutation_set.cpp 
 	${MKDIR} -p ${OBJECTDIR}
@@ -157,11 +113,6 @@ ${OBJECTDIR}/score_cache.o: score_cache.cpp
 	${RM} "$@.d"
 	$(COMPILE.cc) -O3 -s -I/usr/local/include -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/score_cache.o score_cache.cpp
 
-${OBJECTDIR}/sequential_selection.o: sequential_selection.cpp 
-	${MKDIR} -p ${OBJECTDIR}
-	${RM} "$@.d"
-	$(COMPILE.cc) -O3 -s -I/usr/local/include -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/sequential_selection.o sequential_selection.cpp
-
 ${OBJECTDIR}/sparse_parent_bitwise.o: sparse_parent_bitwise.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
@@ -177,11 +128,6 @@ ${OBJECTDIR}/sparse_parent_tree.o: sparse_parent_tree.cpp
 	${RM} "$@.d"
 	$(COMPILE.cc) -O3 -s -I/usr/local/include -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/sparse_parent_tree.o sparse_parent_tree.cpp
 
-${OBJECTDIR}/vary_node.o: vary_node.cpp 
-	${MKDIR} -p ${OBJECTDIR}
-	${RM} "$@.d"
-	$(COMPILE.cc) -O3 -s -I/usr/local/include -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/vary_node.o vary_node.cpp
-
 ${OBJECTDIR}/weighted_path_initializer.o: weighted_path_initializer.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
@@ -193,7 +139,7 @@ ${OBJECTDIR}/weighted_path_initializer.o: weighted_path_initializer.cpp
 # Clean Targets
 .clean-conf: ${CLEAN_SUBPROJECTS}
 	${RM} -r ${CND_BUILDDIR}/${CND_CONF}
-	${RM} ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/bn_learning
+	${RM} ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/bn_structure
 
 # Subprojects
 .clean-subprojects:

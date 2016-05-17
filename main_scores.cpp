@@ -18,14 +18,8 @@
 #include "record_file.h"
 #include "bayesian_network.h"
 #include "ad_tree.h"
-#include "score_cache.h"
-#include "greedy_search.h"
 #include "scoring_function.h"
 #include "scoring_function_creator.h"
-#include "initializer.h"
-#include "initializer_creator.h"
-#include "best_score_calculator.h"
-#include "best_score_creator.h"
 #include "parent_set_selection.h"
 #include "parent_set_selection_creator.h"
 #include "node.h"
@@ -73,20 +67,6 @@ std::string pruneString = "Add this flag if the scores should NOT be pruned at t
 /* Whether to use deCampos-style pruning */
 bool enableDeCamposPruning = true ;
 std::string deCamposPruningString = "Add this flag if the scores should be pruned while calculating." ;
-
-/* The data structure to use to calculate best parent set scores */
-std::string bestScoreCalculator ;
-
-/* The type of initializer to use */
-std::string initializerType ;
-
-/* Number of solutions to be generated with initializer */
-int numSolutions = 1 ;
-std::string numSolutionsString = "Number of initial solutions to be generated." ;
-
-/* Number of iterations for greedy search until stopping */
-int maxIterations = 500 ;
-std::string maxIterationsString = "Max number of iterations in greedy search." ;
 
 /* Method to select parent sets */
 std::string selectionType = "sequential" ;
@@ -188,48 +168,22 @@ void calculateScore(){
 	concatenateScoreFiles( outputFile , metadata ) ;
 }
 
-void greedySearch(){
-	printf( "Dataset: '%s'\n" , outputFile.c_str() ) ;
-	//    printf("Net file: '%s'\n", netFile.c_str());
-	printf( "Best score calculator: '%s'\n" , bestScoreCalculator.c_str() ) ;
-	printf( "Initialization type: '%s'\n" , initializerType.c_str() ) ;
-
-	printf( "Reading score cache.\n" ) ;
-	scoring::ScoreCache cache ;
-	cache.read( outputFile ) ;
-
-	printf( "Creating Best score calculators.\n" ) ;
-	std::vector<bestscorecalculators::BestScoreCalculator*> bestScCalc = bestscorecalculators::create( bestScoreCalculator , cache ) ;
-
-	printf( "Creating Initialization heuristic.\n" ) ;
-	initializers::Initializer* initializer = initializers::create( initializerType , bestScCalc ) ;
-
-	greedysearch::GreedySearch* algorithm = new greedysearch::GreedySearch( initializer , bestScCalc , maxIterations ) ;
-	std::vector<greedysearch::Node*> solution = algorithm->search( numSolutions ) ;
-}
-
 int main( int argc , char** argv ){
 	std::string description = std::string( "Compute the scores for a csv file.  Example usage: " ) + argv[ 0 ] + " iris.csv iris.pss" ;
 	po::options_description desc( description ) ;
 
 	desc.add_options()
 		( "input" , po::value<std::string > (&inputFile)->required(), inputFileString.c_str() )
-			( "output" , po::value<std::string > (&outputFile)->required(), outputFile.c_str() )
-			( "delimiter,d" , po::value<char> (&delimiter)->required()->default_value(','), delimiterString.c_str() )
-			( "rMin,m" , po::value<int> (&rMin)->default_value(5), rMinString.c_str() )
-			( "maxParents,p" , po::value<int> (&maxParents)->default_value(0), maxParentsString.c_str() )
-			( "threads,t" , po::value<int> (&threadCount)->default_value(1), threadString.c_str() )
-			( "time,r" , po::value<int> (&runningTime)->default_value(-1), runningTimeString.c_str() )
-			( "hasHeader,s" , hasHeaderString.c_str() )
-			( "doNotPrune,o" , pruneString.c_str() )
-			( "enableDeCamposPruning,c" , deCamposPruningString.c_str() )
-			( "parentSelectionType,q" ,po::value<std::string>(&selectionType)->default_value("sequential"), parentselection::parentSetSelectionString.c_str() )
-			( "bestScore,b" , po::value<std::string > (&bestScoreCalculator)->default_value("list") , bestscorecalculators::bestScoreCalculatorString.c_str() )
-			( "initializer,z" , po::value<std::string > (&initializerType)->default_value("random"), initializers::initializerTypeString.c_str() )
-			( "numSolutions,n" , po::value<int> (&numSolutions)->default_value(1), numSolutionsString.c_str() )
-			( "maxIterations,k" , po::value<int> (&maxIterations)->default_value(100), maxIterationsString.c_str() )
-			( "help,h" , "Show this help message." )
-			;
+		( "output" , po::value<std::string > (&outputFile)->required(), outputFile.c_str() )
+		( "delimiter,d" , po::value<char> (&delimiter)->required()->default_value(','), delimiterString.c_str() )
+		( "rMin,m" , po::value<int> (&rMin)->default_value(5), rMinString.c_str() )
+		( "maxParents,p" , po::value<int> (&maxParents)->default_value(0), maxParentsString.c_str() )
+		( "threads,t" , po::value<int> (&threadCount)->default_value(1), threadString.c_str() )
+		( "time,r" , po::value<int> (&runningTime)->default_value(-1), runningTimeString.c_str() )
+		( "hasHeader,s" , hasHeaderString.c_str() )
+		( "doNotPrune,o" , pruneString.c_str() )
+		( "enableDeCamposPruning,c" , deCamposPruningString.c_str() )
+		( "help,h" , "Show this help message." ) ;
 
 	po::positional_options_description positionalOptions ;
 	positionalOptions.add( "input" , 1 ) ;
@@ -271,6 +225,4 @@ int main( int argc , char** argv ){
 	//    srand( time( NULL ) ) ;
 	if( !file_exists( outputFile ) )
 		calculateScore() ;
-
-	greedySearch() ;
 }
