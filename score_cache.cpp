@@ -11,6 +11,56 @@
 #include <boost/algorithm/string.hpp>
 #include <boost/algorithm/string/trim.hpp>
 
+float scoring::ScoreCache::getScore(int variable, varset parents) const {
+	return (*cache[variable])[parents];
+}
+
+void scoring::ScoreCache::putScore(int variable, varset parents, float score) {
+	(*cache[variable])[parents] = score;
+}
+
+void scoring::ScoreCache::removeScore(int variable, varset parents) {
+	(*cache[variable]).erase(parents);
+}
+
+int scoring::ScoreCache::getVariableCount() const {
+	return variableCount;
+}
+
+FloatMap* scoring::ScoreCache::getCache(int variable) const {
+	return cache[variable];
+}
+
+void scoring::ScoreCache::setCache( int variable , FloatMap* varCache ){
+	FloatMap* temp = new FloatMap( *varCache ) ;
+	cache[ variable ] = temp ;
+}
+
+std::string scoring::ScoreCache::getMetaInformation(std::string key) {
+	return metaInformation[key];
+}
+
+void scoring::ScoreCache::updateMetaInformation(std::string key, std::string value) {
+	metaInformation[key] = value;
+}
+
+datastructures::BayesianNetwork* scoring::ScoreCache::getNetwork(){
+	return network;
+}
+
+void scoring::ScoreCache::setNetwork( datastructures::BayesianNetwork &network ){
+	*this->network = network ;
+	setVariableCount( network.size() ) ;
+}
+
+void scoring::ScoreCache::deleteCache(int variable) {
+	if (cache[variable] != NULL) {
+		cache[variable]->clear();
+	}
+
+	delete cache[variable];
+}
+
 void scoring::ScoreCache::setVariableCount(int variableCount) {
 	this->variableCount = variableCount;
 

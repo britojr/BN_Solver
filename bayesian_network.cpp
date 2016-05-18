@@ -8,11 +8,11 @@ datastructures::BayesianNetwork::BayesianNetwork() {
 
 datastructures::BayesianNetwork::BayesianNetwork(int size) {
 	for (int i = 0; i < size; i++) {
-		datastructures::Variable *v = new datastructures::Variable(this, i);
+		datastructures::Variable *v = new datastructures::Variable( this , i ) ;
 		std::string name = "Variable_" + TO_STRING( i ) ;
-		v->setName(name);
-		nameToIndex[v->getName()] = variables.size();
-		variables.push_back(v);
+		v->setName( name ) ;
+		nameToIndex[ v->getName() ] = variables.size() ;
+		variables.push_back( v ) ;
 	}
 }
 

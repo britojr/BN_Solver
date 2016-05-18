@@ -109,6 +109,9 @@ datastructures::BayesianNetwork network ;
 /* The constraints information */
 scoring::Constraints *constraints ;
 
+/* Score cache */
+scoring::ScoreCache cache ;
+
 inline std::string getTime(){
 	time_t now = time( 0 ) ;
 	tm *gmtm = gmtime( &now ) ;
@@ -145,7 +148,8 @@ void scoringThread( int thread ){
 			printf( "Thread: %d , Variable: %d , Size after pruning: %d , Time: %s\n" , thread , variable , prunedSize , getTime().c_str() ) ;
 		}
 
-		createVariableScoreFile( varFilename , network , variable , sc ) ;
+		// Add all scores calculated for this variable
+		cache.setCache( variable , &sc ) ;
 		
 		sc.clear() ;
 	}
@@ -171,6 +175,9 @@ void calculateScore(){
 	scoringFunction = scoring::create( sf , adTree , network , recordFile , constraints , enableDeCamposPruning ) ;
 	maxParents = scoring::parentsize( sf, maxParents , network , recordFile ) ;
 	
+	// Initialize score cache
+	cache.setNetwork( network ) ;
+	
 	std::vector<boost::thread*> threads ;
 	for( int thread = 0 ; thread < threadCount ; thread++){
 		boost::thread *workerThread = new boost::thread( scoringThread , thread ) ;
@@ -179,16 +186,6 @@ void calculateScore(){
 
 	for( auto it = threads.begin() ; it != threads.end() ; it++)
 		( *it )->join() ;
-
-	// concatenate all of the files together
-	std::map<std::string,std::string> metadata ;
-	metadata[ "inputFile" ] = inputFile ;
-	metadata[ "numRecords" ] = TO_STRING( recordFile.size() ) ;
-	metadata[ "maxParents" ] = TO_STRING( maxParents ) ;
-	metadata[ "scoringFunction" ] = sf ;
-	metadata[ "variableCount" ] = TO_STRING( network.size() ) ;
-	metadata[ "parentSelection" ] = selectionType ;
-	concatenateScoreFiles( scoresFile , metadata ) ;
 }
 
 void greedySearch(){
@@ -197,17 +194,13 @@ void greedySearch(){
 	printf( "Best score calculator: '%s'\n" , bestScoreCalculator.c_str() ) ;
 	printf( "Initialization type: '%s'\n" , initializerType.c_str() ) ;
 
-	printf( "Reading score cache.\n" ) ;
-	scoring::ScoreCache cache ;
-	cache.read( scoresFile ) ;
-	remove( scoresFile.c_str() ) ;
-
 	printf( "Creating Best score calculators.\n" ) ;
 	std::vector<bestscorecalculators::BestScoreCalculator*> bestScCalc = bestscorecalculators::create( bestScoreCalculator , cache ) ;
 
 	printf( "Creating Initialization heuristic.\n" ) ;
 	initializers::Initializer* initializer = initializers::create( initializerType , bestScCalc ) ;
 
+	printf("Performing Greedy Search\n" ) ;
 	greedysearch::GreedySearch* algorithm = new greedysearch::GreedySearch( initializer , bestScCalc , maxIterations ) ;
 	std::vector<greedysearch::Node*> solution = algorithm->search( numSolutions ) ;
 }

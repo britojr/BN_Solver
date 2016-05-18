@@ -14,9 +14,9 @@ bestscorecalculators::SparseParentBitwise::SparseParentBitwise(const int variabl
 }
 
 bestscorecalculators::SparseParentBitwise::~SparseParentBitwise() {
-//    BITSET_FREE(getScoreScratch_);
+//    BITSET_FREE(getScoreScratch);
 //    
-//    for(bitset u : usedParents_) {
+//    for(bitset u : usedParents) {
 //        BITSET_FREE(u);
 //    }
 }

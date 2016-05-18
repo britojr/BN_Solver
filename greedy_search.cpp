@@ -37,7 +37,11 @@ std::vector<greedysearch::Node*> greedysearch::GreedySearch::search( int numSolu
 		numIterations = 0 ;
 		for(int i = 0 ; i < maxIterations ; i++){
 			greedysearch::PermutationSet bestNeighbor = findBestNeighbor( current ) ;
+			printf(" === best neighbor ===\n" ) ;
+			bestNeighbor.print() ;
 			greedysearch::PermutationSet disturbedNeighbor = disturbSet( bestNeighbor ) ;
+			printf(" === dist neighbor ===\n" ) ;
+			disturbedNeighbor.print() ;
 			if( disturbedNeighbor.isBetter( bestNeighbor ) ) bestNeighbor = disturbedNeighbor ;
 			if( !bestNeighbor.isBetter( current ) ) break ;
 			printf(" === Iteration %d ===\n" , i+1 ) ;

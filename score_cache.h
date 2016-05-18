@@ -56,48 +56,24 @@ namespace scoring {
 
 			ScoreCache(std::string filename);
 			~ScoreCache();
-
+			
+			float getScore(int variable, varset parents) const ;
+			void putScore(int variable, varset parents, float score) ;
+			void removeScore(int variable, varset parents) ;
+			
 			void setVariableCount(int variableCount);
+			int getVariableCount() const ;
 
-			float getScore(int variable, varset parents) const {
-				return (*cache[variable])[parents];
-			}
+			FloatMap *getCache(int variable) const ;
+			void setCache( int variable , FloatMap* varCache ) ;
 
-			void putScore(int variable, varset parents, float score) {
-				(*cache[variable])[parents] = score;
-			}
+			std::string getMetaInformation(std::string key) ;
+			void updateMetaInformation(std::string key, std::string value) ;
 
-			void removeScore(int variable, varset parents) {
-				(*cache[variable]).erase(parents);
-			}
-
-			int getVariableCount() const {
-				return variableCount;
-			}
-
-			FloatMap *getCache(int variable) const {
-				return cache[variable];
-			}
-
-			std::string getMetaInformation(std::string key) {
-				return metaInformation[key];
-			}
-
-			void updateMetaInformation(std::string key, std::string value) {
-				metaInformation[key] = value;
-			}
-
-			datastructures::BayesianNetwork *getNetwork() {
-				return network;
-			}
-
-			void deleteCache(int variable) {
-				if (cache[variable] != NULL) {
-					cache[variable]->clear();
-				}
-
-				delete cache[variable];
-			}
+			datastructures::BayesianNetwork *getNetwork() ;
+			void setNetwork( datastructures::BayesianNetwork &network ) ;
+			
+			void deleteCache(int variable) ;
 
 			void read(std::string filename);
 			void write(std::string filename);
