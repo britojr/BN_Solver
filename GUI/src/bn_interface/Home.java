@@ -6,8 +6,14 @@
 package bn_interface;
 
 import java.awt.Component;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFileChooser;
+import javax.swing.JSpinner;
 
 /**
  *
@@ -77,7 +83,7 @@ public class Home extends javax.swing.JFrame {
         jCbxInitializer = new javax.swing.JComboBox();
         jSpnNumSolutions = new javax.swing.JSpinner();
         jSpnMaxIterations = new javax.swing.JSpinner();
-        jComboBox3 = new javax.swing.JComboBox();
+        jCbxBestScoreCalculator = new javax.swing.JComboBox();
         jTabbedMultiLabelClassification = new javax.swing.JTabbedPane();
         jPanelGeneralMLC = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
@@ -107,55 +113,50 @@ public class Home extends javax.swing.JFrame {
         jLblDelChar.setText("Delimiter Char.");
 
         jTxtDataSet.setEditable(false);
-        jTxtDataSet.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTxtDataSetActionPerformed(evt);
-            }
-        });
 
         jTxtScoresFile.setEditable(false);
 
         jTxtBayesNet.setEditable(false);
 
         jBtnDataSet.setText("...");
-        jBtnDataSet.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jBtnDataSetMouseClicked(evt);
+        jBtnDataSet.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBtnDataSetActionPerformed(evt);
             }
         });
 
         jBtnScoresFile.setText("...");
-        jBtnScoresFile.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jBtnScoresFileMouseClicked(evt);
+        jBtnScoresFile.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBtnScoresFileActionPerformed(evt);
             }
         });
 
         jBtnBayesNet.setText("...");
-        jBtnBayesNet.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jBtnBayesNetMouseClicked(evt);
+        jBtnBayesNet.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBtnBayesNetActionPerformed(evt);
             }
         });
 
         jChkHasHeader.setText("Has header?");
-        jChkHasHeader.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jChkHasHeaderMouseClicked(evt);
+        jChkHasHeader.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jChkHasHeaderActionPerformed(evt);
             }
         });
 
         jChkSaveFile.setText("Save file?");
-        jChkSaveFile.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jChkSaveFileMouseClicked(evt);
+        jChkSaveFile.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jChkSaveFileActionPerformed(evt);
             }
         });
 
         jChkScoresOnly.setText("Only Scores?");
-        jChkScoresOnly.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jChkScoresOnlyMouseClicked(evt);
+        jChkScoresOnly.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jChkScoresOnlyActionPerformed(evt);
             }
         });
 
@@ -167,9 +168,9 @@ public class Home extends javax.swing.JFrame {
         });
 
         jChkStructureOptimizationOnly.setText("Only Structure Opt.?");
-        jChkStructureOptimizationOnly.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jChkStructureOptimizationOnlyMouseClicked(evt);
+        jChkStructureOptimizationOnly.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jChkStructureOptimizationOnlyActionPerformed(evt);
             }
         });
 
@@ -250,20 +251,25 @@ public class Home extends javax.swing.JFrame {
         jLblRMin.setText("rMin");
 
         jChkWhileCalculatingPrune.setText("While-calculating prune");
-        jChkWhileCalculatingPrune.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jChkWhileCalculatingPruneMouseClicked(evt);
+        jChkWhileCalculatingPrune.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jChkWhileCalculatingPruneActionPerformed(evt);
             }
         });
 
         jChkEndOfCalculatingPrune.setText("End-of-calculating prune");
-        jChkEndOfCalculatingPrune.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jChkEndOfCalculatingPruneMouseClicked(evt);
+        jChkEndOfCalculatingPrune.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jChkEndOfCalculatingPruneActionPerformed(evt);
             }
         });
 
         jCbxMethod.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Sequential" }));
+        jCbxMethod.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCbxMethodActionPerformed(evt);
+            }
+        });
 
         jSpnMaxParentSize.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(0), Integer.valueOf(0), null, Integer.valueOf(1)));
 
@@ -368,14 +374,29 @@ public class Home extends javax.swing.JFrame {
         jLblBestScoreCalculator.setText("Best Score Calculator");
 
         jCbxAlgorithm.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Greedy Search" }));
+        jCbxAlgorithm.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCbxAlgorithmActionPerformed(evt);
+            }
+        });
 
         jCbxInitializer.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Random" }));
+        jCbxInitializer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCbxInitializerActionPerformed(evt);
+            }
+        });
 
         jSpnNumSolutions.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(1), Integer.valueOf(1), null, Integer.valueOf(1)));
 
         jSpnMaxIterations.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(1), Integer.valueOf(1), null, Integer.valueOf(1)));
 
-        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "List" }));
+        jCbxBestScoreCalculator.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "List" }));
+        jCbxBestScoreCalculator.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCbxBestScoreCalculatorActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanelStructureOptimizationSLLayout = new javax.swing.GroupLayout(jPanelStructureOptimizationSL);
         jPanelStructureOptimizationSL.setLayout(jPanelStructureOptimizationSLLayout);
@@ -387,7 +408,7 @@ public class Home extends javax.swing.JFrame {
                     .addGroup(jPanelStructureOptimizationSLLayout.createSequentialGroup()
                         .addComponent(jLblBestScoreCalculator, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jCbxBestScoreCalculator, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanelStructureOptimizationSLLayout.createSequentialGroup()
                         .addGroup(jPanelStructureOptimizationSLLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jLblNumSolutions, javax.swing.GroupLayout.DEFAULT_SIZE, 140, Short.MAX_VALUE)
@@ -424,7 +445,7 @@ public class Home extends javax.swing.JFrame {
                 .addGap(30, 30, 30)
                 .addGroup(jPanelStructureOptimizationSLLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLblBestScoreCalculator)
-                    .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jCbxBestScoreCalculator, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(81, Short.MAX_VALUE))
         );
 
@@ -499,110 +520,305 @@ public class Home extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
 	private void setDefaults(){
-		hasHeader = false ;
-		saveScoresFile = true ;
-		scoresOnly = true ;
+		// Structure Learning: General Panel
+		setHasHeader( false ) ;
+		setDelimiterCharacter( ',' ) ;
+		setSaveScoresFile( true ) ;
+		setScoresOnly( false ) ;
+		setStructureOptimizationOnly( false ) ;
 	
-		whileCalculatingPrune = true ;
-		endOfCalculatingPrune = true ;
+		// Structure Learning: Parent Set Selection Panel
+		initParentSetMethod() ; setParentSetMethod( 0 ) ;
+		setMaxParentSetSize( 0 ) ;
+		setRMin( 5 ) ;
+		setWhileCalculatingPrune( true ) ;
+		initScoringFunction() ; setScoringFunction( 0 ) ;
+		setNumThreads( 1 ) ;
+		setTimePerVariable( 0 ) ;
+		setEndOfCalculatingPrune( true ) ;
+		
+		// Structure Learning: Structure Optimization
+		initAlgorithm() ; setAlgorithm( 0 ) ;
+		setNumSolutions( 1 ) ;
+		initBestScoreCalculator() ; setBestScoreCalculator( 0 ) ;
+		initInitializer() ; setBestScoreCalculator( 0 ) ;
+		setMaxIterations( 100 ) ;
 	}
 	
-    private void jTxtDataSetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTxtDataSetActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTxtDataSetActionPerformed
+	// <editor-fold defaultstate="collapsed" desc="Modifiers Structure Learning: General Panel">
+	private void setHasHeader( boolean value ){
+		jChkHasHeader.setSelected( value ) ;
+		hasHeader = value ;
+	}
+	
+	private void setSaveScoresFile( boolean value ){
+		jChkSaveFile.setSelected( value ) ;
+		saveScoresFile = value ;
+	}
+	
+	private void setScoresOnly( boolean value ){
+		jChkScoresOnly.setSelected( value ) ;
+		scoresOnly = value ;
+		
+		jBtnBayesNet.setEnabled( !value ) ;
+		
+		// Enable/Disable all fields in Structure Optimization Panel
+		jCbxAlgorithm.setEnabled( !value ) ;
+		jSpnNumSolutions.setEnabled( !value ) ;
+		jCbxBestScoreCalculator.setEnabled( !value ) ;
+		jCbxInitializer.setEnabled( !value ) ;
+		jSpnMaxIterations.setEnabled( !value ) ;
 
-    private void jCbxScoringFunctionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCbxScoringFunctionActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jCbxScoringFunctionActionPerformed
+		if( value ){
+			setStructureOptimizationOnly( false ) ;
+		}
+	}
+	
+	private void setStructureOptimizationOnly( boolean value ){
+		jChkStructureOptimizationOnly.setSelected( value ) ;
+		structureOptimizationOnly = value ;
+		jBtnDataSet.setEnabled( !value ) ;
+		jChkHasHeader.setEnabled( !value ) ;
+		jTxtDelimiter.setEnabled( !value ) ;
+			
+		// Enable/Disable all fields in Parent Set Selection Panel
+		jCbxMethod.setEnabled( !value ) ;
+		jSpnMaxParentSize.setEnabled( !value ) ;
+		jSpnRMin.setEnabled( !value ) ;
+		jChkWhileCalculatingPrune.setEnabled( !value ) ;
+		jCbxScoringFunction.setEnabled( !value ) ;
+		jSpnNumThreads.setEnabled( !value ) ;
+		jSpnTimePerVariable.setEnabled( !value ) ;
+		jChkEndOfCalculatingPrune.setEnabled( !value ) ;
 
-    private void jBtnDataSetMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jBtnDataSetMouseClicked
-		JFileChooser fChooser = new JFileChooser() ;
+		if( value ){
+			setScoresOnly( false ) ;
+		}
+	}
+	
+	private void setDelimiterCharacter( char delimiter ){
+		jTxtDelimiter.setText( "" + delimiter ) ;
+		delimiterCharacter = delimiter ;
+	}	
+	// </editor-fold>
+	
+	// <editor-fold defaultstate="collapsed" desc="Modifiers Structure Learning: Parent Set Selection Panel">
+	private void initParentSetMethod(){
+		jCbxMethod.removeAllItems() ;
+		jCbxMethod.addItem( "Sequential" ) ;
+		jCbxMethod.addItem( "Greedy" ) ;
+		jCbxMethod.addItem( "Independence" ) ;
+	}
+	
+	private void setParentSetMethod( int index ){
+		jCbxMethod.setSelectedIndex( index ) ;
+		parentSetMethod = "" + jCbxMethod.getSelectedItem() ;
+		switch( index ){
+			case 0 : // Sequential
+			case 1 : // Greedy
+				setWhileCalculatingPrune( true ) ;
+				break ;
+			case 2 : // Independence
+				setWhileCalculatingPrune( false ) ;
+				break ;
+		}
+	}
+	
+	private void setMaxParentSetSize( int value ){
+		jSpnMaxParentSize.setValue( value ) ;
+		maxParentSize = value ;
+	}
+	
+	private void setRMin( int value ){
+		jSpnRMin.setValue( value ) ;
+		rMin = value ;
+	}
+	
+	private void initScoringFunction(){
+		jCbxScoringFunction.removeAllItems() ;
+		jCbxScoringFunction.addItem( "BIC" ) ;
+	}
+	
+	private void setScoringFunction( int index ){
+		jCbxScoringFunction.setSelectedIndex( index ) ;
+		scoringFunction = "" + jCbxScoringFunction.getSelectedItem() ;
+	}
+	
+	private void setNumThreads( int value ){
+		jSpnNumThreads.setValue( value ) ;
+		numThreads = value ;
+	}
+	
+	private void setTimePerVariable( int value ){
+		jSpnTimePerVariable.setValue( value ) ;
+		timePerVariable = value ;
+	}
+	
+	private void setWhileCalculatingPrune( boolean value ){
+		jChkWhileCalculatingPrune.setSelected( value ) ;
+		whileCalculatingPrune = value ;
+	}
+	
+	private void setEndOfCalculatingPrune( boolean value ){
+		jChkEndOfCalculatingPrune.setSelected( value ) ;
+		endOfCalculatingPrune = value ;
+	}
+	// </editor-fold>
+	
+	// <editor-fold defaultstate="collapsed" desc="Modifiers Structure Learning: Structure Optimization Panel">
+	private void initAlgorithm(){
+		jCbxAlgorithm.removeAllItems() ;
+		jCbxAlgorithm.addItem( "Greedy search" ) ;
+	}
+	
+	private void setAlgorithm( int index ){
+		jCbxAlgorithm.setSelectedIndex( index ) ;
+	}
+	
+	private void setNumSolutions( int value ){
+		jSpnNumSolutions.setValue( value ) ;
+	}
+	
+	private void initBestScoreCalculator(){
+		jCbxBestScoreCalculator.removeAllItems() ;
+		jCbxBestScoreCalculator.addItem( "List" ) ;
+		jCbxBestScoreCalculator.addItem( "Tree" ) ;
+		jCbxBestScoreCalculator.addItem( "Bitwise" ) ;
+	}
+	
+	private void setBestScoreCalculator( int index ){
+		jCbxBestScoreCalculator.setSelectedIndex( index ) ;
+	}
+	
+	private void initInitializer(){
+		jCbxInitializer.removeAllItems() ;
+		jCbxInitializer.addItem( "Random" ) ;
+		jCbxInitializer.addItem( "DFS" ) ;
+		jCbxInitializer.addItem( "FAS" ) ;
+	}
+	
+	private void setInitializer( int index ){
+		jCbxInitializer.setSelectedIndex( index ) ;
+	}
+	
+	private void setMaxIterations( int value ){
+		jSpnMaxIterations.setValue( value ) ;
+	}
+	// </editor-fold>
+	
+	private void executeProcess( String command ){
+		try {
+			Runtime rt = Runtime.getRuntime() ;
+			Process pr = rt.exec( command ) ;
+				
+			BufferedReader stdInput = new BufferedReader( new InputStreamReader( pr.getInputStream() ) ) ;
+
+			// read the output from the command
+			String s = stdInput.readLine() ;
+			while( s != null ){
+				System.out.println( s ) ;
+				s = stdInput.readLine() ;
+			}
+		}catch( IOException ex ){
+		}
+	}
+	
+	// <editor-fold defaultstate="collapsed" desc="Action Listeners">
+    private void jBtnRunMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jBtnRunMouseClicked
+        System.out.println( "Vamo a meterle!" ) ;
+		if( scoresOnly ){
+			executeProcess( "./../CLI/dist/ScoreCalculator-Mac/GNU-MacOSX/bn_scorer -h" ) ;
+		}else if( structureOptimizationOnly ){
+			executeProcess( "./../CLI/dist/StructureOptimizer-Mac/GNU-MacOSX/bn_structure -h" ) ;
+		}else{
+			executeProcess( "./../CLI/dist/Learner-Mac/GNU-MacOSX/bn_learning -h" ) ;
+		}
+    }//GEN-LAST:event_jBtnRunMouseClicked
+
+    private void jChkHasHeaderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jChkHasHeaderActionPerformed
+        setHasHeader( jChkHasHeader.isSelected() ) ;
+    }//GEN-LAST:event_jChkHasHeaderActionPerformed
+
+    private void jChkSaveFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jChkSaveFileActionPerformed
+		setSaveScoresFile( jChkSaveFile.isSelected() ) ;
+    }//GEN-LAST:event_jChkSaveFileActionPerformed
+
+    private void jChkScoresOnlyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jChkScoresOnlyActionPerformed
+        setScoresOnly( jChkScoresOnly.isSelected() ) ;
+    }//GEN-LAST:event_jChkScoresOnlyActionPerformed
+
+    private void jChkStructureOptimizationOnlyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jChkStructureOptimizationOnlyActionPerformed
+		setStructureOptimizationOnly( jChkStructureOptimizationOnly.isSelected() ) ;
+    }//GEN-LAST:event_jChkStructureOptimizationOnlyActionPerformed
+
+    private void jBtnDataSetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnDataSetActionPerformed
+        JFileChooser fChooser = new JFileChooser() ;
 		fChooser.setFileSelectionMode( JFileChooser.FILES_ONLY ) ;
-		int sel = fChooser.showSaveDialog( null ) ;
-		if( sel == 1 ){ // Cancel
+		int sel = fChooser.showOpenDialog( null ) ;
+		if( sel == JFileChooser.CANCEL_OPTION ){
 			jTxtDataSet.setText( "" ) ;
 		}else{ // Select
 			File file = fChooser.getSelectedFile() ;
 			jTxtDataSet.setText( file.getPath() ) ;
+			dataSetPath = file.getPath() ;
 		}
-    }//GEN-LAST:event_jBtnDataSetMouseClicked
+    }//GEN-LAST:event_jBtnDataSetActionPerformed
 
-    private void jBtnScoresFileMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jBtnScoresFileMouseClicked
+    private void jBtnScoresFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnScoresFileActionPerformed
         JFileChooser fChooser = new JFileChooser() ;
 		fChooser.setFileSelectionMode( JFileChooser.FILES_ONLY ) ;
 		int sel = fChooser.showSaveDialog( null ) ;
-		if( sel == 1 ){ // Cancel
+		if( sel == JFileChooser.CANCEL_OPTION ){
 			jTxtScoresFile.setText( "" ) ;
 		}else{ // Select
 			File file = fChooser.getSelectedFile() ;
 			jTxtScoresFile.setText( file.getPath() ) ;
+			scoresFilePath = file.getPath() ;
 		}
-    }//GEN-LAST:event_jBtnScoresFileMouseClicked
+    }//GEN-LAST:event_jBtnScoresFileActionPerformed
 
-    private void jBtnBayesNetMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jBtnBayesNetMouseClicked
+    private void jBtnBayesNetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnBayesNetActionPerformed
         JFileChooser fChooser = new JFileChooser() ;
 		fChooser.setFileSelectionMode( JFileChooser.FILES_ONLY ) ;
 		int sel = fChooser.showSaveDialog( null ) ;
-		if( sel == 1 ){ // Cancel
+		if( sel == JFileChooser.CANCEL_OPTION ){
 			jTxtBayesNet.setText( "" ) ;
 		}else{ // Select
 			File file = fChooser.getSelectedFile() ;
 			jTxtBayesNet.setText( file.getPath() ) ;
+			bayesianNetworkPath = file.getPath() ;
 		}
-    }//GEN-LAST:event_jBtnBayesNetMouseClicked
+    }//GEN-LAST:event_jBtnBayesNetActionPerformed
 
-    private void jChkHasHeaderMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jChkHasHeaderMouseClicked
-        if( jChkHasHeader.isSelected() ){
-			hasHeader = true ;
-		}else{
-			hasHeader = false ;
-		}
-    }//GEN-LAST:event_jChkHasHeaderMouseClicked
+    private void jChkWhileCalculatingPruneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jChkWhileCalculatingPruneActionPerformed
+        setWhileCalculatingPrune( jChkWhileCalculatingPrune.isSelected() ) ;
+    }//GEN-LAST:event_jChkWhileCalculatingPruneActionPerformed
 
-    private void jChkSaveFileMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jChkSaveFileMouseClicked
-        if( jChkSaveFile.isSelected() ){
-			saveScoresFile = true ;
-		}else{
-			saveScoresFile = false ;
-		}
-    }//GEN-LAST:event_jChkSaveFileMouseClicked
+    private void jChkEndOfCalculatingPruneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jChkEndOfCalculatingPruneActionPerformed
+        setEndOfCalculatingPrune( jChkEndOfCalculatingPrune.isSelected() ) ;
+    }//GEN-LAST:event_jChkEndOfCalculatingPruneActionPerformed
 
-    private void jChkScoresOnlyMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jChkScoresOnlyMouseClicked
-        if( jChkScoresOnly.isSelected() ){
-			scoresOnly = true ;
-		}else{
-			scoresOnly = false ;
-		}
-    }//GEN-LAST:event_jChkScoresOnlyMouseClicked
+    private void jCbxMethodActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCbxMethodActionPerformed
+        setParentSetMethod( jCbxMethod.getSelectedIndex() ) ;
+    }//GEN-LAST:event_jCbxMethodActionPerformed
 
-    private void jBtnRunMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jBtnRunMouseClicked
-        System.out.println("Vamo a meterle!");
-    }//GEN-LAST:event_jBtnRunMouseClicked
+    private void jCbxScoringFunctionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCbxScoringFunctionActionPerformed
+        setScoringFunction( jCbxScoringFunction.getSelectedIndex() ) ;
+    }//GEN-LAST:event_jCbxScoringFunctionActionPerformed
 
-    private void jChkWhileCalculatingPruneMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jChkWhileCalculatingPruneMouseClicked
-        if( jChkWhileCalculatingPrune.isSelected() ){
-			whileCalculatingPrune = true ;
-		}else{
-			whileCalculatingPrune = false ;
-		}
-    }//GEN-LAST:event_jChkWhileCalculatingPruneMouseClicked
+    private void jCbxAlgorithmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCbxAlgorithmActionPerformed
+        setAlgorithm( jCbxAlgorithm.getSelectedIndex() ) ;
+    }//GEN-LAST:event_jCbxAlgorithmActionPerformed
 
-    private void jChkEndOfCalculatingPruneMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jChkEndOfCalculatingPruneMouseClicked
-        if( jChkEndOfCalculatingPrune.isSelected() ){
-			endOfCalculatingPrune = true ;
-		}else{
-			endOfCalculatingPrune = false ;
-		}
-    }//GEN-LAST:event_jChkEndOfCalculatingPruneMouseClicked
+    private void jCbxInitializerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCbxInitializerActionPerformed
+        setInitializer( jCbxInitializer.getSelectedIndex() ) ;
+    }//GEN-LAST:event_jCbxInitializerActionPerformed
 
-    private void jChkStructureOptimizationOnlyMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jChkStructureOptimizationOnlyMouseClicked
-        if( jChkStructureOptimizationOnly.isSelected() ){
-			structureOptimizationOnly = true ;
-		}else{
-			structureOptimizationOnly = false ;
-		}
-    }//GEN-LAST:event_jChkStructureOptimizationOnlyMouseClicked
-
+    private void jCbxBestScoreCalculatorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCbxBestScoreCalculatorActionPerformed
+        setBestScoreCalculator( jCbxBestScoreCalculator.getSelectedIndex() ) ;
+    }//GEN-LAST:event_jCbxBestScoreCalculatorActionPerformed
+	// </editor-fold>
+	
 	/**
 	 * @param args the command line arguments
 	 */
@@ -639,13 +855,23 @@ public class Home extends javax.swing.JFrame {
 	}
 	
 	// Structure Learning: General Panel
+	private String dataSetPath ;
+	private String scoresFilePath ;
+	private String bayesianNetworkPath ;
 	private boolean hasHeader ;
+	private char delimiterCharacter ;
 	private boolean saveScoresFile ;
 	private boolean scoresOnly ;
 	private boolean structureOptimizationOnly ;
 	
 	// Structure Learning: Parent Set Selection Panel
+	private String parentSetMethod ;
+	private int maxParentSize ;
+	private int rMin ;
 	private boolean whileCalculatingPrune ;
+	private String scoringFunction ;
+	private int numThreads ;
+	private int timePerVariable ;
 	private boolean endOfCalculatingPrune ;
 	
 	// Structure Learning: Structure Optimization Panel
@@ -657,6 +883,7 @@ public class Home extends javax.swing.JFrame {
     private javax.swing.JButton jBtnRun;
     private javax.swing.JButton jBtnScoresFile;
     private javax.swing.JComboBox jCbxAlgorithm;
+    private javax.swing.JComboBox jCbxBestScoreCalculator;
     private javax.swing.JComboBox jCbxInitializer;
     private javax.swing.JComboBox jCbxMethod;
     private javax.swing.JComboBox jCbxScoringFunction;
@@ -666,7 +893,6 @@ public class Home extends javax.swing.JFrame {
     private javax.swing.JCheckBox jChkScoresOnly;
     private javax.swing.JCheckBox jChkStructureOptimizationOnly;
     private javax.swing.JCheckBox jChkWhileCalculatingPrune;
-    private javax.swing.JComboBox jComboBox3;
     private javax.swing.JFrame jFrameApp;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
