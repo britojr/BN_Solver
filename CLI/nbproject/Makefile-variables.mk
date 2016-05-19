@@ -12,8 +12,8 @@ CND_ARTIFACT_DIR_Learner-Mac=dist/Learner-Mac/GNU-MacOSX
 CND_ARTIFACT_NAME_Learner-Mac=bn_learning
 CND_ARTIFACT_PATH_Learner-Mac=dist/Learner-Mac/GNU-MacOSX/bn_learning
 CND_PACKAGE_DIR_Learner-Mac=dist/Learner-Mac/GNU-MacOSX/package
-CND_PACKAGE_NAME_Learner-Mac=bnsolver.tar
-CND_PACKAGE_PATH_Learner-Mac=dist/Learner-Mac/GNU-MacOSX/package/bnsolver.tar
+CND_PACKAGE_NAME_Learner-Mac=cli.tar
+CND_PACKAGE_PATH_Learner-Mac=dist/Learner-Mac/GNU-MacOSX/package/cli.tar
 # Release-Linux configuration
 CND_PLATFORM_Release-Linux=GNU-Linux
 CND_ARTIFACT_DIR_Release-Linux=dist/Release-Linux/GNU-Linux
@@ -28,16 +28,16 @@ CND_ARTIFACT_DIR_ScoreCalculator-Mac=dist/ScoreCalculator-Mac/GNU-MacOSX
 CND_ARTIFACT_NAME_ScoreCalculator-Mac=bn_scorer
 CND_ARTIFACT_PATH_ScoreCalculator-Mac=dist/ScoreCalculator-Mac/GNU-MacOSX/bn_scorer
 CND_PACKAGE_DIR_ScoreCalculator-Mac=dist/ScoreCalculator-Mac/GNU-MacOSX/package
-CND_PACKAGE_NAME_ScoreCalculator-Mac=bnsolver.tar
-CND_PACKAGE_PATH_ScoreCalculator-Mac=dist/ScoreCalculator-Mac/GNU-MacOSX/package/bnsolver.tar
+CND_PACKAGE_NAME_ScoreCalculator-Mac=cli.tar
+CND_PACKAGE_PATH_ScoreCalculator-Mac=dist/ScoreCalculator-Mac/GNU-MacOSX/package/cli.tar
 # StructureOptimizer-Mac configuration
 CND_PLATFORM_StructureOptimizer-Mac=GNU-MacOSX
 CND_ARTIFACT_DIR_StructureOptimizer-Mac=dist/StructureOptimizer-Mac/GNU-MacOSX
 CND_ARTIFACT_NAME_StructureOptimizer-Mac=bn_structure
 CND_ARTIFACT_PATH_StructureOptimizer-Mac=dist/StructureOptimizer-Mac/GNU-MacOSX/bn_structure
 CND_PACKAGE_DIR_StructureOptimizer-Mac=dist/StructureOptimizer-Mac/GNU-MacOSX/package
-CND_PACKAGE_NAME_StructureOptimizer-Mac=bnsolver.tar
-CND_PACKAGE_PATH_StructureOptimizer-Mac=dist/StructureOptimizer-Mac/GNU-MacOSX/package/bnsolver.tar
+CND_PACKAGE_NAME_StructureOptimizer-Mac=cli.tar
+CND_PACKAGE_PATH_StructureOptimizer-Mac=dist/StructureOptimizer-Mac/GNU-MacOSX/package/cli.tar
 #
 # include compiler specific variables
 #
