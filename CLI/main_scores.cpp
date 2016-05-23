@@ -175,6 +175,7 @@ int main( int argc , char** argv ){
 	desc.add_options()
 		( "input" , po::value<std::string > (&inputFile)->required(), inputFileString.c_str() )
 		( "output" , po::value<std::string > (&outputFile)->required(), outputFile.c_str() )
+		( "parentSelectionType,q" ,po::value<std::string>(&selectionType)->default_value("sequential"), parentselection::parentSetSelectionString.c_str() )
 		( "delimiter,d" , po::value<char> (&delimiter)->required()->default_value(','), delimiterString.c_str() )
 		( "rMin,m" , po::value<int> (&rMin)->default_value(5), rMinString.c_str() )
 		( "maxParents,p" , po::value<int> (&maxParents)->default_value(0), maxParentsString.c_str() )

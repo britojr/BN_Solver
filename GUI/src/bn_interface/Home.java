@@ -8,12 +8,14 @@ package bn_interface;
 import java.awt.Component;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileFilter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JSpinner;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  *
@@ -272,8 +274,18 @@ public class Home extends javax.swing.JFrame {
         });
 
         jSpnMaxParentSize.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(0), Integer.valueOf(0), null, Integer.valueOf(1)));
+        jSpnMaxParentSize.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                jSpnMaxParentSizeStateChanged(evt);
+            }
+        });
 
         jSpnRMin.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(5), Integer.valueOf(5), null, Integer.valueOf(5)));
+        jSpnRMin.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                jSpnRMinStateChanged(evt);
+            }
+        });
 
         jLblScoringFunction.setText("Scoring Function");
 
@@ -282,8 +294,18 @@ public class Home extends javax.swing.JFrame {
         jLblTimePerVariable.setText("Time per variable");
 
         jSpnTimePerVariable.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(0), Integer.valueOf(0), null, Integer.valueOf(1)));
+        jSpnTimePerVariable.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                jSpnTimePerVariableStateChanged(evt);
+            }
+        });
 
         jSpnNumThreads.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(1), Integer.valueOf(1), null, Integer.valueOf(1)));
+        jSpnNumThreads.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                jSpnNumThreadsStateChanged(evt);
+            }
+        });
 
         jCbxScoringFunction.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "BIC" }));
         jCbxScoringFunction.addActionListener(new java.awt.event.ActionListener() {
@@ -388,8 +410,18 @@ public class Home extends javax.swing.JFrame {
         });
 
         jSpnNumSolutions.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(1), Integer.valueOf(1), null, Integer.valueOf(1)));
+        jSpnNumSolutions.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                jSpnNumSolutionsStateChanged(evt);
+            }
+        });
 
         jSpnMaxIterations.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(1), Integer.valueOf(1), null, Integer.valueOf(1)));
+        jSpnMaxIterations.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                jSpnMaxIterationsStateChanged(evt);
+            }
+        });
 
         jCbxBestScoreCalculator.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "List" }));
         jCbxBestScoreCalculator.addActionListener(new java.awt.event.ActionListener() {
@@ -613,6 +645,7 @@ public class Home extends javax.swing.JFrame {
 	private void setParentSetMethod( int index ){
 		jCbxMethod.setSelectedIndex( index ) ;
 		parentSetMethod = "" + jCbxMethod.getSelectedItem() ;
+		parentSetMethod = parentSetMethod.toLowerCase() ;
 		switch( index ){
 			case 0 : // Sequential
 			case 1 : // Greedy
@@ -642,6 +675,7 @@ public class Home extends javax.swing.JFrame {
 	private void setScoringFunction( int index ){
 		jCbxScoringFunction.setSelectedIndex( index ) ;
 		scoringFunction = "" + jCbxScoringFunction.getSelectedItem() ;
+		scoringFunction = scoringFunction.toLowerCase() ;
 	}
 	
 	private void setNumThreads( int value ){
@@ -673,10 +707,13 @@ public class Home extends javax.swing.JFrame {
 	
 	private void setAlgorithm( int index ){
 		jCbxAlgorithm.setSelectedIndex( index ) ;
+		algorithm = "" + jCbxAlgorithm.getSelectedItem() ;
+		algorithm = algorithm.toLowerCase() ;
 	}
 	
 	private void setNumSolutions( int value ){
 		jSpnNumSolutions.setValue( value ) ;
+		numSolutions = value ;
 	}
 	
 	private void initBestScoreCalculator(){
@@ -688,6 +725,8 @@ public class Home extends javax.swing.JFrame {
 	
 	private void setBestScoreCalculator( int index ){
 		jCbxBestScoreCalculator.setSelectedIndex( index ) ;
+		bestScoreCalculator = "" + jCbxBestScoreCalculator.getSelectedItem() ;
+		bestScoreCalculator = bestScoreCalculator.toLowerCase() ;
 	}
 	
 	private void initInitializer(){
@@ -699,10 +738,13 @@ public class Home extends javax.swing.JFrame {
 	
 	private void setInitializer( int index ){
 		jCbxInitializer.setSelectedIndex( index ) ;
+		initializer = "" + jCbxInitializer.getSelectedItem() ;
+		initializer = initializer.toLowerCase() ;
 	}
 	
 	private void setMaxIterations( int value ){
 		jSpnMaxIterations.setValue( value ) ;
+		numIterations = value ;
 	}
 	// </editor-fold>
 	
@@ -723,16 +765,41 @@ public class Home extends javax.swing.JFrame {
 		}
 	}
 	
+	private String get_command(){
+		String command = "./../CLI/dist/" ;
+		if( scoresOnly ){
+			command += "ScoreCalculator-Mac/GNU-MacOSX/bn_scorer" ;
+			command += " " + dataSetPath ;
+			command += " " + scoresFilePath ;
+			command += " -q " + parentSetMethod ;
+			command += " -d " + delimiterCharacter ;
+			command += " -m " + rMin ;
+			command += " -p " + maxParentSize ;
+			command += " -t " + numThreads ;
+			command += " -r " + timePerVariable ;
+			command += ( hasHeader ? " -s" : "" ) ;
+			command += ( endOfCalculatingPrune ? "" : " -o" ) ;
+			command += ( whileCalculatingPrune ? " -c" : "" ) ;
+		}else if( structureOptimizationOnly ){
+			command += "StructureOptimizer-Mac/GNU-MacOSX/bn_structure" ;
+			command += " " + scoresFilePath ;
+			command += " -b " + bestScoreCalculator ;
+			command += " -z " + initializer ;
+			command += " -n " + numSolutions ;
+			command += " -k " + numIterations ;
+		}else{
+			command += "Learner-Mac/GNU-MacOSX/bn_learning" ;
+		}
+		return command ;
+	}
+	
 	// <editor-fold defaultstate="collapsed" desc="Action Listeners">
     private void jBtnRunMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jBtnRunMouseClicked
-        System.out.println( "Vamo a meterle!" ) ;
-		if( scoresOnly ){
-			executeProcess( "./../CLI/dist/ScoreCalculator-Mac/GNU-MacOSX/bn_scorer -h" ) ;
-		}else if( structureOptimizationOnly ){
-			executeProcess( "./../CLI/dist/StructureOptimizer-Mac/GNU-MacOSX/bn_structure -h" ) ;
-		}else{
-			executeProcess( "./../CLI/dist/Learner-Mac/GNU-MacOSX/bn_learning -h" ) ;
-		}
+//        System.out.println( "Vamo a meterle!" ) ;
+		String command = get_command() ;
+		System.out.println( command ) ;
+		executeProcess( command ) ;
+		
     }//GEN-LAST:event_jBtnRunMouseClicked
 
     private void jChkHasHeaderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jChkHasHeaderActionPerformed
@@ -754,6 +821,8 @@ public class Home extends javax.swing.JFrame {
     private void jBtnDataSetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnDataSetActionPerformed
         JFileChooser fChooser = new JFileChooser() ;
 		fChooser.setFileSelectionMode( JFileChooser.FILES_ONLY ) ;
+		FileNameExtensionFilter filter = new FileNameExtensionFilter( "CSV files" , "csv" ) ;
+		fChooser.setFileFilter( filter ) ;
 		int sel = fChooser.showOpenDialog( null ) ;
 		if( sel == JFileChooser.CANCEL_OPTION ){
 			jTxtDataSet.setText( "" ) ;
@@ -772,8 +841,10 @@ public class Home extends javax.swing.JFrame {
 			jTxtScoresFile.setText( "" ) ;
 		}else{ // Select
 			File file = fChooser.getSelectedFile() ;
-			jTxtScoresFile.setText( file.getPath() ) ;
-			scoresFilePath = file.getPath() ;
+			String filePath = file.getPath() ;
+			if( !filePath.endsWith( ".pss" ) ) filePath += ".pss" ;
+			jTxtScoresFile.setText( filePath ) ;
+			scoresFilePath = filePath ;
 		}
     }//GEN-LAST:event_jBtnScoresFileActionPerformed
 
@@ -817,6 +888,30 @@ public class Home extends javax.swing.JFrame {
     private void jCbxBestScoreCalculatorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCbxBestScoreCalculatorActionPerformed
         setBestScoreCalculator( jCbxBestScoreCalculator.getSelectedIndex() ) ;
     }//GEN-LAST:event_jCbxBestScoreCalculatorActionPerformed
+
+    private void jSpnMaxParentSizeStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jSpnMaxParentSizeStateChanged
+        setMaxParentSetSize( Integer.valueOf( jSpnMaxParentSize.getValue().toString() ) ) ;
+    }//GEN-LAST:event_jSpnMaxParentSizeStateChanged
+
+    private void jSpnRMinStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jSpnRMinStateChanged
+        setRMin( Integer.valueOf( jSpnRMin.getValue().toString() ) ) ;
+    }//GEN-LAST:event_jSpnRMinStateChanged
+
+    private void jSpnNumThreadsStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jSpnNumThreadsStateChanged
+        setNumThreads( Integer.valueOf( jSpnNumThreads.getValue().toString() ) ) ;
+    }//GEN-LAST:event_jSpnNumThreadsStateChanged
+
+    private void jSpnTimePerVariableStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jSpnTimePerVariableStateChanged
+        setTimePerVariable( Integer.valueOf( jSpnTimePerVariable.getValue().toString() ) ) ;
+    }//GEN-LAST:event_jSpnTimePerVariableStateChanged
+
+    private void jSpnNumSolutionsStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jSpnNumSolutionsStateChanged
+        setNumSolutions( Integer.valueOf( jSpnNumSolutions.getValue().toString() ) ) ;
+    }//GEN-LAST:event_jSpnNumSolutionsStateChanged
+
+    private void jSpnMaxIterationsStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jSpnMaxIterationsStateChanged
+        setMaxIterations( Integer.valueOf( jSpnMaxIterations.getValue().toString() ) ) ;
+    }//GEN-LAST:event_jSpnMaxIterationsStateChanged
 	// </editor-fold>
 	
 	/**
@@ -875,6 +970,11 @@ public class Home extends javax.swing.JFrame {
 	private boolean endOfCalculatingPrune ;
 	
 	// Structure Learning: Structure Optimization Panel
+	private String algorithm ;
+	private String bestScoreCalculator ;
+	private int numSolutions ;
+	private String initializer ;
+	private int numIterations ;
 	
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
