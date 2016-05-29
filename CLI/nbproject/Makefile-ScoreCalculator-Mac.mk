@@ -35,6 +35,7 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
+	${OBJECTDIR}/acyclic_selection.o \
 	${OBJECTDIR}/ad_node.o \
 	${OBJECTDIR}/ad_tree.o \
 	${OBJECTDIR}/bayesian_network.o \
@@ -72,6 +73,11 @@ LDLIBSOPTIONS=-L/usr/local/lib -lboost_system -lboost_thread-mt -lboost_chrono -
 ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/bn_scorer: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
 	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/bn_scorer ${OBJECTFILES} ${LDLIBSOPTIONS}
+
+${OBJECTDIR}/acyclic_selection.o: acyclic_selection.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O3 -s -I/usr/local/include -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/acyclic_selection.o acyclic_selection.cpp
 
 ${OBJECTDIR}/ad_node.o: ad_node.cpp 
 	${MKDIR} -p ${OBJECTDIR}

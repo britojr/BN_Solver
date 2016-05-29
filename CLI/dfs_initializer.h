@@ -25,7 +25,7 @@ namespace initializers {
 			DFSInitializer( std::vector<bestscorecalculators::BestScoreCalculator*> bestScoreCalculators ) ;
 			~DFSInitializer() ;
 			
-			greedysearch::PermutationSet generate() ;
+			structureoptimizer::PermutationSet generate() ;
 			void initialize() ;
 
 		private :
@@ -34,7 +34,7 @@ namespace initializers {
 			
 			varset unvisitedVariables ;
 			int variableCount ;
-			std::vector<greedysearch::Node*> nodes ;
+			std::vector<structureoptimizer::Node*> nodes ;
 			std::vector<bestscorecalculators::BestScoreCalculator*> bestScoreCalculators ;
 			
 			std::vector<hnode> unvisitedNodes ;

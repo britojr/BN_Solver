@@ -12,11 +12,11 @@
 #include "permutation_set.h"
 #include "utils.h"
 
-greedysearch::PermutationSet::PermutationSet(){
+structureoptimizer::PermutationSet::PermutationSet(){
 	// Do nothing
 }
 
-greedysearch::PermutationSet::PermutationSet( int size ){
+structureoptimizer::PermutationSet::PermutationSet( int size ){
 	boost::mt19937 gen( time( NULL ) ) ;
 	for(int i = 0 ; i < size ; i++)
 		permutation.push_back( i ) ;
@@ -24,36 +24,36 @@ greedysearch::PermutationSet::PermutationSet( int size ){
 	score = std::numeric_limits<float>::max() ;
 }
 
-greedysearch::PermutationSet::~PermutationSet(){
+structureoptimizer::PermutationSet::~PermutationSet(){
 	// Do nothing
 }
 
-float greedysearch::PermutationSet::getScore(){
+float structureoptimizer::PermutationSet::getScore(){
 	return score ;
 }
 
-void greedysearch::PermutationSet::setScore( float score ){
+void structureoptimizer::PermutationSet::setScore( float score ){
 	this->score = score ;
 }
 
 // Considering that minimizing is better
-bool greedysearch::PermutationSet::isBetter( greedysearch::PermutationSet other ){
+bool structureoptimizer::PermutationSet::isBetter( structureoptimizer::PermutationSet other ){
 	return other.getScore() > score ;
 }
 
-void greedysearch::PermutationSet::setPermutation( std::vector<int> permutation ){
+void structureoptimizer::PermutationSet::setPermutation( std::vector<int> permutation ){
 	this->permutation = permutation ;
 }
 
-std::vector<int> greedysearch::PermutationSet::getPermutation(){
+std::vector<int> structureoptimizer::PermutationSet::getPermutation(){
 	return permutation ;
 }
 
-int greedysearch::PermutationSet::size(){
+int structureoptimizer::PermutationSet::size(){
 	return permutation.size() ;
 }
 
-void greedysearch::PermutationSet::print(){
+void structureoptimizer::PermutationSet::print(){
 	for(int i = 0 ; i < permutation.size() ; i++){
 		if( i ) printf(" " ) ;
 		printf("%d" , permutation[ i ] ) ;
@@ -62,17 +62,17 @@ void greedysearch::PermutationSet::print(){
 	printf("Score = %.6f\n" , score ) ;
 }
 
-int greedysearch::PermutationSet::operator[]( int idx ){
+int structureoptimizer::PermutationSet::operator[]( int idx ){
 	return permutation[ idx ] ;
 }
 
-void greedysearch::PermutationSet::swap( int idx1 , int idx2 ){
+void structureoptimizer::PermutationSet::swap( int idx1 , int idx2 ){
 	int aux = permutation[ idx1 ] ;
 	permutation[ idx1 ] = permutation[ idx2 ] ;
 	permutation[ idx2 ] = aux ;
 }
 
-varset greedysearch::PermutationSet::getVarset( int index ){
+varset structureoptimizer::PermutationSet::getVarset( int index ){
 	VARSET_NEW( set , permutation.size() ) ;
 	for( int i = 0 ; i < index ; i++)
 		VARSET_SET( set , permutation[ i ] ) ;

@@ -10,29 +10,39 @@
 
 #include "utils_main.h"
 #include "score_cache.h"
-#include "greedy_search.h"
+#include "structure_optimizer.h"
+#include "structure_optimizer_creator.h"
 #include "initializer.h"
 #include "initializer_creator.h"
 #include "best_score_calculator.h"
 #include "best_score_creator.h"
 
+/* The algorithm for structure learning */
+std::string structureOptimizerTypeDefault = "greedy_search" ;
+std::string structureOptimizerType = structureOptimizerTypeDefault ;
+std::string structureOptimizerTypeString = "Algorithm for order-based structure learning" ;
+
 /* The data structure to use to calculate best parent set scores */
 std::string bestScoreCalculatorDefault = "bitwise" ;
 std::string bestScoreCalculator = bestScoreCalculatorDefault ;
+std::string bestScoreCalculatorShortCut = "bestScore,b" ;
 
 /* The type of initializer to use */
 std::string initializerTypeDefault = "random" ;
 std::string initializerType = initializerTypeDefault ;
+std::string initializerShortCut = "initializer,z" ;
 
 /* Number of solutions to be generated with initializer */
 int numSolutionsDefault = 1 ;
 int numSolutions = numSolutionsDefault ;
 std::string numSolutionsString = "Number of initial solutions to be generated." ;
+std::string numSolutionsShortCut = "numSolutions,n" ;
 
 /* Number of iterations for greedy search until stopping */
 int maxIterationsDefault = 500 ;
 int maxIterations = maxIterationsDefault ;
-std::string maxIterationsString = "Max number of iterations in greedy search." ;
+std::string maxIterationsString = "Max number of iterations in order-based structure learning." ;
+std::string maxIterationsShortCut = "maxIterations,k" ;
 
 void greedySearch(){
 	printf( "Scores file: '%s'\n" , scoresFile.c_str() ) ;
@@ -43,7 +53,8 @@ void greedySearch(){
 	printf( "Reading score cache.\n" ) ;
 	scoring::ScoreCache cache ;
 	cache.read( scoresFile ) ;
-//	remove( scoresFile.c_str() ) ; // TODO: Check this
+	if( scoresFile.compare( scoresFileDefault ) == 0 )
+		remove( scoresFile.c_str() ) ;
 
 	printf( "Creating Best score calculators.\n" ) ;
 	std::vector<bestscorecalculators::BestScoreCalculator*> bestScCalc = bestscorecalculators::create( bestScoreCalculator , cache ) ;
@@ -51,9 +62,9 @@ void greedySearch(){
 	printf( "Creating Initialization heuristic.\n" ) ;
 	initializers::Initializer* initializer = initializers::create( initializerType , bestScCalc ) ;
 
-	greedysearch::GreedySearch* algorithm = new greedysearch::GreedySearch( initializer , bestScCalc , maxIterations ) ;
-	std::vector<greedysearch::Node*> solution = algorithm->search( numSolutions ) ;
+	printf( "Creating the order-based structure learning algorithm\n" ) ;
+	structureoptimizer::StructureOptimizer* algorithm = structureoptimizer::create( structureOptimizerType , initializer , bestScCalc , maxIterations ) ;
+	std::vector<structureoptimizer::Node*> solution = algorithm->search( numSolutions ) ;
 }
 
 #endif	/* STRUCTURE_OPTIMIZER_H */
-

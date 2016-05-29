@@ -24,7 +24,7 @@ namespace initializers {
 			FASInitializer( std::vector<bestscorecalculators::BestScoreCalculator*> bestScoreCalculators ) ;
 			~FASInitializer() ;
 			
-			greedysearch::PermutationSet generate() ;
+			structureoptimizer::PermutationSet generate() ;
 			void initialize() ;
 
 		private :
@@ -35,7 +35,7 @@ namespace initializers {
 			
 			varset unvisitedVariables ;
 			int variableCount ;
-			std::vector<greedysearch::Node*> nodes ;
+			std::vector<structureoptimizer::Node*> nodes ;
 			std::vector<bestscorecalculators::BestScoreCalculator*> bestScoreCalculators ;
 			std::vector<edge> cycle ;
 			std::vector<int> inGrades ;

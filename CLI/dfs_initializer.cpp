@@ -30,7 +30,7 @@ void initializers::DFSInitializer::initialize(){
 	// Initialize adjacent lists
 	nodes.clear() ;
 	for(int i = 0 ; i < variableCount ; i++){
-		greedysearch::Node* var = new greedysearch::Node( i , variableCount ) ;
+		structureoptimizer::Node* var = new structureoptimizer::Node( i , variableCount ) ;
 		nodes.push_back( var ) ;
 	}
 
@@ -68,7 +68,7 @@ bool cmpNodes( hnode node1 , hnode node2 ){
 	return node1.first < node2.first ;
 }
 
-greedysearch::PermutationSet initializers::DFSInitializer::generate(){
+structureoptimizer::PermutationSet initializers::DFSInitializer::generate(){
 	this->unvisitedVariables = varset( variableCount ) ;
 	VARSET_SET_ALL( this->unvisitedVariables , variableCount ) ;
 
@@ -89,7 +89,7 @@ greedysearch::PermutationSet initializers::DFSInitializer::generate(){
 	}
 	
 	// Build the permutation set
-	greedysearch::PermutationSet set( variableCount ) ;
+	structureoptimizer::PermutationSet set( variableCount ) ;
 	set.setPermutation( order ) ;
 	float score = 0.0 ;
 	for(int i = 0 ; i < variableCount ; i++){

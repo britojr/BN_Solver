@@ -21,11 +21,6 @@
         <itemPath>record_file.h</itemPath>
         <itemPath>variable.h</itemPath>
       </logicalFolder>
-      <logicalFolder name="f8" displayName="greedy_search" projectFiles="true">
-        <itemPath>greedy_search.h</itemPath>
-        <itemPath>node.h</itemPath>
-        <itemPath>permutation_set.h</itemPath>
-      </logicalFolder>
       <logicalFolder name="f9" displayName="initializers" projectFiles="true">
         <itemPath>dfs_initializer.h</itemPath>
         <itemPath>fas_initializer.h</itemPath>
@@ -58,6 +53,14 @@
         <itemPath>scoring_function_creator.h</itemPath>
         <itemPath>vary_node.h</itemPath>
       </logicalFolder>
+      <logicalFolder name="f8" displayName="structureoptimizer" projectFiles="true">
+        <itemPath>acyclic_selection.h</itemPath>
+        <itemPath>greedy_search.h</itemPath>
+        <itemPath>node.h</itemPath>
+        <itemPath>permutation_set.h</itemPath>
+        <itemPath>structure_optimizer.h</itemPath>
+        <itemPath>structure_optimizer_creator.h</itemPath>
+      </logicalFolder>
       <itemPath>files.h</itemPath>
       <itemPath>typedefs.h</itemPath>
       <itemPath>utils.h</itemPath>
@@ -79,10 +82,6 @@
       <logicalFolder name="f1" displayName="datastructures" projectFiles="true">
         <itemPath>bayesian_network.cpp</itemPath>
       </logicalFolder>
-      <logicalFolder name="f14" displayName="greedy_search" projectFiles="true">
-        <itemPath>greedy_search.cpp</itemPath>
-        <itemPath>permutation_set.cpp</itemPath>
-      </logicalFolder>
       <logicalFolder name="f15" displayName="initializers" projectFiles="true">
         <itemPath>dfs_initializer.cpp</itemPath>
         <itemPath>fas_initializer.cpp</itemPath>
@@ -102,6 +101,11 @@
         <itemPath>log_likelihood_calculator.cpp</itemPath>
         <itemPath>score_cache.cpp</itemPath>
         <itemPath>vary_node.cpp</itemPath>
+      </logicalFolder>
+      <logicalFolder name="f14" displayName="structureoptimizer" projectFiles="true">
+        <itemPath>acyclic_selection.cpp</itemPath>
+        <itemPath>greedy_search.cpp</itemPath>
+        <itemPath>permutation_set.cpp</itemPath>
       </logicalFolder>
       <itemPath>main_learner.cpp</itemPath>
       <itemPath>main_scores.cpp</itemPath>
@@ -159,6 +163,10 @@
           </linkerLibItems>
         </linkerTool>
       </compileType>
+      <item path="acyclic_selection.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="acyclic_selection.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="ad_node.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="ad_node.h" ex="false" tool="3" flavor2="0">
@@ -265,6 +273,10 @@
       </item>
       <item path="sparse_tree_node.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="structure_optimizer.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="structure_optimizer_creator.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="structure_optimizer_main.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="typedefs.h" ex="false" tool="3" flavor2="0">
@@ -321,6 +333,10 @@
           </linkerLibItems>
         </linkerTool>
       </compileType>
+      <item path="acyclic_selection.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="acyclic_selection.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="ad_node.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="ad_node.h" ex="false" tool="3" flavor2="0">
@@ -431,6 +447,10 @@
       </item>
       <item path="sparse_tree_node.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="structure_optimizer.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="structure_optimizer_creator.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="structure_optimizer_main.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="typedefs.h" ex="false" tool="3" flavor2="0">
@@ -488,6 +508,10 @@
           </linkerLibItems>
         </linkerTool>
       </compileType>
+      <item path="acyclic_selection.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="acyclic_selection.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="ad_node.cpp" ex="false" tool="1" flavor2="9">
       </item>
       <item path="ad_node.h" ex="false" tool="3" flavor2="0">
@@ -598,6 +622,10 @@
       </item>
       <item path="sparse_tree_node.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="structure_optimizer.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="structure_optimizer_creator.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="structure_optimizer_main.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="typedefs.h" ex="false" tool="3" flavor2="0">
@@ -655,6 +683,10 @@
           </linkerLibItems>
         </linkerTool>
       </compileType>
+      <item path="acyclic_selection.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="acyclic_selection.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="ad_node.cpp" ex="true" tool="1" flavor2="9">
       </item>
       <item path="ad_node.h" ex="false" tool="3" flavor2="0">
@@ -764,6 +796,10 @@
       <item path="sparse_parent_tree.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="sparse_tree_node.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="structure_optimizer.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="structure_optimizer_creator.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="structure_optimizer_main.h" ex="false" tool="3" flavor2="0">
       </item>

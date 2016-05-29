@@ -12,7 +12,7 @@
 
 #include "typedefs.h"
 
-namespace greedysearch {
+namespace structureoptimizer {
 	class PermutationSet {
 		public :
 			PermutationSet() ;

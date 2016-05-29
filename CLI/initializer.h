@@ -13,7 +13,7 @@
 namespace initializers {
 	class Initializer {
 		public :
-			virtual greedysearch::PermutationSet generate() = 0 ;
+			virtual structureoptimizer::PermutationSet generate() = 0 ;
 			virtual void initialize() = 0 ;
 	} ;
 }

@@ -8,32 +8,26 @@
 #ifndef GREEDYSEARCH_H
 #define	GREEDYSEARCH_H
 
-#include <vector>
-
-#include "initializer.h"
+#include "structure_optimizer.h"
 #include "permutation_set.h"
-#include "best_score_calculator.h"
-#include "node.h"
 
-namespace greedysearch {
-	class GreedySearch {
+namespace structureoptimizer {
+	class GreedySearch : public structureoptimizer::StructureOptimizer {
 		public :
 			GreedySearch() ;
 			GreedySearch( initializers::Initializer* initializer ,
-						std::vector<bestscorecalculators::BestScoreCalculator*> bestScoreCalculator , int maxIterations ) ;
+						std::vector<bestscorecalculators::BestScoreCalculator*> bestScoreCalculator ,
+						int maxIterations ) ;
 			~GreedySearch() ;
 		
-			std::vector<greedysearch::Node*> search( int numSolutions ) ;
+			std::vector<structureoptimizer::Node*> search( int numSolutions ) ;
 		
 		private :
-			greedysearch::PermutationSet findBestNeighbor( greedysearch::PermutationSet set ) ;
-			greedysearch::PermutationSet disturbSet( greedysearch::PermutationSet set , int numSwaps = 5 ) ;
-			greedysearch::PermutationSet doSwap( greedysearch::PermutationSet set , int index ) ;
-			std::vector<greedysearch::Node*> reconstructSolution( greedysearch::PermutationSet set ) ;
+			structureoptimizer::PermutationSet findBestNeighbor( structureoptimizer::PermutationSet set ) ;
+			structureoptimizer::PermutationSet disturbSet( structureoptimizer::PermutationSet set , int numSwaps = 5 ) ;
+			structureoptimizer::PermutationSet doSwap( structureoptimizer::PermutationSet set , int index ) ;
+			std::vector<structureoptimizer::Node*> reconstructSolution( structureoptimizer::PermutationSet set ) ;
 			
-			initializers::Initializer* initializer ;
-			std::vector<bestscorecalculators::BestScoreCalculator*> bestScoreCalculator ;
-			int maxIterations ;
 			int numIterations ;
 			int variableCount ;
 	} ;

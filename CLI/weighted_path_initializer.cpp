@@ -29,7 +29,7 @@ void initializers::WPathInitializer::initialize(){
 	// Initialize adjacent lists
 	nodes.clear() ;
 	for(int i = 0 ; i < variableCount ; i++){
-		greedysearch::Node* var = new greedysearch::Node( i , variableCount ) ;
+		structureoptimizer::Node* var = new structureoptimizer::Node( i , variableCount ) ;
 		nodes.push_back( var ) ;
 	}
 
@@ -56,7 +56,7 @@ void initializers::WPathInitializer::initialize(){
 	}
 }
 
-greedysearch::PermutationSet initializers::WPathInitializer::generate(){
+structureoptimizer::PermutationSet initializers::WPathInitializer::generate(){
 	this->unvisitedVariables = varset( variableCount ) ;
 	VARSET_SET_ALL( this->unvisitedVariables , variableCount ) ;
 
@@ -81,7 +81,7 @@ greedysearch::PermutationSet initializers::WPathInitializer::generate(){
 	}
 
 	// Build the permutation set
-	greedysearch::PermutationSet set( variableCount ) ;
+	structureoptimizer::PermutationSet set( variableCount ) ;
 	set.setPermutation( order ) ;
 	float score = 0.0 ;
 	for(int i = 0 ; i < variableCount ; i++){

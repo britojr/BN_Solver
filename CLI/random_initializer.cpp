@@ -24,8 +24,8 @@ initializers::RandomInitializer::~RandomInitializer(){
 	// Do nothing
 }
 
-greedysearch::PermutationSet initializers::RandomInitializer::generate(){
-	greedysearch::PermutationSet set( variableCount ) ;
+structureoptimizer::PermutationSet initializers::RandomInitializer::generate(){
+	structureoptimizer::PermutationSet set( variableCount ) ;
 	std::vector<int> permut = shuffle( set.getPermutation() , gen ) ;
 	set.setPermutation( permut ) ;
 	float score = 0.0 ;

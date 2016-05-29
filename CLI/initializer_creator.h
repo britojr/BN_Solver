@@ -22,7 +22,7 @@
 
 namespace initializers {
 	
-    static std::string initializerTypeString = "The type of solution initialization in greedy search [\"random\", \"dfs\", \"fas\", \"path\"]" ;
+    static std::string initializerTypeString = "The type of solution initialization in greedy search [\"random\", \"dfs\", \"fas\"]" ;
 	
     initializers::Initializer* create( std::string type ,
 									std::vector<bestscorecalculators::BestScoreCalculator*> bestScoreCalculator ){
