@@ -134,6 +134,18 @@ void scoringThread( int thread ){
 }
 
 void calculateScore(){
+	printf( "========== STEP: PARENT SET SELECTION ========== \n" ) ;
+	printf( "Method: %s\n" , selectionType.c_str() ) ;
+	printf( "Delimiter: '%c'\n" , delimiter ) ;
+	printf( "r_min: '%d'\n" , rMin ) ;
+	printf( "Scoring function: '%s'\n" , sf.c_str() ) ;
+	printf( "Maximum parents: '%d'\n" , maxParents ) ;
+	printf( "Threads: '%d'\n" , threadCount ) ;
+	printf( "Running time (per variable): '%d'\n" , runningTime ) ;
+	printf( "Has header: '%s'\n" , ( hasHeader ? "true" : "false" ) ) ;
+	printf( "Enable end-of-scoring pruning: '%s'\n" , ( prune ? "true" : "false" ) ) ;
+	printf( "Enable DeCampos pruning: '%s'\n" , ( enableDeCamposPruning ? "true" : "false" ) ) ;
+
 	printf( "Parsing input file.\n" ) ;
 	datastructures::RecordFile recordFile( datasetFile , delimiter , hasHeader ) ;
 	recordFile.read() ;

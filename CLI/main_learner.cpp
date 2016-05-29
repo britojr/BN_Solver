@@ -12,14 +12,13 @@
 namespace po = boost::program_options ;
 
 int main( int argc , char** argv ){
-	std::string description = std::string( "Compute the scores for a csv file.  Example usage: " ) + argv[ 0 ] + " iris.csv iris.pss" ;
-	po::options_description desc( description ) ;
+	po::options_description desc( getProgramDescription( argv[ 0 ] ) ) ;
 
 	desc.add_options()
-		( datasetShortCut.c_str() , po::value<std::string> (&datasetFile)->required(), datasetFileString.c_str() )
 		( bnetFileShortCut.c_str() , po::value<std::string> (&bnetFile)->required(), bnetFileString.c_str() )
-		( stepsToPerformShortCut.c_str() , po::value<int>( &stepsToPerform)->required()->default_value( stepsToPerformDefault ) , stepsToPerformString.c_str() )
-		( scoresFileShortCut.c_str() , po::value<std::string> (&scoresFile)->default_value( scoresFileDefault ) , scoresFileString.c_str() )
+		( stepsToPerformShortCut.c_str() , po::value<int>(&stepsToPerform)->required()->default_value( stepsToPerformDefault ) , stepsToPerformString.c_str() )
+		( datasetShortCut.c_str() , po::value<std::string> (&datasetFile), datasetFileString.c_str() )
+		( scoresFileShortCut.c_str() , po::value<std::string> (&scoresFile)->required()->default_value( scoresFileDefault ) , scoresFileString.c_str() )
 		( delimiterShortCut.c_str() , po::value<char> (&delimiter)->required()->default_value( delimiterDefault ), delimiterString.c_str() )
 		( rMinShortCut.c_str() , po::value<int> (&rMin)->default_value( rMinDefault ), rMinString.c_str() )
 		( maxParentsShortCut.c_str() , po::value<int> (&maxParents)->default_value( maxParentsDefault ) , maxParentsString.c_str() )
@@ -37,7 +36,7 @@ int main( int argc , char** argv ){
 		( "help,h" , "Show this help message." ) ;
 
 	po::positional_options_description positionalOptions ;
-	positionalOptions.add( datasetShortCut.c_str() , 1 ) ;
+//	positionalOptions.add( datasetShortCut.c_str() , 1 ) ;
 	positionalOptions.add( bnetFileShortCut.c_str() , 1 ) ;
 
 	po::variables_map vm ;
@@ -60,22 +59,14 @@ int main( int argc , char** argv ){
 		threadCount = 1 ;
 	}
 
-	printf( "URLearning, Score Calculator\n" ) ;
+	printf( " ============================== BN_LEARNING ============================== \n" ) ;
+	datasetFile = ( stepsToPerform & PERFORM_SCORE_CALCULATION ? datasetFile : "NO SPECIFIED" ) ;
 	printf( "Dataset file: '%s'\n" , datasetFile.c_str() ) ;
+	printf( "Score file: '%s'\n" , scoresFile.c_str() ) ;
 	printf( "Bnet file: '%s'\n" , bnetFile.c_str() ) ;
-	printf( "Parent selection method: %s\n" , selectionType.c_str() ) ;
-	printf( "Delimiter: '%c'\n" , delimiter ) ;
-	printf( "r_min: '%d'\n" , rMin ) ;
-	printf( "Scoring function: '%s'\n" , sf.c_str() ) ;
-	printf( "Maximum parents: '%d'\n" , maxParents ) ;
-	printf( "Threads: '%d'\n" , threadCount ) ;
-	printf( "Running time (per variable): '%d'\n" , runningTime ) ;
-	printf( "Has header: '%s'\n" , ( hasHeader ? "true" : "false" ) ) ;
-	printf( "Enable end-of-scoring pruning: '%s'\n" , ( prune ? "true" : "false" ) ) ;
-	printf( "Enable DeCampos pruning: '%s'\n" , ( enableDeCamposPruning ? "true" : "false" ) ) ;
 
 	if( stepsToPerform & PERFORM_SCORE_CALCULATION )
 		calculateScore() ;
 	if( stepsToPerform & PERFORM_STRUCTURE_LEARNING )
-		greedySearch() ;
+		structureLearning() ;
 }

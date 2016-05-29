@@ -44,11 +44,11 @@ int maxIterations = maxIterationsDefault ;
 std::string maxIterationsString = "Max number of iterations in order-based structure learning." ;
 std::string maxIterationsShortCut = "maxIterations,k" ;
 
-void greedySearch(){
-	printf( "Scores file: '%s'\n" , scoresFile.c_str() ) ;
-	//    printf("Net file: '%s'\n", netFile.c_str());
+void structureLearning(){
+	printf( "========== STEP: STRUCTURE OPTIMIZATION ========== \n" ) ;
 	printf( "Best score calculator: '%s'\n" , bestScoreCalculator.c_str() ) ;
 	printf( "Initialization type: '%s'\n" , initializerType.c_str() ) ;
+	printf( "Structure learning: '%s'\n" , structureOptimizerType.c_str() ) ;
 
 	printf( "Reading score cache.\n" ) ;
 	scoring::ScoreCache cache ;

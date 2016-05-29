@@ -18,20 +18,27 @@ inline std::string getTime(){
 	return dt ;
 }
 
+std::string getProgramDescription( std::string programName ){
+	std::string description = "Bayesian network order-based structure learning from data. Example usage: " ;
+	description += programName ;
+	description += " iris.bnet --dataset iris.csv" ;
+	return description ;
+}
+
 /* The file containing the data */
 std::string datasetFile ;
-std::string datasetFileString = "The data set file. First positional argument." ;
+std::string datasetFileString = "The data set file (*.csv)" ;
 std::string datasetShortCut = "dataset" ;
 
 /* The file to write the scores file */
 std::string scoresFileDefault = "temp.pss" ;
 std::string scoresFile = scoresFileDefault ;
-std::string scoresFileString = "The score cache file. It will be deleted after calculation if default value" ;
+std::string scoresFileString = "The score cache file (*.pss). It will be deleted after calculation if default value" ;
 std::string scoresFileShortCut = "scorefile" ;
 
 /* The file containing the Bayesian network specification */
 std::string bnetFile ;
-std::string bnetFileString = "The Bayesian network file. Second positional argument." ;
+std::string bnetFileString = "The Bayesian network file (*.bnet)." ;
 std::string bnetFileShortCut = "bnetfile" ;
 
 /* Bitset parameter for activate steps */
