@@ -22,11 +22,11 @@ namespace structureoptimizer {
 			datastructures::BNStructure search( int numSolutions ) ;
 
 		private :
-//			structureoptimizer::PermutationSet findBestNeighbor( structureoptimizer::PermutationSet set ) ;
-//			structureoptimizer::PermutationSet disturbSet( structureoptimizer::PermutationSet set , int numSwaps = 5 ) ;
-//			structureoptimizer::PermutationSet doSwap( structureoptimizer::PermutationSet set , int index ) ;
-//			std::vector<structureoptimizer::Node*> reconstructSolution( structureoptimizer::PermutationSet set ) ;
-
+			void visit( int index ) ;
+			
+			std::vector<varset> m ; // Descendants
+			std::vector<std::vector<int> > todo ; // To-Do lists
+			datastructures::BNStructure partial_bn ; // Partial BN structure
 			int variableCount ;
 	} ;
 }

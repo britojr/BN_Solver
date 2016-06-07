@@ -20,6 +20,8 @@ namespace datastructures {
 			BNStructure( structureoptimizer::PermutationSet order ,
 						std::vector<bestscorecalculators::BestScoreCalculator*> &bsc ) ;
 			
+			structureoptimizer::Node* operator []( int index ) ;
+			
 			float getScore() ;
 			
 			int size() ;

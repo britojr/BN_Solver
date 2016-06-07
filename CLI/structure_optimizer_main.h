@@ -20,7 +20,8 @@
 /* The algorithm for structure learning */
 std::string structureOptimizerTypeDefault = "greedy_search" ;
 std::string structureOptimizerType = structureOptimizerTypeDefault ;
-std::string structureOptimizerTypeString = "Algorithm for order-based structure learning" ;
+std::string structureOptimizerTypeString = "Algorithm for order-based structure learning. Options: [ greedy_seach , acyclic_selection ]" ;
+std::string structureOptimizerTypeShortCut = "algorithm" ;
 
 /* The data structure to use to calculate best parent set scores */
 std::string bestScoreCalculatorDefault = "bitwise" ;

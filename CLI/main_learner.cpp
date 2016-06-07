@@ -15,6 +15,7 @@ int main( int argc , char** argv ){
 	po::options_description desc( getProgramDescription( argv[ 0 ] ) ) ;
 
 	desc.add_options()
+		( structureOptimizerTypeShortCut.c_str() , po::value<std::string>(&structureOptimizerType)->required()->default_value( structureOptimizerTypeDefault) , structureOptimizerTypeString.c_str() )
 		( bnetFileShortCut.c_str() , po::value<std::string> (&bnetFile)->required(), bnetFileString.c_str() )
 		( stepsToPerformShortCut.c_str() , po::value<int>(&stepsToPerform)->required()->default_value( stepsToPerformDefault ) , stepsToPerformString.c_str() )
 		( datasetShortCut.c_str() , po::value<std::string> (&datasetFile), datasetFileString.c_str() )

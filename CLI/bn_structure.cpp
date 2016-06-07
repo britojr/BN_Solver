@@ -51,7 +51,7 @@ bool datastructures::BNStructure::isBetter( datastructures::BNStructure other ){
 }
 
 int datastructures::BNStructure::size(){
-	return variableCount ;
+	return nodes.size() ;
 }
 
 void datastructures::BNStructure::setParents( int indexnode , varset& parents , float score ){
@@ -59,4 +59,8 @@ void datastructures::BNStructure::setParents( int indexnode , varset& parents , 
 	nodes[ indexnode ]->setParents( parents ) ;
 	nodes[ indexnode ]->setScore( score ) ;
 	this->score += score ;
+}
+
+structureoptimizer::Node* datastructures::BNStructure::operator[]( int index ){
+	return nodes[ index ] ;
 }

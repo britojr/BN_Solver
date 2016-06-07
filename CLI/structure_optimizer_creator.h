@@ -23,7 +23,7 @@ namespace structureoptimizer {
 		StructureOptimizer *sto ;
 		if( type == "greedy_search" ){
 			sto = new structureoptimizer::GreedySearch( initializer , bestScoreCalculators , maxIterations ) ;
-		}else if( type == "asobs" ){
+		}else if( type == "acyclic_selection" ){
 			sto = new structureoptimizer::AcyclicSelection( initializer , bestScoreCalculators ) ;
 		}else{
 			throw std::runtime_error( "Invalid SO selection: '" + type + "'.  Valid options are 'greedy_search' and 'acyclic_selection'." ) ;
