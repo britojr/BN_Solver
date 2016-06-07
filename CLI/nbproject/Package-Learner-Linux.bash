@@ -7,13 +7,13 @@
 # Macros
 TOP=`pwd`
 CND_PLATFORM=GNU-MacOSX
-CND_CONF=Learner-Mac
+CND_CONF=Learner-Linux
 CND_DISTDIR=dist
 CND_BUILDDIR=build
 CND_DLIB_EXT=dylib
 NBTMPDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}/tmp-packaging
 TMPDIRNAME=tmp-packaging
-OUTPUT_PATH=${CND_DISTDIR}/Learner/${CND_PLATFORM}/bn_learning
+OUTPUT_PATH=${CND_DISTDIR}/Learner/GNU-Linux/bn_learning
 OUTPUT_BASENAME=bn_learning
 PACKAGE_TOP_DIR=cli/
 

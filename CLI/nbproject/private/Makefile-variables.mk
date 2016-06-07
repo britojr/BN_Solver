@@ -4,3 +4,4 @@
 # NOCDDL
 #
 # Learner-Mac configuration
+# Learner-Linux configuration

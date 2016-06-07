@@ -110,8 +110,6 @@
         <itemPath>permutation_set.cpp</itemPath>
       </logicalFolder>
       <itemPath>main_learner.cpp</itemPath>
-      <itemPath>main_scores.cpp</itemPath>
-      <itemPath>main_structure.cpp</itemPath>
     </logicalFolder>
     <logicalFolder name="TestFiles"
                    displayName="Test Files"
@@ -150,7 +148,7 @@
           <commandLine>-std=c++0x -march=native</commandLine>
         </ccTool>
         <linkerTool>
-          <output>${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/bn_learning</output>
+          <output>${CND_DISTDIR}/Learner/${CND_PLATFORM}/bn_learning</output>
           <linkerAddLib>
             <pElem>/usr/local/lib</pElem>
           </linkerAddLib>
@@ -320,14 +318,14 @@
           <stripSymbols>true</stripSymbols>
           <commandlineTool>g++</commandlineTool>
           <incDir>
-            <pElem>/usr/local/include</pElem>
+            <pElem>/opt/apps/programas/gnu/old_boost.1.58.0/include</pElem>
           </incDir>
           <commandLine>-std=c++0x -march=native</commandLine>
         </ccTool>
         <linkerTool>
-          <output>${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/bn_learning</output>
+          <output>${CND_DISTDIR}/Learner/GNU-Linux/bn_learning</output>
           <linkerAddLib>
-            <pElem>/usr/local/lib</pElem>
+            <pElem>/opt/apps/programas/gnu/old_boost.1.58.0/lib</pElem>
           </linkerAddLib>
           <linkerLibItems>
             <linkerOptionItem>-lboost_system</linkerOptionItem>
@@ -404,10 +402,6 @@
       <item path="log_likelihood_calculator.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="main_learner.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="main_scores.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="main_structure.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="node.h" ex="false" tool="3" flavor2="0">
       </item>
