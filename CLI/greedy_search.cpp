@@ -27,7 +27,7 @@ structureoptimizer::GreedySearch::~GreedySearch(){
 	// Do nothing
 }
 
-std::vector<structureoptimizer::Node*> structureoptimizer::GreedySearch::search( int numSolutions ){
+datastructures::BNStructure structureoptimizer::GreedySearch::search( int numSolutions ){
 	structureoptimizer::PermutationSet best ;
 	for(int k = 0 ; k < numSolutions ; k++){
 		structureoptimizer::PermutationSet current = initializer->generate() ;
@@ -48,7 +48,7 @@ std::vector<structureoptimizer::Node*> structureoptimizer::GreedySearch::search(
 		if( best.size() == 0 || current.isBetter( best ) )
 			best = current ;
 	}
-	return reconstructSolution( best ) ;
+	return datastructures::BNStructure( best , bestScoreCalculators ) ;
 }
 
 structureoptimizer::PermutationSet structureoptimizer::GreedySearch::findBestNeighbor( structureoptimizer::PermutationSet set ){
@@ -73,7 +73,7 @@ structureoptimizer::PermutationSet structureoptimizer::GreedySearch::disturbSet(
 	float score = 0.0 ;
 	for(int i = 0 ; i < variableCount ; i++){
 		varset options = newSet.getVarset( i ) ;
-		score += bestScoreCalculators[ i ]->getScore( options ) ;
+		score += bestScoreCalculators[ set[ i ] ]->getScore( options ) ;
 	}
 	newSet.setScore( score ) ;
 	return newSet ;
@@ -86,39 +86,19 @@ structureoptimizer::PermutationSet structureoptimizer::GreedySearch::doSwap( str
 
 	// Remove previous scores
 	varset previousOptions1 = set.getVarset( index ) ;
-	newScore -= bestScoreCalculators[ index ]->getScore( previousOptions1 ) ;
+	newScore -= bestScoreCalculators[ set[ index ] ]->getScore( previousOptions1 ) ;
 
 	varset previousOptions2 = set.getVarset( index + 1 ) ;
-	newScore -= bestScoreCalculators[ index + 1 ]->getScore( previousOptions2 ) ;
+	newScore -= bestScoreCalculators[ set[ index + 1 ] ]->getScore( previousOptions2 ) ;
 
 	// Add current scores
 	varset currentOptions1 = newSet.getVarset( index ) ;
-	newScore += bestScoreCalculators[ index ]->getScore( currentOptions1 ) ;
+	newScore += bestScoreCalculators[ set[ index ] ]->getScore( currentOptions1 ) ;
 
 	varset currentOptions2 = newSet.getVarset( index + 1 ) ;
-	newScore += bestScoreCalculators[ index + 1 ]->getScore( currentOptions2 ) ;
+	newScore += bestScoreCalculators[ set[ index + 1 ] ]->getScore( currentOptions2 ) ;
 
 	newSet.setScore( newScore ) ;
 
 	return newSet ;
-}
-
-std::vector<structureoptimizer::Node*> structureoptimizer::GreedySearch::reconstructSolution( structureoptimizer::PermutationSet set ){
-	std::vector<Node*> nodes ;
-	for(int i = 0 ; i < set.size() ; i++){
-		Node* var = new Node( i , set.size() ) ;
-		nodes.push_back( var ) ;
-	}
-	for(int i = 0 ; i < variableCount ; i++){
-		varset options = set.getVarset( i ) ;
-		float score = bestScoreCalculators[ i ]->getScore( options ) ; 
-		nodes[ i ]->setScore( score ) ;
-		varset parents = bestScoreCalculators[ i ]->getParents() ; 
-		nodes[ i ]->setParents( parents ) ;
-		for(int j = 0 ; j < variableCount ; j++){
-			if( !VARSET_GET( parents , j ) ) continue ;
-			nodes[ j ]->addChild( i ) ;
-		}
-	}
-	return nodes ;
 }

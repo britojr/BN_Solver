@@ -31,7 +31,7 @@ DEFAULTCONF=Learner-Mac
 CONF=${DEFAULTCONF}
 
 # All Configurations
-ALLCONFS=Learner-Mac Release-Linux ScoreCalculator-Mac StructureOptimizer-Mac 
+ALLCONFS=Learner-Mac Learner-Linux 
 
 
 # build

@@ -12,16 +12,15 @@
 
 #include "best_score_calculator.h"
 #include "initializer.h"
-#include "node.h"
+#include "bn_structure.h"
 
 namespace structureoptimizer {
 	class StructureOptimizer {
 		public :
-			virtual std::vector<structureoptimizer::Node*> search( int numSolutions ) = 0 ;
+			virtual datastructures::BNStructure search( int numSolutions ) = 0 ;
 
 			initializers::Initializer* initializer ;
 			std::vector<bestscorecalculators::BestScoreCalculator*> bestScoreCalculators ;
-			int maxIterations ;
 	} ;
 }
 

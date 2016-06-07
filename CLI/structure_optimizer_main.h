@@ -64,7 +64,7 @@ void structureLearning(){
 
 	printf( "Creating the order-based structure learning algorithm\n" ) ;
 	structureoptimizer::StructureOptimizer* algorithm = structureoptimizer::create( structureOptimizerType , initializer , bestScCalc , maxIterations ) ;
-	std::vector<structureoptimizer::Node*> solution = algorithm->search( numSolutions ) ;
+	datastructures::BNStructure solution = algorithm->search( numSolutions ) ;
 }
 
 #endif	/* STRUCTURE_OPTIMIZER_H */

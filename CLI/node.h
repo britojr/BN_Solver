@@ -18,6 +18,7 @@ namespace structureoptimizer {
 			Node() ;
 			Node( int variable , int size ){
 				this->variableIndex = variable ;
+				this->score = 0. ;
 				
 				VARSET_NEW( parentsAux , size ) ;
 				this->parents = parentsAux ;

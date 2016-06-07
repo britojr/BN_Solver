@@ -9,25 +9,24 @@
 #define	ACYCLIC_SELECTION_H
 
 #include "structure_optimizer.h"
+#include "bn_structure.h"
 
 namespace structureoptimizer {
 	class AcyclicSelection : public structureoptimizer::StructureOptimizer {
 		public :
 			AcyclicSelection() ;
 			AcyclicSelection( initializers::Initializer* initializer ,
-						std::vector<bestscorecalculators::BestScoreCalculator*> bestScoreCalculator ,
-						int maxIterations ) ;
+						std::vector<bestscorecalculators::BestScoreCalculator*> bestScoreCalculator ) ;
 			~AcyclicSelection() ;
-		
-			std::vector<structureoptimizer::Node*> search( int numSolutions ) ;
-		
+
+			datastructures::BNStructure search( int numSolutions ) ;
+
 		private :
 //			structureoptimizer::PermutationSet findBestNeighbor( structureoptimizer::PermutationSet set ) ;
 //			structureoptimizer::PermutationSet disturbSet( structureoptimizer::PermutationSet set , int numSwaps = 5 ) ;
 //			structureoptimizer::PermutationSet doSwap( structureoptimizer::PermutationSet set , int index ) ;
 //			std::vector<structureoptimizer::Node*> reconstructSolution( structureoptimizer::PermutationSet set ) ;
-			
-			int numIterations ;
+
 			int variableCount ;
 	} ;
 }

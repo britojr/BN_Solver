@@ -20,15 +20,15 @@ namespace structureoptimizer {
 						int maxIterations ) ;
 			~GreedySearch() ;
 		
-			std::vector<structureoptimizer::Node*> search( int numSolutions ) ;
+			datastructures::BNStructure search( int numSolutions ) ;
 		
 		private :
 			structureoptimizer::PermutationSet findBestNeighbor( structureoptimizer::PermutationSet set ) ;
-			structureoptimizer::PermutationSet disturbSet( structureoptimizer::PermutationSet set , int numSwaps = 5 ) ;
+			structureoptimizer::PermutationSet disturbSet( structureoptimizer::PermutationSet set , int numSwaps = 3 ) ;
 			structureoptimizer::PermutationSet doSwap( structureoptimizer::PermutationSet set , int index ) ;
-			std::vector<structureoptimizer::Node*> reconstructSolution( structureoptimizer::PermutationSet set ) ;
 			
 			int numIterations ;
+			int maxIterations ;
 			int variableCount ;
 	} ;
 }

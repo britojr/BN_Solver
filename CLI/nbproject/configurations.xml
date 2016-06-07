@@ -16,6 +16,7 @@
       </logicalFolder>
       <logicalFolder name="f1" displayName="datastructures" projectFiles="true">
         <itemPath>bayesian_network.h</itemPath>
+        <itemPath>bn_structure.h</itemPath>
         <itemPath>dynamic_bitset_hash.h</itemPath>
         <itemPath>record.h</itemPath>
         <itemPath>record_file.h</itemPath>
@@ -81,6 +82,7 @@
       </logicalFolder>
       <logicalFolder name="f1" displayName="datastructures" projectFiles="true">
         <itemPath>bayesian_network.cpp</itemPath>
+        <itemPath>bn_structure.cpp</itemPath>
       </logicalFolder>
       <logicalFolder name="f15" displayName="initializers" projectFiles="true">
         <itemPath>dfs_initializer.cpp</itemPath>
@@ -186,6 +188,10 @@
       <item path="bic_scoring_function.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="bic_scoring_function.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="bn_structure.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="bn_structure.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="constraints.h" ex="false" tool="3" flavor2="0">
       </item>
@@ -296,7 +302,7 @@
       <item path="weighted_path_initializer.h" ex="false" tool="3" flavor2="0">
       </item>
     </conf>
-    <conf name="Release-Linux" type="1">
+    <conf name="Learner-Linux" type="1">
       <toolsSet>
         <compilerSet>default</compilerSet>
         <dependencyChecking>true</dependencyChecking>
@@ -356,6 +362,10 @@
       <item path="bic_scoring_function.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="bic_scoring_function.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="bn_structure.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="bn_structure.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="constraints.h" ex="false" tool="3" flavor2="0">
       </item>
@@ -466,356 +476,6 @@
       <item path="vary_node.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="weighted_path_initializer.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="weighted_path_initializer.h" ex="false" tool="3" flavor2="0">
-      </item>
-    </conf>
-    <conf name="ScoreCalculator-Mac" type="1">
-      <toolsSet>
-        <compilerSet>default</compilerSet>
-        <dependencyChecking>true</dependencyChecking>
-        <rebuildPropChanged>false</rebuildPropChanged>
-      </toolsSet>
-      <compileType>
-        <cTool>
-          <incDir>
-            <pElem>/usr/local/include</pElem>
-          </incDir>
-          <commandLine>-march=native</commandLine>
-        </cTool>
-        <ccTool>
-          <developmentMode>6</developmentMode>
-          <stripSymbols>true</stripSymbols>
-          <commandlineTool>g++</commandlineTool>
-          <incDir>
-            <pElem>/usr/local/include</pElem>
-          </incDir>
-          <commandLine>-std=c++0x -march=native</commandLine>
-        </ccTool>
-        <linkerTool>
-          <output>${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/bn_scorer</output>
-          <linkerAddLib>
-            <pElem>/usr/local/lib</pElem>
-          </linkerAddLib>
-          <linkerLibItems>
-            <linkerOptionItem>-lboost_system</linkerOptionItem>
-            <linkerOptionItem>-lboost_thread-mt</linkerOptionItem>
-            <linkerOptionItem>-lboost_chrono</linkerOptionItem>
-            <linkerOptionItem>-lboost_timer</linkerOptionItem>
-            <linkerOptionItem>-lboost_program_options</linkerOptionItem>
-            <linkerOptionItem>-lboost_container</linkerOptionItem>
-            <linkerOptionItem>-lboost_serialization</linkerOptionItem>
-          </linkerLibItems>
-        </linkerTool>
-      </compileType>
-      <item path="acyclic_selection.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="acyclic_selection.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="ad_node.cpp" ex="false" tool="1" flavor2="9">
-      </item>
-      <item path="ad_node.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="ad_tree.cpp" ex="false" tool="1" flavor2="9">
-      </item>
-      <item path="ad_tree.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="bayesian_network.cpp" ex="false" tool="1" flavor2="9">
-      </item>
-      <item path="bayesian_network.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="best_score_calculator.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="best_score_creator.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="bic_scoring_function.cpp" ex="false" tool="1" flavor2="9">
-      </item>
-      <item path="bic_scoring_function.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="constraints.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="contingency_table_node.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="dfs_initializer.cpp" ex="true" tool="1" flavor2="9">
-      </item>
-      <item path="dfs_initializer.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="dynamic_bitset_hash.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="fas_initializer.cpp" ex="true" tool="1" flavor2="9">
-      </item>
-      <item path="fas_initializer.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="files.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="greedy_search.cpp" ex="true" tool="1" flavor2="9">
-      </item>
-      <item path="greedy_search.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="greedy_selection.cpp" ex="false" tool="1" flavor2="9">
-      </item>
-      <item path="greedy_selection.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="independence_selection.cpp" ex="false" tool="1" flavor2="9">
-      </item>
-      <item path="independence_selection.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="initializer.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="initializer_creator.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="log_likelihood_calculator.cpp" ex="false" tool="1" flavor2="9">
-      </item>
-      <item path="log_likelihood_calculator.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="main_learner.cpp" ex="true" tool="1" flavor2="9">
-      </item>
-      <item path="main_scores.cpp" ex="false" tool="1" flavor2="9">
-      </item>
-      <item path="main_structure.cpp" ex="true" tool="1" flavor2="9">
-      </item>
-      <item path="node.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="parent_set_selection.cpp" ex="false" tool="1" flavor2="9">
-      </item>
-      <item path="parent_set_selection.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="parent_set_selection_creator.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="parent_set_selection_main.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="permutation_set.cpp" ex="true" tool="1" flavor2="9">
-      </item>
-      <item path="permutation_set.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="random_initializer.cpp" ex="true" tool="1" flavor2="9">
-      </item>
-      <item path="random_initializer.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="record.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="record_file.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="score_cache.cpp" ex="false" tool="1" flavor2="9">
-      </item>
-      <item path="score_cache.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="scoring_function.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="scoring_function_creator.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="sequential_selection.cpp" ex="false" tool="1" flavor2="9">
-      </item>
-      <item path="sequential_selection.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="sparse_parent_bitwise.cpp" ex="true" tool="1" flavor2="9">
-      </item>
-      <item path="sparse_parent_bitwise.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="sparse_parent_list.cpp" ex="true" tool="1" flavor2="9">
-      </item>
-      <item path="sparse_parent_list.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="sparse_parent_tree.cpp" ex="true" tool="1" flavor2="9">
-      </item>
-      <item path="sparse_parent_tree.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="sparse_tree_node.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="structure_optimizer.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="structure_optimizer_creator.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="structure_optimizer_main.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="typedefs.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="utils.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="utils_main.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="variable.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="vary_node.cpp" ex="false" tool="1" flavor2="9">
-      </item>
-      <item path="vary_node.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="weighted_path_initializer.cpp" ex="true" tool="1" flavor2="9">
-      </item>
-      <item path="weighted_path_initializer.h" ex="false" tool="3" flavor2="0">
-      </item>
-    </conf>
-    <conf name="StructureOptimizer-Mac" type="1">
-      <toolsSet>
-        <compilerSet>default</compilerSet>
-        <dependencyChecking>true</dependencyChecking>
-        <rebuildPropChanged>false</rebuildPropChanged>
-      </toolsSet>
-      <compileType>
-        <cTool>
-          <incDir>
-            <pElem>/usr/local/include</pElem>
-          </incDir>
-          <commandLine>-march=native</commandLine>
-        </cTool>
-        <ccTool>
-          <developmentMode>6</developmentMode>
-          <stripSymbols>true</stripSymbols>
-          <commandlineTool>g++</commandlineTool>
-          <incDir>
-            <pElem>/usr/local/include</pElem>
-          </incDir>
-          <commandLine>-std=c++0x -march=native</commandLine>
-        </ccTool>
-        <linkerTool>
-          <output>${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/bn_structure</output>
-          <linkerAddLib>
-            <pElem>/usr/local/lib</pElem>
-          </linkerAddLib>
-          <linkerLibItems>
-            <linkerOptionItem>-lboost_system</linkerOptionItem>
-            <linkerOptionItem>-lboost_thread-mt</linkerOptionItem>
-            <linkerOptionItem>-lboost_chrono</linkerOptionItem>
-            <linkerOptionItem>-lboost_timer</linkerOptionItem>
-            <linkerOptionItem>-lboost_program_options</linkerOptionItem>
-            <linkerOptionItem>-lboost_container</linkerOptionItem>
-            <linkerOptionItem>-lboost_serialization</linkerOptionItem>
-          </linkerLibItems>
-        </linkerTool>
-      </compileType>
-      <item path="acyclic_selection.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="acyclic_selection.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="ad_node.cpp" ex="true" tool="1" flavor2="9">
-      </item>
-      <item path="ad_node.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="ad_tree.cpp" ex="true" tool="1" flavor2="9">
-      </item>
-      <item path="ad_tree.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="bayesian_network.cpp" ex="false" tool="1" flavor2="9">
-      </item>
-      <item path="bayesian_network.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="best_score_calculator.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="best_score_creator.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="bic_scoring_function.cpp" ex="true" tool="1" flavor2="9">
-      </item>
-      <item path="bic_scoring_function.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="constraints.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="contingency_table_node.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="dfs_initializer.cpp" ex="false" tool="1" flavor2="9">
-      </item>
-      <item path="dfs_initializer.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="dynamic_bitset_hash.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="fas_initializer.cpp" ex="false" tool="1" flavor2="9">
-      </item>
-      <item path="fas_initializer.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="files.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="greedy_search.cpp" ex="false" tool="1" flavor2="9">
-      </item>
-      <item path="greedy_search.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="greedy_selection.cpp" ex="true" tool="1" flavor2="9">
-      </item>
-      <item path="greedy_selection.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="independence_selection.cpp" ex="true" tool="1" flavor2="9">
-      </item>
-      <item path="independence_selection.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="initializer.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="initializer_creator.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="log_likelihood_calculator.cpp" ex="true" tool="1" flavor2="9">
-      </item>
-      <item path="log_likelihood_calculator.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="main_learner.cpp" ex="true" tool="1" flavor2="9">
-      </item>
-      <item path="main_scores.cpp" ex="true" tool="1" flavor2="9">
-      </item>
-      <item path="main_structure.cpp" ex="false" tool="1" flavor2="9">
-      </item>
-      <item path="node.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="parent_set_selection.cpp" ex="true" tool="1" flavor2="9">
-      </item>
-      <item path="parent_set_selection.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="parent_set_selection_creator.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="parent_set_selection_main.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="permutation_set.cpp" ex="false" tool="1" flavor2="9">
-      </item>
-      <item path="permutation_set.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="random_initializer.cpp" ex="false" tool="1" flavor2="9">
-      </item>
-      <item path="random_initializer.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="record.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="record_file.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="score_cache.cpp" ex="false" tool="1" flavor2="9">
-      </item>
-      <item path="score_cache.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="scoring_function.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="scoring_function_creator.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="sequential_selection.cpp" ex="true" tool="1" flavor2="9">
-      </item>
-      <item path="sequential_selection.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="sparse_parent_bitwise.cpp" ex="false" tool="1" flavor2="9">
-      </item>
-      <item path="sparse_parent_bitwise.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="sparse_parent_list.cpp" ex="false" tool="1" flavor2="9">
-      </item>
-      <item path="sparse_parent_list.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="sparse_parent_tree.cpp" ex="false" tool="1" flavor2="9">
-      </item>
-      <item path="sparse_parent_tree.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="sparse_tree_node.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="structure_optimizer.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="structure_optimizer_creator.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="structure_optimizer_main.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="typedefs.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="utils.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="utils_main.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="variable.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="vary_node.cpp" ex="true" tool="1" flavor2="9">
-      </item>
-      <item path="vary_node.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="weighted_path_initializer.cpp" ex="false" tool="1" flavor2="9">
       </item>
       <item path="weighted_path_initializer.h" ex="false" tool="3" flavor2="0">
       </item>
