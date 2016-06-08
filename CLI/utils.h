@@ -43,6 +43,12 @@ inline int random_generator( int n , boost::mt19937 &gen ){
 	return dist( gen ) ;
 }
 
+#include <boost/random/uniform_01.hpp>
+inline float random_generator( boost::mt19937 &gen ){
+	boost::random::uniform_01<> dist ;
+	return dist( gen ) ;
+}
+
 template<typename T>
 std::vector<T> shuffle( std::vector<T> v , boost::mt19937 &gen ){
 	int n = v.size() ;

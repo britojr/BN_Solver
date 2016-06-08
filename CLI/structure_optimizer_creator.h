@@ -12,6 +12,7 @@
 #include "best_score_calculator.h"
 #include "greedy_search.h"
 #include "acyclic_selection.h"
+#include "simulated_annealing.h"
 
 namespace structureoptimizer {
 
@@ -25,6 +26,8 @@ namespace structureoptimizer {
 			sto = new structureoptimizer::GreedySearch( initializer , bestScoreCalculators , maxIterations ) ;
 		}else if( type == "acyclic_selection" ){
 			sto = new structureoptimizer::AcyclicSelection( initializer , bestScoreCalculators ) ;
+		}else if( type == "simulated_annealing" ){
+			sto = new structureoptimizer::SimulatedAnnealing( initializer , bestScoreCalculators , maxIterations ) ;
 		}else{
 			throw std::runtime_error( "Invalid SO selection: '" + type + "'.  Valid options are 'greedy_search' and 'acyclic_selection'." ) ;
 		}

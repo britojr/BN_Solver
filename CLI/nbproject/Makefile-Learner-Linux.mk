@@ -53,6 +53,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/random_initializer.o \
 	${OBJECTDIR}/score_cache.o \
 	${OBJECTDIR}/sequential_selection.o \
+	${OBJECTDIR}/simulated_annealing.o \
 	${OBJECTDIR}/sparse_parent_bitwise.o \
 	${OBJECTDIR}/sparse_parent_list.o \
 	${OBJECTDIR}/sparse_parent_tree.o \
@@ -173,6 +174,11 @@ ${OBJECTDIR}/sequential_selection.o: sequential_selection.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -O3 -s -I/opt/apps/programas/gnu/old_boost.1.58.0/include -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/sequential_selection.o sequential_selection.cpp
+
+${OBJECTDIR}/simulated_annealing.o: simulated_annealing.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O3 -s -I/opt/apps/programas/gnu/old_boost.1.58.0/include -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/simulated_annealing.o simulated_annealing.cpp
 
 ${OBJECTDIR}/sparse_parent_bitwise.o: sparse_parent_bitwise.cpp 
 	${MKDIR} -p ${OBJECTDIR}

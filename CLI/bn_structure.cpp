@@ -47,7 +47,7 @@ float datastructures::BNStructure::getScore(){
 }
 
 bool datastructures::BNStructure::isBetter( datastructures::BNStructure other ){
-	return compare( score , other.getScore() ) > 0 ;
+	return compare( other.getScore() , score ) > 0 ;
 }
 
 int datastructures::BNStructure::size(){
