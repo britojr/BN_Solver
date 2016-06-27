@@ -45,6 +45,9 @@ namespace scoring {
 			Constraints(int variableCount) {
 				this->variableCount = variableCount;
 
+				std::vector<int> all ;
+				for(int i = 0 ; i < variableCount ; i++)
+					all.push_back( i ) ;
 				for (int i = 0; i < variableCount; i++) {
 					std::vector<varset> forbidden;
 					std::vector<varset> required;
@@ -54,6 +57,7 @@ namespace scoring {
 					varConstraints.push_back(required);
 
 					constraints.push_back(varConstraints);
+					options.push_back( all ) ;
 				}
 			}
 
@@ -68,6 +72,11 @@ namespace scoring {
 			void addConstraint(int variable, varset requiredParents, varset forbiddenParents) {
 				constraints[variable][0].push_back(requiredParents);
 				constraints[variable][1].push_back(forbiddenParents);
+				for(int i = 0 ; i < variableCount ; i++){
+					options[ variable ].clear() ;
+					if( !VARSET_GET( forbiddenParents , i ) )
+						options[ variable ].push_back( i ) ;
+				}
 
 #ifdef DEBUG
 				printf("Added constraint. Variable: %d. RequriedParents: %s. Forbidden parents: %s.\n", variable, varsetToString(requiredParents).c_str(), varsetToString(forbiddenParents).c_str());
@@ -110,6 +119,10 @@ namespace scoring {
 				}
 				return false;
 			}
+			
+			std::vector<int> getPossibleParents( int variable ){
+				return options[ variable ] ;
+			}
 
 
 		private:
@@ -118,6 +131,8 @@ namespace scoring {
 			 * The number of variables in the data set.
 			 */
 			int variableCount;
+			
+			std::vector<std::vector<int>> options ;
 
 			/**
 			 * The actual constraints. See the class description for the meaning of each
@@ -160,12 +175,11 @@ namespace scoring {
 				it++;
 
 				while (it != tokenizer.end()) {
-
-					if (*it == ")") {
+					if (*it == ")") { // End constraint
 						constraints->addConstraint(variable->getIndex(), required, forbidden);
 						VARSET_CLEAR_ALL(required);
 						VARSET_CLEAR_ALL(forbidden);
-					} else if ( (*it)[0] == '!') {
+					} else if ( (*it)[0] == '!') { // Forbidden parent
 						std::string variableName = (*it).substr(1);
 						datastructures::Variable *parent = network.get(variableName);
 						if (parent == NULL) {
@@ -173,11 +187,11 @@ namespace scoring {
 						}
 						VARSET_SET(forbidden, parent->getIndex());
 
-					} else if (*it == "(") {
+					} else if (*it == "(") { // Start constraint
 						// skip this token
 						// just do nothing
 					}
-					else {
+					else { // Required parent
 						datastructures::Variable *parent = network.get(*it);
 						if (parent == NULL) {
 							throw std::runtime_error("Error parsing constraint file.  Expecting a variable name, but found: '" + *it + "'.");

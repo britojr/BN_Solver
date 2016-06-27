@@ -147,7 +147,7 @@
           <incDir>
             <pElem>/usr/local/include</pElem>
           </incDir>
-          <commandLine>-std=c++0x -march=native</commandLine>
+          <commandLine>-std=c++0x -march=native -DMACOSX</commandLine>
         </ccTool>
         <linkerTool>
           <output>${CND_DISTDIR}/Learner/${CND_PLATFORM}/bn_learning</output>
@@ -155,13 +155,16 @@
             <pElem>/usr/local/lib</pElem>
           </linkerAddLib>
           <linkerLibItems>
-            <linkerOptionItem>-lboost_system</linkerOptionItem>
+            <linkerOptionItem>-lboost_system-mt</linkerOptionItem>
             <linkerOptionItem>-lboost_thread-mt</linkerOptionItem>
-            <linkerOptionItem>-lboost_chrono</linkerOptionItem>
-            <linkerOptionItem>-lboost_timer</linkerOptionItem>
-            <linkerOptionItem>-lboost_program_options</linkerOptionItem>
-            <linkerOptionItem>-lboost_container</linkerOptionItem>
-            <linkerOptionItem>-lboost_serialization</linkerOptionItem>
+            <linkerOptionItem>-lboost_chrono-mt</linkerOptionItem>
+            <linkerOptionItem>-lboost_timer-mt</linkerOptionItem>
+            <linkerOptionItem>-lboost_program_options-mt</linkerOptionItem>
+            <linkerOptionItem>-lboost_container-mt</linkerOptionItem>
+            <linkerOptionItem>-lboost_serialization-mt</linkerOptionItem>
+            <linkerOptionItem>-lgmpxx</linkerOptionItem>
+            <linkerOptionItem>-lgmp</linkerOptionItem>
+            <linkerOptionItem>-ldai</linkerOptionItem>
           </linkerLibItems>
         </linkerTool>
       </compileType>

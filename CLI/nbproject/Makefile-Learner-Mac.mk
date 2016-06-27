@@ -65,8 +65,8 @@ OBJECTFILES= \
 CFLAGS=-march=native
 
 # CC Compiler Flags
-CCFLAGS=-std=c++0x -march=native
-CXXFLAGS=-std=c++0x -march=native
+CCFLAGS=-std=c++0x -march=native -DMACOSX
+CXXFLAGS=-std=c++0x -march=native -DMACOSX
 
 # Fortran Compiler Flags
 FFLAGS=
@@ -75,7 +75,7 @@ FFLAGS=
 ASFLAGS=
 
 # Link Libraries and Options
-LDLIBSOPTIONS=-L/usr/local/lib -lboost_system -lboost_thread-mt -lboost_chrono -lboost_timer -lboost_program_options -lboost_container -lboost_serialization
+LDLIBSOPTIONS=-L/usr/local/lib -lboost_system-mt -lboost_thread-mt -lboost_chrono-mt -lboost_timer-mt -lboost_program_options-mt -lboost_container-mt -lboost_serialization-mt -lgmpxx -lgmp -ldai
 
 # Build Targets
 .build-conf: ${BUILD_SUBPROJECTS}

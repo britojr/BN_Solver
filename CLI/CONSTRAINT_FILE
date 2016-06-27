@@ -1,0 +1,4 @@
+# Forbidden parents start with ! followed by its corresponding labels
+# Required parents only need their labels
+A,( !B,!C,!D,!E,!F,!G,!H,!I,!J,!K,!L )
+B,( !A,!D,!P,!M,!E,!H )

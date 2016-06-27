@@ -5,8 +5,8 @@
  * Created on 28 de mayo de 2016, 1:23
  */
 
-#ifndef SCORER_H
-#define	SCORER_H
+#ifndef PSELECTION_H
+#define	PSELECTION_H
 
 #include <cstdlib>
 #include <ctime>
@@ -83,6 +83,8 @@ std::string selectionTypeShortCut = "parentSelectionType,q" ;
 
 /* File specifying constraints on the scores */
 std::string constraintsFile ;
+std::string constraintsFileString = "Constraints for parent's variables" ;
+std::string constraintsFileShortCut = "constraintsfile" ;
 
 /* The scoring function to use */
 std::string sfDefault = "BIC" ;
@@ -158,7 +160,7 @@ void calculateScore(){
 	adTree->initialize( network , recordFile ) ;
 	adTree->createTree() ;
 
-	constraints = NULL ;
+	constraints = new scoring::Constraints( network.size() ) ;
 	if( constraintsFile.length() > 0 )
 		constraints = scoring::parseConstraints( constraintsFile , network ) ;
 
@@ -186,4 +188,4 @@ void calculateScore(){
 	concatenateScoreFiles( scoresFile , metadata ) ;
 }
 
-#endif	/* SCORER_H */
+#endif	/* PSELECTION_H */

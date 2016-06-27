@@ -57,6 +57,9 @@ void parentselection::IndependenceSelection::calculateScores( int variable , Flo
 }
 
 void parentselection::IndependenceSelection::calculateScores_internal( int variable , FloatMap &pruned , FloatMap& cache ){
+	// Get possible parents for variable based on constraints
+	std::vector<int> options = constraints->getPossibleParents( variable ) ;
+	
 	while( !open.empty() && !outOfTime ){
 		// Get best approx score
 		approxStruct best = open.top() ; open.pop() ;
@@ -78,16 +81,18 @@ void parentselection::IndependenceSelection::calculateScores_internal( int varia
 		// Expand parent set
 		VARSET_NEW( superset , variableCount ) ;
 		superset = parents ;
-		for(int i = 0 ; i < variableCount && !outOfTime ; i++){
-			if( i == variable ) continue ;
-			VARSET_SET( superset , i ) ;
+		for(int i = 0 ; i < options.size() && !outOfTime ; i++){
+			if( options[ i ] == variable ) continue ;
+			VARSET_SET( superset , options[ i ] ) ;
 			// Expand only if it is not already visited/calculated
-			if( !cache.count( superset ) && !openCache.count( superset ) ){
-				approxStruct approximation = scoringFunction->approximateScore( variable , superset , pruned , cache ) ;
-				open.push( approximation ) ;
-				openCache[ superset ] = 0.0 ;
+			if( constraints->satisfiesConstraints( variable , parents ) ){
+				if( !cache.count( superset ) && !openCache.count( superset ) ){
+					approxStruct approximation = scoringFunction->approximateScore( variable , superset , pruned , cache ) ;
+					open.push( approximation ) ;
+					openCache[ superset ] = 0.0 ;
+				}
 			}
-			VARSET_CLEAR( superset , i ) ;
+			VARSET_CLEAR( superset , options[ i ] ) ;
 		}
 	}
 	openCache.clear() ;
@@ -105,18 +110,23 @@ void parentselection::IndependenceSelection::initialize( int variable , FloatMap
 	if( score < 1 ){
 		cache[ empty ] = score ;
 	}
+	
+	// Get possible parents based on constraints
+	std::vector<int> options = constraints->getPossibleParents( variable ) ;
 
 	// Add parent set of size 1
 	int prunedCount = 0 ;
-	for(int i = 0 ; i < variableCount && !outOfTime ; i++){
-		if( i == variable ) continue ;
+	for(int i = 0 ; i < options.size() && !outOfTime ; i++){
+		if( options[ i ] == variable ) continue ;
 		VARSET_NEW( parents , variableCount ) ;
-		VARSET_SET( parents , i ) ;
-		float score = scoringFunction->calculateScore( variable , parents , pruned , cache ) ;
-		if( compare( score ) < 0 ){
-			cache[ parents ] = score ;
-		}else{
-			prunedCount++ ;
+		VARSET_SET( parents , options[ i ] ) ;
+		if( constraints->satisfiesConstraints( variable , parents ) ){
+			float score = scoringFunction->calculateScore( variable , parents , pruned , cache ) ;
+			if( compare( score ) < 0 ){
+				cache[ parents ] = score ;
+			}else{
+				prunedCount++ ;
+			}
 		}
 	}
 
@@ -126,20 +136,22 @@ void parentselection::IndependenceSelection::initialize( int variable , FloatMap
 	std::priority_queue<approxStruct,std::vector<approxStruct>,compareIndependence> aux ;
 	open = aux ;
 	openCache.clear() ;
-	for(int i = 0 ; i < variableCount - 1 && !outOfTime ; i++){
-		if( i == variable ) continue ;
+	for(int i = 0 ; i < options.size() - 1 && !outOfTime ; i++){
+		if( options[ i ] == variable ) continue ;
 		VARSET_NEW( parents , variableCount ) ;
-		VARSET_SET( parents , i ) ;
-		for(int j = i+1 ; j < variableCount && !outOfTime ; j++){
-			if( j == variable ) continue ;
-			VARSET_SET( parents , j ) ;
-			approxStruct approximation = scoringFunction->approximateScore( variable , parents , pruned , cache ) ;
-			if( compare( approximation.first ) < 0 ){
-				open.push( approximation ) ;
-				openCache[ parents ] = 0.0 ;
+		VARSET_SET( parents , options[ i ] ) ;
+		for(int j = i+1 ; j < options.size() && !outOfTime ; j++){
+			if( options[ j ] == variable ) continue ;
+			VARSET_SET( parents , options[ j ] ) ;
+			if( constraints->satisfiesConstraints( variable , parents ) ){
+				approxStruct approximation = scoringFunction->approximateScore( variable , parents , pruned , cache ) ;
+				if( compare( approximation.first ) < 0 ){
+					open.push( approximation ) ;
+					openCache[ parents ] = 0.0 ;
+				}
 			}
-			VARSET_CLEAR( parents , j ) ;
+			VARSET_CLEAR( parents , options[ j ] ) ;
 		}
-		VARSET_CLEAR( parents , i ) ;
+		VARSET_CLEAR( parents , options[ i ] ) ;
 	}
 }
