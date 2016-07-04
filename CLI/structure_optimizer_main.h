@@ -49,7 +49,7 @@ void structureLearning(){
 	printf( "========== STEP: STRUCTURE OPTIMIZATION ========== \n" ) ;
 	printf( "Best score calculator: '%s'\n" , bestScoreCalculator.c_str() ) ;
 	printf( "Initialization type: '%s'\n" , initializerType.c_str() ) ;
-	printf( "Structure learning: '%s'\n" , structureOptimizerType.c_str() ) ;
+	printf( "Learning algorithm: '%s'\n" , structureOptimizerType.c_str() ) ;
 
 	printf( "Reading score cache.\n" ) ;
 	scoring::ScoreCache cache ;
@@ -66,6 +66,20 @@ void structureLearning(){
 	printf( "Creating the order-based structure learning algorithm\n" ) ;
 	structureoptimizer::StructureOptimizer* algorithm = structureoptimizer::create( structureOptimizerType , initializer , bestScCalc , maxIterations ) ;
 	datastructures::BNStructure solution = algorithm->search( numSolutions ) ;
+	printSolution( solution ) ;
+}
+
+void printSolution( datastructures::BNStructure solution ){
+	for(int i = 0 ; i < solution.size() ; i++){
+		varset vs = solution[ i ]->getParents() ;
+		printf( "{" ) ;
+		for( int j = 0 ; j < vs.size() ; j++){
+			if( i == j && VARSET_GET( vs , j ) ) printf(" #%d# " , j ) ;
+			printf("%d" , VARSET_GET( vs , j ) ) ;
+		}
+		printf( "}" ) ;
+		printf("\n" ) ;
+	}
 }
 
 #endif	/* STRUCTURE_OPTIMIZER_H */

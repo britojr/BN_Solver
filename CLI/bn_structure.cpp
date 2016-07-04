@@ -19,7 +19,7 @@ datastructures::BNStructure::BNStructure( int size ){
 		nodes.push_back( var ) ;
 	}
 	this->variableCount = size ;
-	this->score = 0. ; // TODO: Revisar
+	this->score = 0. ;
 }
 
 datastructures::BNStructure::BNStructure( structureoptimizer::PermutationSet order ,
@@ -32,9 +32,10 @@ datastructures::BNStructure::BNStructure( structureoptimizer::PermutationSet ord
 	this->score = 0. ;
 	for(int i = 0 ; i < variableCount ; i++){
 		varset options = order.getVarset( i ) ;
-		float score = bsc[ order[ i ] ]->getScore( options ) ;
-		varset parents = bsc[ order[ i ] ]->getParents() ;
-		setParents( i , parents , score ) ;
+		int variable = order[ i ] ;
+		float score = bsc[ variable ]->getScore( options ) ;
+		varset parents = bsc[ variable ]->getParents() ;
+		setParents( variable , parents , score ) ;
 		for(int j = 0 ; j < variableCount ; j++){
 			if( !VARSET_GET( parents , j ) ) continue ;
 			nodes[ j ]->addChild( i ) ;
@@ -55,10 +56,11 @@ int datastructures::BNStructure::size(){
 }
 
 void datastructures::BNStructure::setParents( int indexnode , varset& parents , float score ){
-	this->score -= nodes[ indexnode ]->getScore() ;
+	//this->score -= nodes[ indexnode ]->getScore() ;
 	nodes[ indexnode ]->setParents( parents ) ;
 	nodes[ indexnode ]->setScore( score ) ;
-	this->score += score ;
+	this->score = 0 ;
+	for(int i = 0 ; i < variableCount ; i++) this->score += nodes[ i ]->getScore() ;
 }
 
 structureoptimizer::Node* datastructures::BNStructure::operator[]( int index ){

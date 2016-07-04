@@ -77,14 +77,6 @@ datastructures::BNStructure structureoptimizer::AcyclicSelection::search( int nu
 			best = partial_bn ;
 		}
 	}
-//	for(int i = 0 ; i < variableCount ; i++){
-//		varset vs = best[ i ]->getParents() ;
-//		printf( "%d: {" , i ) ;
-//		for( int j = 0 ; j < vs.size() ; j++)
-//			if( VARSET_GET( vs , j ) ) printf( "%d," , j ) ;
-//		printf( "}" ) ;
-//		printf("\n" ) ;
-//	}
 	printf(" === BEST === \n" ) ;
 	printf( "Score = %.6f\n" , best.getScore() ) ;
 	return best ;

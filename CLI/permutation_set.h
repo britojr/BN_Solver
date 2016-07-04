@@ -10,34 +10,40 @@
 
 #include <vector>
 
+#include "best_score_calculator.h"
 #include "typedefs.h"
 
 namespace structureoptimizer {
 	class PermutationSet {
 		public :
 			PermutationSet() ;
-			PermutationSet( int size ) ;
+			PermutationSet( int size , std::vector<bestscorecalculators::BestScoreCalculator*> &bestScoreCalculator ) ;
+			PermutationSet( const PermutationSet &other ) ;
 			~PermutationSet() ;
 			
-			int operator [] ( int idx ) ;
+			int operator [] ( int idx ) const ;
 			
 			void swap( int idx1 , int idx2 ) ;
 			
 			void setScore( float score ) ;
 			float getScore() ;
+			void updateScore( int adjacentPos = -1 ) ;
 			bool isBetter( PermutationSet other ) ;
 			
 			void setPermutation( std::vector<int> permutation ) ;
 			std::vector<int> getPermutation() ;
 			
-			int size() ;
+			int size() const ;
 			
 			void print() ;
 			
 			varset getVarset( int index ) ;
 			
+			std::vector<bestscorecalculators::BestScoreCalculator*> getBestScoreCalculators() const ;
+			
 		private :
 			std::vector<int> permutation ;
+			std::vector<bestscorecalculators::BestScoreCalculator*> bestScoreCalculator ;
 			float score ;
 	} ;
 }

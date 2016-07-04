@@ -25,15 +25,9 @@ initializers::RandomInitializer::~RandomInitializer(){
 }
 
 structureoptimizer::PermutationSet initializers::RandomInitializer::generate(){
-	structureoptimizer::PermutationSet set( variableCount ) ;
+	structureoptimizer::PermutationSet set( variableCount , bestScoreCalculators ) ;
 	std::vector<int> permut = shuffle( set.getPermutation() , gen ) ;
 	set.setPermutation( permut ) ;
-	float score = 0.0 ;
-	for(int i = 0 ; i < variableCount ; i++){
-		varset parents = set.getVarset( i ) ;
-		score += bestScoreCalculators[ i ]->getScore( parents ) ;
-	}
-	set.setScore( score ) ;
 	return set ;
 }
 

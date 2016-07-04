@@ -8,6 +8,8 @@
 #ifndef GREEDYSEARCH_H
 #define	GREEDYSEARCH_H
 
+#include <boost/random.hpp>
+
 #include "structure_optimizer.h"
 #include "permutation_set.h"
 
@@ -24,12 +26,13 @@ namespace structureoptimizer {
 		
 		private :
 			structureoptimizer::PermutationSet findBestNeighbor( structureoptimizer::PermutationSet set ) ;
-			structureoptimizer::PermutationSet disturbSet( structureoptimizer::PermutationSet set , int numSwaps = 3 ) ;
+			structureoptimizer::PermutationSet perturbSet( structureoptimizer::PermutationSet set , int numSwaps = 3 ) ;
 			structureoptimizer::PermutationSet doSwap( structureoptimizer::PermutationSet set , int index ) ;
 			
 			int numIterations ;
 			int maxIterations ;
 			int variableCount ;
+			boost::mt19937 gen ;
 	} ;
 }
 

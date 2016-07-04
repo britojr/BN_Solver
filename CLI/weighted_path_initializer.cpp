@@ -81,15 +81,8 @@ structureoptimizer::PermutationSet initializers::WPathInitializer::generate(){
 	}
 
 	// Build the permutation set
-	structureoptimizer::PermutationSet set( variableCount ) ;
+	structureoptimizer::PermutationSet set( variableCount , bestScoreCalculators ) ;
 	set.setPermutation( order ) ;
-	float score = 0.0 ;
-	for(int i = 0 ; i < variableCount ; i++){
-		varset options = set.getVarset( i ) ;
-		score += bestScoreCalculators[ i ]->getScore( options ) ;
-	}
-	set.setScore( score ) ;
-
 	return set ;
 }
 

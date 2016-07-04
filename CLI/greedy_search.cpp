@@ -8,6 +8,7 @@
 #include <cstdlib>
 
 #include "greedy_search.h"
+#include "utils.h"
 
 structureoptimizer::GreedySearch::GreedySearch(){
 	// Do nothing
@@ -21,6 +22,7 @@ structureoptimizer::GreedySearch::GreedySearch( initializers::Initializer* initi
 	this->maxIterations = maxIterations ;
 	this->numIterations = 0 ;
 	this->variableCount = bestScoreCalculator.size() ;
+	this->gen = boost::mt19937( time( NULL ) ) ;
 }
 
 structureoptimizer::GreedySearch::~GreedySearch(){
@@ -37,7 +39,7 @@ datastructures::BNStructure structureoptimizer::GreedySearch::search( int numSol
 		numIterations = 0 ;
 		for(int i = 0 ; i < maxIterations ; i++){
 			structureoptimizer::PermutationSet bestNeighbor = findBestNeighbor( current ) ;
-			structureoptimizer::PermutationSet disturbedNeighbor = disturbSet( bestNeighbor ) ;
+			structureoptimizer::PermutationSet disturbedNeighbor = perturbSet( bestNeighbor ) ;
 			if( disturbedNeighbor.isBetter( bestNeighbor ) ) bestNeighbor = disturbedNeighbor ;
 			if( !bestNeighbor.isBetter( current ) ) break ;
 			printf(" === Iteration %d ===\n" , i+1 ) ;
@@ -48,11 +50,13 @@ datastructures::BNStructure structureoptimizer::GreedySearch::search( int numSol
 		if( best.size() == 0 || current.isBetter( best ) )
 			best = current ;
 	}
+	printf(" === BEST === \n" ) ;
+	printf( "Score = %.6f\n" , best.getScore() ) ;
 	return datastructures::BNStructure( best , bestScoreCalculators ) ;
 }
 
 structureoptimizer::PermutationSet structureoptimizer::GreedySearch::findBestNeighbor( structureoptimizer::PermutationSet set ){
-	structureoptimizer::PermutationSet bestN = set ;
+	structureoptimizer::PermutationSet bestN( set ) ;
 	for(int i = 0 ; i < variableCount - 1 ; i++){
 		structureoptimizer::PermutationSet neighbor = doSwap( set , i ) ;
 		if( !neighbor.isBetter( bestN ) ) continue ;
@@ -61,44 +65,19 @@ structureoptimizer::PermutationSet structureoptimizer::GreedySearch::findBestNei
 	return bestN ;
 }
 
-structureoptimizer::PermutationSet structureoptimizer::GreedySearch::disturbSet( structureoptimizer::PermutationSet set , int numSwaps ){
-	structureoptimizer::PermutationSet newSet = set ;
+structureoptimizer::PermutationSet structureoptimizer::GreedySearch::perturbSet( structureoptimizer::PermutationSet set , int numSwaps ){
+	structureoptimizer::PermutationSet newSet( set ) ;
 	// Perform swaps
 	for(int i = 0 ; i < numSwaps ; i++){
-		int idx1 = rand() % set.size() ;
-		int idx2 = rand() % set.size() ;
+		int idx1 = random_generator( set.size() , this->gen ) ;
+		int idx2 = random_generator( set.size() , this->gen ) ;
 		newSet.swap( idx1 , idx2 ) ;
 	}
-	// Update score
-	float score = 0.0 ;
-	for(int i = 0 ; i < variableCount ; i++){
-		varset options = newSet.getVarset( i ) ;
-		score += bestScoreCalculators[ set[ i ] ]->getScore( options ) ;
-	}
-	newSet.setScore( score ) ;
 	return newSet ;
 }
 
 structureoptimizer::PermutationSet structureoptimizer::GreedySearch::doSwap( structureoptimizer::PermutationSet set , int index ){
-	structureoptimizer::PermutationSet newSet = set ;
+	structureoptimizer::PermutationSet newSet( set ) ;
 	newSet.swap( index , index + 1 ) ;
-	float newScore = set.getScore() ;
-
-	// Remove previous scores
-	varset previousOptions1 = set.getVarset( index ) ;
-	newScore -= bestScoreCalculators[ set[ index ] ]->getScore( previousOptions1 ) ;
-
-	varset previousOptions2 = set.getVarset( index + 1 ) ;
-	newScore -= bestScoreCalculators[ set[ index + 1 ] ]->getScore( previousOptions2 ) ;
-
-	// Add current scores
-	varset currentOptions1 = newSet.getVarset( index ) ;
-	newScore += bestScoreCalculators[ set[ index ] ]->getScore( currentOptions1 ) ;
-
-	varset currentOptions2 = newSet.getVarset( index + 1 ) ;
-	newScore += bestScoreCalculators[ set[ index + 1 ] ]->getScore( currentOptions2 ) ;
-
-	newSet.setScore( newScore ) ;
-
 	return newSet ;
 }

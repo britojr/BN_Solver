@@ -47,15 +47,8 @@ structureoptimizer::PermutationSet initializers::FASInitializer::generate(){
 	}
 
 	// Build the permutation set
-	structureoptimizer::PermutationSet set( variableCount ) ;
+	structureoptimizer::PermutationSet set( variableCount , bestScoreCalculators ) ;
 	set.setPermutation( order ) ;
-	float score = 0.0 ;
-	for(int i = 0 ; i < variableCount ; i++){
-		varset options = set.getVarset( i ) ;
-		score += bestScoreCalculators[ i ]->getScore( options ) ;
-	}
-	set.setScore( score ) ;
-
 	return set ;
 }
 
@@ -179,12 +172,13 @@ std::vector<int> initializers::FASInitializer::traverse( int index ){
 	VARSET_CLEAR( unvisitedVariables , index ) ;
 	std::vector<int> children = shuffle( nodes[ index ]->getChildrenVector() , gen ) ;
 	for(int i = 0 ; i < children.size() ; i++){
-		if( !VARSET_GET( unvisitedVariables , children[ i ] ) ) continue ;
-		inGrades[ children[ i ] ]-- ;
-		if( inGrades[ children[ i ] ] == 0 ){
-			std::vector<int> next = traverse( children[ i ] ) ;
+		int ch = children[ i ] ;
+		if( !VARSET_GET( unvisitedVariables , ch ) ) continue ;
+		inGrades[ ch ]-- ;
+		if( inGrades[ ch ] == 0 ){
+			std::vector<int> next = traverse( ch ) ;
 			for(int j = 0 ; j < next.size() ; j++)
-			visited.push_back( next[ j ] ) ;
+				visited.push_back( next[ j ] ) ;
 		}
 	}
 	return visited ;
