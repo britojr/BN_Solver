@@ -24,38 +24,6 @@ parentselection::IndependenceSelection::IndependenceSelection( scoring::ScoringF
 	this->constraints = constraints ;
 }
 
-void parentselection::IndependenceSelection::calculateScores( int variable , FloatMap &cache ){
-	this->outOfTime = false ;
-
-	io.reset() ;
-	boost::asio::deadline_timer *t ;
-	boost::asio::io_service io_t ;
-	t = new boost::asio::deadline_timer( io_t ) ;
-	
-	FloatMap pruned ;
-	init_map( pruned ) ;
-	initialize( variable , pruned , cache ) ;
-	if( runningTime > 0 ){
-		printf( "I am using a timer in the calculation function.\n" ) ;
-		t->expires_from_now( boost::posix_time::seconds( runningTime ) ) ;
-		t->async_wait( boost::bind( &parentselection::ParentSetSelection::timeout, this, boost::asio::placeholders::error ) ) ;
-		boost::thread workerThread ;
-
-		workerThread = boost::thread( 
-				boost::bind( &parentselection::IndependenceSelection::calculateScores_internal ,
-							this , variable , boost::ref( pruned ) , boost::ref( cache )
-				) 
-		) ;
-		io_t.run() ;
-		workerThread.join() ;
-		io_t.stop() ;
-		t->cancel() ;
-	}else{
-		printf("I am executing without time limit\n" ) ;
-		calculateScores_internal( variable , pruned , cache ) ;
-	}
-}
-
 void parentselection::IndependenceSelection::calculateScores_internal( int variable , FloatMap &pruned , FloatMap& cache ){
 	// Get possible parents for variable based on constraints
 	std::vector<int> options = constraints->getPossibleParents( variable ) ;
@@ -96,9 +64,7 @@ void parentselection::IndependenceSelection::calculateScores_internal( int varia
 		}
 	}
 	openCache.clear() ;
-	io.stop();
-//    t->cancel();
-	io.reset();
+    t->cancel() ;
 }
 
 void parentselection::IndependenceSelection::initialize( int variable , FloatMap &pruned , FloatMap &cache ){

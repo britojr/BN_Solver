@@ -18,7 +18,6 @@ namespace parentselection {
 			SequentialSelection( scoring::ScoringFunction *scoringFunction ,
 								int maxParents , int variableCount ,
 								int runningTime , scoring::Constraints *constraints ) ;
-			void calculateScores( int variable , FloatMap &cache ) ;
 
 		private :
 			void initialize( int variable , FloatMap &pruned , FloatMap &cache ) ;

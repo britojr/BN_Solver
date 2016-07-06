@@ -17,14 +17,14 @@ namespace parentselection {
 	class ParentSetSelection {
 		public :
 			void prune( FloatMap &cache ) ;
-			void timeout( const boost::system::error_code& /*e*/ ) ;
-
-			virtual void calculateScores( int variable , FloatMap &cache ) = 0 ;
+			void timeout( const boost::system::error_code &/*e*/ ) ;
+			void calculateScores( int variable , FloatMap &cache ) ;
+			virtual void initialize( int variable , FloatMap &pruned , FloatMap &cache ) = 0 ;
+		
+		protected :
 			virtual void calculateScores_internal( int variable , 
 													FloatMap &pruned ,
 													FloatMap &cache ) = 0 ;
-			virtual void initialize( int variable , FloatMap &pruned ,
-										FloatMap &cache ) = 0 ;
 
 			boost::asio::io_service io ;
 			boost::asio::deadline_timer *t ;

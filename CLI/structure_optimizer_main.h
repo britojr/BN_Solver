@@ -45,6 +45,19 @@ int maxIterations = maxIterationsDefault ;
 std::string maxIterationsString = "Max number of iterations in order-based structure learning." ;
 std::string maxIterationsShortCut = "maxIterations,k" ;
 
+void printSolution( datastructures::BNStructure solution ){
+	for(int i = 0 ; i < solution.size() ; i++){
+		varset vs = solution[ i ]->getParents() ;
+		printf( "{" ) ;
+		for( int j = 0 ; j < vs.size() ; j++){
+			if( i == j && VARSET_GET( vs , j ) ) printf(" #%d# " , j ) ;
+			printf("%d" , VARSET_GET( vs , j ) ) ;
+		}
+		printf( "}" ) ;
+		printf("\n" ) ;
+	}
+}
+
 void structureLearning(){
 	printf( "========== STEP: STRUCTURE OPTIMIZATION ========== \n" ) ;
 	printf( "Best score calculator: '%s'\n" , bestScoreCalculator.c_str() ) ;
@@ -67,19 +80,6 @@ void structureLearning(){
 	structureoptimizer::StructureOptimizer* algorithm = structureoptimizer::create( structureOptimizerType , initializer , bestScCalc , maxIterations ) ;
 	datastructures::BNStructure solution = algorithm->search( numSolutions ) ;
 	printSolution( solution ) ;
-}
-
-void printSolution( datastructures::BNStructure solution ){
-	for(int i = 0 ; i < solution.size() ; i++){
-		varset vs = solution[ i ]->getParents() ;
-		printf( "{" ) ;
-		for( int j = 0 ; j < vs.size() ; j++){
-			if( i == j && VARSET_GET( vs , j ) ) printf(" #%d# " , j ) ;
-			printf("%d" , VARSET_GET( vs , j ) ) ;
-		}
-		printf( "}" ) ;
-		printf("\n" ) ;
-	}
 }
 
 #endif	/* STRUCTURE_OPTIMIZER_H */

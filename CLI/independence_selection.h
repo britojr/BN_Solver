@@ -24,7 +24,6 @@ namespace parentselection {
 			IndependenceSelection( scoring::ScoringFunction *scoringFunction ,
 								int maxParents , int variableCount ,
 								int runningTime , scoring::Constraints *constraints ) ;
-			void calculateScores( int variable , FloatMap &cache ) ;
 
 		private :
 			void calculateScores_internal( int variable , FloatMap &pruned , FloatMap &cache ) ;
