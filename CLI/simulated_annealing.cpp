@@ -20,7 +20,7 @@ structureoptimizer::SimulatedAnnealing::SimulatedAnnealing( initializers::Initia
 	this->initializer = initializer ;
 	this->bestScoreCalculators = bestScoreCalculator ;
 	this->gen = boost::mt19937( time( NULL ) ) ;
-	
+
 	setParameters( parametersFile ) ;
 }
 

@@ -1,5 +1,5 @@
 /* 
- * File:   RandomInitializer.h
+ * File:   random_initializer.h
  * Author: nonwhite
  *
  * Created on 26 de enero de 2016, 04:31 PM
@@ -23,11 +23,6 @@ namespace initializers {
 			
 			structureoptimizer::PermutationSet generate() ;
 			void initialize() ;
-
-		private :
-			int variableCount ;
-			std::vector<bestscorecalculators::BestScoreCalculator*> bestScoreCalculators ;
-			boost::mt19937 gen ;
 	} ;
 }
 

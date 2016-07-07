@@ -1,5 +1,5 @@
 /* 
- * File:   DFSInitializer.h
+ * File:   dfs_initializer.h
  * Author: nonwhite
  *
  * Created on 26 de enero de 2016, 05:00 PM
@@ -32,13 +32,9 @@ namespace initializers {
 			void updateNodeWeights() ;
 			int getUnvisitedInDegree( int n ) ;
 			
-			varset unvisitedVariables ;
-			int variableCount ;
 			std::vector<structureoptimizer::Node*> nodes ;
-			std::vector<bestscorecalculators::BestScoreCalculator*> bestScoreCalculators ;
-			
+			varset unvisitedVariables ;
 			std::vector<hnode> unvisitedNodes ;
-			boost::mt19937 gen ;
 	} ;
 }
 

@@ -15,6 +15,11 @@ namespace initializers {
 		public :
 			virtual structureoptimizer::PermutationSet generate() = 0 ;
 			virtual void initialize() = 0 ;
+			
+		protected :
+			int variableCount ;
+			boost::mt19937 gen ;
+			std::vector<bestscorecalculators::BestScoreCalculator*> bestScoreCalculators ;
 	} ;
 }
 
