@@ -12,7 +12,7 @@
 #include <sys/stat.h>
 inline bool file_exists( std::string filePath ){
     struct stat buffer ;
-    return (stat (filePath.c_str(), &buffer) == 0 ) ; 
+    return ( stat ( filePath.c_str(), &buffer) == 0 ) ; 
 }
 
 inline int compare( float a , float b = 0.0 ){

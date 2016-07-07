@@ -4,6 +4,7 @@
  * 
  * Created on 8 de junio de 2016, 11:38
  */
+#include <cstdio>
 
 #include "simulated_annealing.h"
 #include "utils.h"
@@ -14,14 +15,36 @@ structureoptimizer::SimulatedAnnealing::SimulatedAnnealing(){
 
 structureoptimizer::SimulatedAnnealing::SimulatedAnnealing( initializers::Initializer* initializer ,
 										std::vector<bestscorecalculators::BestScoreCalculator*> bestScoreCalculator ,
-										int maxIterations ){
+										std::string parametersFile ){
 	this->variableCount = bestScoreCalculator.size() ;
-	this->maxIterations = maxIterations ;
 	this->initializer = initializer ;
 	this->bestScoreCalculators = bestScoreCalculator ;
+	this->gen = boost::mt19937( time( NULL ) ) ;
+	
+	setParameters( parametersFile ) ;
+}
+
+void structureoptimizer::SimulatedAnnealing::setDefaultParameters(){
+	this->maxIterations = 500 ;
 	this->t_max = 2500.0 ;
 	this->t_min = 5.0 ;
-	this->gen = boost::mt19937( time( NULL ) ) ;
+}
+
+void structureoptimizer::SimulatedAnnealing::setFileParameters( std::map<std::string,std::string> params ){
+	if( params.count( "max_iterations" ) )
+		sscanf( params[ "max_iterations" ].c_str() , "%d" , &maxIterations ) ;
+	
+	if( params.count( "max_temperature" ) )
+		sscanf( params[ "max_temperature" ].c_str() , "%f" , &t_max ) ;
+	
+	if( params.count( "min_temperature" ) )
+		sscanf( params[ "min_temperature" ].c_str() , "%f" , &t_min ) ;
+}
+
+void structureoptimizer::SimulatedAnnealing::printParameters(){
+	printf( "Max number of iterations: '%d'\n" , maxIterations ) ;
+	printf( "Initial temperature: %.6f\n" , t_max ) ;
+	printf( "Final temperature: %.6f\n" , t_min ) ;
 }
 
 structureoptimizer::SimulatedAnnealing::~SimulatedAnnealing(){
@@ -55,26 +78,8 @@ datastructures::BNStructure structureoptimizer::SimulatedAnnealing::search( int 
 
 structureoptimizer::PermutationSet structureoptimizer::SimulatedAnnealing::neighbour( structureoptimizer::PermutationSet set ){
 	int index = random_generator( variableCount - 1 , gen ) ;
-	
-	structureoptimizer::PermutationSet newSet = set ;
+	structureoptimizer::PermutationSet newSet( set ) ;
 	newSet.swap( index , index + 1 ) ;
-	float newScore = set.getScore() ;
-
-	// Remove previous scores
-	varset previousOptions1 = set.getVarset( index ) ;
-	newScore -= bestScoreCalculators[ set[ index ] ]->getScore( previousOptions1 ) ;
-
-	varset previousOptions2 = set.getVarset( index + 1 ) ;
-	newScore -= bestScoreCalculators[ set[ index + 1 ] ]->getScore( previousOptions2 ) ;
-
-	// Add current scores
-	varset currentOptions1 = newSet.getVarset( index ) ;
-	newScore += bestScoreCalculators[ newSet[ index ] ]->getScore( currentOptions1 ) ;
-
-	varset currentOptions2 = newSet.getVarset( index + 1 ) ;
-	newScore += bestScoreCalculators[ newSet[ index + 1 ] ]->getScore( currentOptions2 ) ;
-
-	newSet.setScore( newScore ) ;
 	return newSet ;
 }
 

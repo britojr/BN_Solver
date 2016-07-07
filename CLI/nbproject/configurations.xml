@@ -28,7 +28,6 @@
         <itemPath>initializer.h</itemPath>
         <itemPath>initializer_creator.h</itemPath>
         <itemPath>random_initializer.h</itemPath>
-        <itemPath>weighted_path_initializer.h</itemPath>
       </logicalFolder>
       <logicalFolder name="f5" displayName="main" projectFiles="true">
         <itemPath>parent_set_selection_main.h</itemPath>
@@ -89,7 +88,6 @@
         <itemPath>dfs_initializer.cpp</itemPath>
         <itemPath>fas_initializer.cpp</itemPath>
         <itemPath>random_initializer.cpp</itemPath>
-        <itemPath>weighted_path_initializer.cpp</itemPath>
       </logicalFolder>
       <logicalFolder name="f4" displayName="parentselection" projectFiles="true">
         <itemPath>greedy_selection.cpp</itemPath>
@@ -110,6 +108,7 @@
         <itemPath>greedy_search.cpp</itemPath>
         <itemPath>permutation_set.cpp</itemPath>
         <itemPath>simulated_annealing.cpp</itemPath>
+        <itemPath>structure_optimizer.cpp</itemPath>
       </logicalFolder>
       <itemPath>main_learner.cpp</itemPath>
     </logicalFolder>
@@ -286,6 +285,8 @@
       </item>
       <item path="sparse_tree_node.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="structure_optimizer.cpp" ex="false" tool="1" flavor2="0">
+      </item>
       <item path="structure_optimizer.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="structure_optimizer_creator.h" ex="false" tool="3" flavor2="0">
@@ -303,10 +304,6 @@
       <item path="vary_node.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="vary_node.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="weighted_path_initializer.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="weighted_path_initializer.h" ex="false" tool="3" flavor2="0">
       </item>
     </conf>
     <conf name="Learner-Linux" type="1">
@@ -464,6 +461,8 @@
       </item>
       <item path="sparse_tree_node.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="structure_optimizer.cpp" ex="false" tool="1" flavor2="0">
+      </item>
       <item path="structure_optimizer.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="structure_optimizer_creator.h" ex="false" tool="3" flavor2="0">
@@ -481,10 +480,6 @@
       <item path="vary_node.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="vary_node.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="weighted_path_initializer.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="weighted_path_initializer.h" ex="false" tool="3" flavor2="0">
       </item>
     </conf>
   </confs>

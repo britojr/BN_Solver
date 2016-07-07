@@ -6,6 +6,7 @@
  */
 
 #include <cstdlib>
+#include <cstdio>
 
 #include "greedy_search.h"
 #include "utils.h"
@@ -16,17 +17,44 @@ structureoptimizer::GreedySearch::GreedySearch(){
 
 structureoptimizer::GreedySearch::GreedySearch( initializers::Initializer* initializer ,
 										std::vector<bestscorecalculators::BestScoreCalculator*> bestScoreCalculator ,
-										int maxIterations ){
+										std::string parametersFile ){
 	this->initializer = initializer ;
 	this->bestScoreCalculators = bestScoreCalculator ;
-	this->maxIterations = maxIterations ;
 	this->numIterations = 0 ;
 	this->variableCount = bestScoreCalculator.size() ;
 	this->gen = boost::mt19937( time( NULL ) ) ;
+	
+	setParameters( parametersFile ) ;
 }
 
 structureoptimizer::GreedySearch::~GreedySearch(){
 	// Do nothing
+}
+
+void structureoptimizer::GreedySearch::setDefaultParameters(){
+	this->performSolutionPerturbation = true ;
+	this->numPerturbationSwaps = 3 ;
+	this->maxIterations = 500 ;
+}
+
+void structureoptimizer::GreedySearch::setFileParameters( std::map<std::string,std::string> params ){
+	if( params.count( "perturb_solution" ) ){
+		int p ;
+		sscanf( params[ "perturb_solution" ].c_str() , "%d" , &p ) ;
+		performSolutionPerturbation = ( p > 0 ) ;
+	}
+	
+	if( params.count( "num_swaps" ) )
+		sscanf( params[ "num_swaps" ].c_str() , "%d" , &numPerturbationSwaps ) ;
+	
+	if( params.count( "max_iterations" ) )
+		sscanf( params[ "max_iterations" ].c_str() , "%d" , &maxIterations ) ;
+}
+
+void structureoptimizer::GreedySearch::printParameters(){
+	printf( "Max number of iterations: %d\n" , maxIterations ) ;
+	printf( "Perturb solutions: %s\n" , performSolutionPerturbation ? "true" : "false" ) ;
+	printf( "Num. of perturbation swaps: %d\n" , numPerturbationSwaps ) ;
 }
 
 datastructures::BNStructure structureoptimizer::GreedySearch::search( int numSolutions ){
@@ -65,13 +93,15 @@ structureoptimizer::PermutationSet structureoptimizer::GreedySearch::findBestNei
 	return bestN ;
 }
 
-structureoptimizer::PermutationSet structureoptimizer::GreedySearch::perturbSet( structureoptimizer::PermutationSet set , int numSwaps ){
+structureoptimizer::PermutationSet structureoptimizer::GreedySearch::perturbSet( structureoptimizer::PermutationSet set ){
 	structureoptimizer::PermutationSet newSet( set ) ;
-	// Perform swaps
-	for(int i = 0 ; i < numSwaps ; i++){
-		int idx1 = random_generator( set.size() , this->gen ) ;
-		int idx2 = random_generator( set.size() , this->gen ) ;
-		newSet.swap( idx1 , idx2 ) ;
+	if( performSolutionPerturbation ){
+		// Perform swaps
+		for(int i = 0 ; i < numPerturbationSwaps ; i++){
+			int idx1 = random_generator( set.size() , gen ) ;
+			int idx2 = random_generator( set.size() , gen ) ;
+			newSet.swap( idx1 , idx2 ) ;
+		}
 	}
 	return newSet ;
 }

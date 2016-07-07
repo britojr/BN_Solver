@@ -13,13 +13,27 @@ structureoptimizer::AcyclicSelection::AcyclicSelection(){
 }
 
 structureoptimizer::AcyclicSelection::AcyclicSelection( initializers::Initializer* initializer ,
-										std::vector<bestscorecalculators::BestScoreCalculator*> bestScoreCalculator ){
+										std::vector<bestscorecalculators::BestScoreCalculator*> bestScoreCalculator ,
+										std::string parametersFile ){
 	this->initializer = initializer ;
 	this->bestScoreCalculators = bestScoreCalculator ;
 	this->variableCount = bestScoreCalculator.size() ;
+	setParameters( parametersFile ) ;
 }
 
 structureoptimizer::AcyclicSelection::~AcyclicSelection(){
+	// Do nothing
+}
+
+void structureoptimizer::AcyclicSelection::setDefaultParameters(){
+	// Do nothing
+}
+
+void structureoptimizer::AcyclicSelection::setFileParameters( std::map<std::string,std::string> params ){
+	// Do nothing
+}
+
+void structureoptimizer::AcyclicSelection::printParameters(){
 	// Do nothing
 }
 

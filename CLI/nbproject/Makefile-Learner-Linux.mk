@@ -57,8 +57,8 @@ OBJECTFILES= \
 	${OBJECTDIR}/sparse_parent_bitwise.o \
 	${OBJECTDIR}/sparse_parent_list.o \
 	${OBJECTDIR}/sparse_parent_tree.o \
-	${OBJECTDIR}/vary_node.o \
-	${OBJECTDIR}/weighted_path_initializer.o
+	${OBJECTDIR}/structure_optimizer.o \
+	${OBJECTDIR}/vary_node.o
 
 
 # C Compiler Flags
@@ -195,15 +195,15 @@ ${OBJECTDIR}/sparse_parent_tree.o: sparse_parent_tree.cpp
 	${RM} "$@.d"
 	$(COMPILE.cc) -O3 -s -I/opt/apps/programas/gnu/old_boost.1.58.0/include -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/sparse_parent_tree.o sparse_parent_tree.cpp
 
+${OBJECTDIR}/structure_optimizer.o: structure_optimizer.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O3 -s -I/opt/apps/programas/gnu/old_boost.1.58.0/include -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/structure_optimizer.o structure_optimizer.cpp
+
 ${OBJECTDIR}/vary_node.o: vary_node.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -O3 -s -I/opt/apps/programas/gnu/old_boost.1.58.0/include -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/vary_node.o vary_node.cpp
-
-${OBJECTDIR}/weighted_path_initializer.o: weighted_path_initializer.cpp 
-	${MKDIR} -p ${OBJECTDIR}
-	${RM} "$@.d"
-	$(COMPILE.cc) -O3 -s -I/opt/apps/programas/gnu/old_boost.1.58.0/include -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/weighted_path_initializer.o weighted_path_initializer.cpp
 
 # Subprojects
 .build-subprojects:

@@ -16,18 +16,21 @@ namespace structureoptimizer {
 		public :
 			AcyclicSelection() ;
 			AcyclicSelection( initializers::Initializer* initializer ,
-						std::vector<bestscorecalculators::BestScoreCalculator*> bestScoreCalculator ) ;
+						std::vector<bestscorecalculators::BestScoreCalculator*> bestScoreCalculator ,
+						std::string parametersFile ) ;
 			~AcyclicSelection() ;
 
 			datastructures::BNStructure search( int numSolutions ) ;
+			void printParameters() ;
 
 		private :
 			void visit( int index ) ;
+			void setDefaultParameters() ;
+			void setFileParameters( std::map<std::string, std::string> params ) ;
 			
 			std::vector<varset> m ; // Descendants
 			std::vector<std::vector<int> > todo ; // To-Do lists
 			datastructures::BNStructure partial_bn ; // Partial BN structure
-			int variableCount ;
 	} ;
 }
 

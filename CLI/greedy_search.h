@@ -8,7 +8,8 @@
 #ifndef GREEDYSEARCH_H
 #define	GREEDYSEARCH_H
 
-#include <boost/random.hpp>
+#include <map>
+#include <string>
 
 #include "structure_optimizer.h"
 #include "permutation_set.h"
@@ -19,20 +20,26 @@ namespace structureoptimizer {
 			GreedySearch() ;
 			GreedySearch( initializers::Initializer* initializer ,
 						std::vector<bestscorecalculators::BestScoreCalculator*> bestScoreCalculator ,
-						int maxIterations ) ;
+						std::string parametersFile ) ;
 			~GreedySearch() ;
 		
 			datastructures::BNStructure search( int numSolutions ) ;
+			void printParameters() ;
 		
 		private :
 			structureoptimizer::PermutationSet findBestNeighbor( structureoptimizer::PermutationSet set ) ;
-			structureoptimizer::PermutationSet perturbSet( structureoptimizer::PermutationSet set , int numSwaps = 3 ) ;
+			structureoptimizer::PermutationSet perturbSet( structureoptimizer::PermutationSet set ) ;
 			structureoptimizer::PermutationSet doSwap( structureoptimizer::PermutationSet set , int index ) ;
 			
+			void setDefaultParameters() ;
+			void setFileParameters( std::map<std::string,std::string> params ) ;
+			
 			int numIterations ;
+			
+			// Configurable Parameters
 			int maxIterations ;
-			int variableCount ;
-			boost::mt19937 gen ;
+			int numPerturbationSwaps ;
+			bool performSolutionPerturbation ;
 	} ;
 }
 

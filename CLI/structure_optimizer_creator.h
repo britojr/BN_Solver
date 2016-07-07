@@ -20,16 +20,18 @@ namespace structureoptimizer {
 
 	inline StructureOptimizer* create( std::string type , initializers::Initializer* initializer ,
 										std::vector<bestscorecalculators::BestScoreCalculator*> bestScoreCalculators ,
-										int maxIterations ){
+										std::string structureParameterFile ){
 		StructureOptimizer *sto ;
 		if( type == "greedy_search" ){
-			sto = new structureoptimizer::GreedySearch( initializer , bestScoreCalculators , maxIterations ) ;
+			sto = new structureoptimizer::GreedySearch( initializer , bestScoreCalculators , structureParameterFile ) ;
 		}else if( type == "acyclic_selection" ){
-			sto = new structureoptimizer::AcyclicSelection( initializer , bestScoreCalculators ) ;
+			sto = new structureoptimizer::AcyclicSelection( initializer , bestScoreCalculators , structureParameterFile ) ;
 		}else if( type == "simulated_annealing" ){
-			sto = new structureoptimizer::SimulatedAnnealing( initializer , bestScoreCalculators , maxIterations ) ;
+			sto = new structureoptimizer::SimulatedAnnealing( initializer , bestScoreCalculators , structureParameterFile ) ;
 		}else{
-			throw std::runtime_error( "Invalid SO selection: '" + type + "'.  Valid options are 'greedy_search' and 'acyclic_selection'." ) ;
+			throw std::runtime_error( "Invalid SO selection: '" + type + 
+					"'.  Valid options are 'greedy_search', " +
+					"'acyclic_selection' and 'simulated_annealing'." ) ;
 		}
 		return sto ;
 	}

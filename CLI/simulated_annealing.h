@@ -20,10 +20,11 @@ namespace structureoptimizer {
 			SimulatedAnnealing() ;
 			SimulatedAnnealing( initializers::Initializer* initializer ,
 						std::vector<bestscorecalculators::BestScoreCalculator*> bestScoreCalculator ,
-						int maxIterations ) ;
+						std::string parametersFile ) ;
 			~SimulatedAnnealing() ;
 
 			datastructures::BNStructure search( int numSolutions ) ;
+			void printParameters() ;
 
 		private :
 			float acceptanceProbability( structureoptimizer::PermutationSet oldState ,
@@ -31,14 +32,14 @@ namespace structureoptimizer {
 										float temperature ) ;
 			structureoptimizer::PermutationSet neighbour( structureoptimizer::PermutationSet currentState ) ;
 			
+			void setDefaultParameters() ;
+			void setFileParameters( std::map<std::string,std::string> params ) ;
+
+			// Configurable parameters
 			int maxIterations ;
-			int variableCount ;
 			float t_max ;
 			float t_min ;
-			
-			boost::mt19937 gen ;
 	} ;
 }
 
 #endif	/* SIMULATED_ANNEALING_H */
-

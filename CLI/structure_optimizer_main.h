@@ -39,11 +39,10 @@ int numSolutions = numSolutionsDefault ;
 std::string numSolutionsString = "Number of initial solutions to be generated." ;
 std::string numSolutionsShortCut = "numSolutions,n" ;
 
-/* Number of iterations for greedy search until stopping */
-int maxIterationsDefault = 500 ;
-int maxIterations = maxIterationsDefault ;
-std::string maxIterationsString = "Max number of iterations in order-based structure learning." ;
-std::string maxIterationsShortCut = "maxIterations,k" ;
+/* Parameters file for structure learning algorithm */
+std::string structureParametersFile ;
+std::string structureParametersFileString = "Parameters file for structure learning algorithm" ;
+std::string structureParametersFileShortCut = "stparams,j" ;
 
 void printSolution( datastructures::BNStructure solution ){
 	for(int i = 0 ; i < solution.size() ; i++){
@@ -77,9 +76,10 @@ void structureLearning(){
 	initializers::Initializer* initializer = initializers::create( initializerType , bestScCalc ) ;
 
 	printf( "Creating the order-based structure learning algorithm\n" ) ;
-	structureoptimizer::StructureOptimizer* algorithm = structureoptimizer::create( structureOptimizerType , initializer , bestScCalc , maxIterations ) ;
+	structureoptimizer::StructureOptimizer* algorithm = structureoptimizer::create( structureOptimizerType , initializer , bestScCalc , structureParametersFile ) ;
+	algorithm->printParameters() ;
 	datastructures::BNStructure solution = algorithm->search( numSolutions ) ;
-	printSolution( solution ) ;
+//	printSolution( solution ) ;
 }
 
 #endif	/* STRUCTURE_OPTIMIZER_H */
