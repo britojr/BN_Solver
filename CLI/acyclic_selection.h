@@ -24,7 +24,8 @@ namespace structureoptimizer {
 			void printParameters() ;
 
 		private :
-			void visit( int index ) ;
+			varset getDescendants( int index ) ;
+//			void visit( int index ) ;
 			void setDefaultParameters() ;
 			void setFileParameters( std::map<std::string, std::string> params ) ;
 			

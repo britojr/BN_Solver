@@ -8,6 +8,8 @@
 #ifndef INITIALIZER_H
 #define	INITIALIZER_H
 
+#include <boost/random.hpp>
+
 #include "permutation_set.h"
 
 namespace initializers {

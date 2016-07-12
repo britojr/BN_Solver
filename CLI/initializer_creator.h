@@ -18,6 +18,7 @@
 #include "dfs_initializer.h"
 #include "fas_initializer.h"
 #include "best_score_calculator.h"
+#include "bfirst_initializer.h"
 
 namespace initializers {
 	
@@ -32,6 +33,8 @@ namespace initializers {
 			init = new initializers::DFSInitializer( bestScoreCalculator ) ;
 		}else if( type == "fas" ){
 			init = new initializers::FASInitializer( bestScoreCalculator ) ;
+		}else if( type == "bfirst" ){
+			init = new initializers::BFirstInitializer( bestScoreCalculator ) ;
 		}else{
 			throw std::runtime_error( "Invalid Initializer type: '" + type + "'.  Valid options are 'random', 'dfs' and 'fas'.");
         }

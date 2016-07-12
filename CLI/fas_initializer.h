@@ -8,8 +8,6 @@
 #ifndef FASINITIALIZER_H
 #define	FASINITIALIZER_H
 
-#include <boost/random.hpp>
-
 #include <vector>
 
 #include "node.h"

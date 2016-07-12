@@ -24,6 +24,7 @@ namespace structureoptimizer {
 			int operator [] ( int idx ) const ;
 			
 			void swap( int idx1 , int idx2 ) ;
+			void reverse() ;
 			
 			void setScore( float score ) ;
 			float getScore() ;

@@ -38,7 +38,7 @@ datastructures::BNStructure::BNStructure( structureoptimizer::PermutationSet ord
 		setParents( variable , parents , score ) ;
 		for(int j = 0 ; j < variableCount ; j++){
 			if( !VARSET_GET( parents , j ) ) continue ;
-			nodes[ j ]->addChild( i ) ;
+			nodes[ j ]->addChild( variable ) ;
 		}
 	}
 }
@@ -55,12 +55,15 @@ int datastructures::BNStructure::size(){
 	return nodes.size() ;
 }
 
-void datastructures::BNStructure::setParents( int indexnode , varset& parents , float score ){
-	//this->score -= nodes[ indexnode ]->getScore() ;
+void datastructures::BNStructure::setParents( int indexnode , varset parents , float score ){
 	nodes[ indexnode ]->setParents( parents ) ;
 	nodes[ indexnode ]->setScore( score ) ;
 	this->score = 0 ;
 	for(int i = 0 ; i < variableCount ; i++) this->score += nodes[ i ]->getScore() ;
+	for(int j = 0 ; j < variableCount ; j++){
+		if( !VARSET_GET( parents , j ) ) continue ;
+		nodes[ j ]->addChild( indexnode ) ;
+	}
 }
 
 structureoptimizer::Node* datastructures::BNStructure::operator[]( int index ){

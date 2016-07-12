@@ -85,6 +85,16 @@ void structureoptimizer::PermutationSet::swap( int idx1 , int idx2 ){
 	isAdjacentMove ? updateScore( std::min( idx1 , idx2 ) ) : updateScore() ;
 }
 
+void structureoptimizer::PermutationSet::reverse(){
+	int n = size() ;
+	for(int i = 0 ; i < n / 2 ; i++){
+		int aux = permutation[ i ] ;
+		permutation[ i ] = permutation[ n - i - 1 ] ;
+		permutation[ n - i - 1 ] = aux ;
+	}
+	updateScore() ;
+}
+
 varset structureoptimizer::PermutationSet::getVarset( int index ){
 	VARSET_NEW( vset , permutation.size() ) ;
 	VARSET_CLEAR_ALL( vset ) ;

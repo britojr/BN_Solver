@@ -28,7 +28,7 @@ namespace datastructures {
 			
 			bool isBetter( datastructures::BNStructure other ) ;
 			
-			void setParents( int indexnode , varset &parents , float score ) ;
+			void setParents( int indexnode , varset parents , float score ) ;
 			
 		private :
 			std::vector<structureoptimizer::Node*> nodes ;
