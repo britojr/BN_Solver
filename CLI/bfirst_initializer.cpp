@@ -4,9 +4,6 @@
  * 
  * Created on 10 de julio de 2016, 21:05
  */
-#include <limits>
-#include <gmpxx.h>
-
 #include "bfirst_initializer.h"
 #include "utils.h"
 
