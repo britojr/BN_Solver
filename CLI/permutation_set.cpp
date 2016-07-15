@@ -64,12 +64,14 @@ int structureoptimizer::PermutationSet::size() const {
 	return permutation.size() ;
 }
 
-void structureoptimizer::PermutationSet::print(){
-	for(int i = 0 ; i < permutation.size() ; i++){
-		if( i ) printf(" " ) ;
-		printf("%d" , permutation[ i ] ) ;
+void structureoptimizer::PermutationSet::print( bool printPermutation ){
+	if( printPermutation ){
+		for(int i = 0 ; i < permutation.size() ; i++){
+			if( i ) printf(" " ) ;
+			printf("%d" , permutation[ i ] ) ;
+		}
+		printf("\n" ) ;
 	}
-	printf("\n" ) ;
 	printf("Score = %.6f\n" , score ) ;
 }
 

@@ -36,7 +36,7 @@ namespace structureoptimizer {
 			
 			int size() const ;
 			
-			void print() ;
+			void print( bool printPermutation = false ) ;
 			
 			varset getVarset( int index ) ;
 			
