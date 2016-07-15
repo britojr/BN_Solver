@@ -16,7 +16,7 @@
 
 #include <boost/thread.hpp>
 
-#include "utils_main.h"
+#include "learner_parameters.h"
 #include "record_file.h"
 #include "bayesian_network.h"
 #include "ad_tree.h"

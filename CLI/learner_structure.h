@@ -8,7 +8,7 @@
 #ifndef STRUCTURE_OPTIMIZER_H
 #define	STRUCTURE_OPTIMIZER_H
 
-#include "utils_main.h"
+#include "learner_parameters.h"
 #include "score_cache.h"
 #include "structure_optimizer.h"
 #include "structure_optimizer_creator.h"
