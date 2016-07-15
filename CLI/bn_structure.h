@@ -19,8 +19,12 @@ namespace datastructures {
 			BNStructure( int size ) ;
 			BNStructure( structureoptimizer::PermutationSet order ,
 						std::vector<bestscorecalculators::BestScoreCalculator*> &bsc ) ;
+			BNStructure( std::vector<bestscorecalculators::BestScoreCalculator*> &bsc ,
+							bool calculateEdgeWeights = false ) ;
 			
 			structureoptimizer::Node* operator []( int index ) ;
+			
+			void print() ;
 			
 			float getScore() ;
 			
@@ -30,9 +34,12 @@ namespace datastructures {
 			
 			void setParents( int indexnode , varset parents , float score ) ;
 			
+			float getMeanInDegree() ;
+			int getMaxInDegree() ;
+			
 		private :
 			std::vector<structureoptimizer::Node*> nodes ;
-			float score ;
+			float structureScore ;
 			int variableCount ;
 	} ;
 }
