@@ -54,7 +54,8 @@ void structureoptimizer::GreedySearch::setFileParameters( std::map<std::string,s
 void structureoptimizer::GreedySearch::printParameters(){
 	printf( "Max number of iterations: %d\n" , maxIterations ) ;
 	printf( "Perturb solutions: %s\n" , performSolutionPerturbation ? "true" : "false" ) ;
-	printf( "Num. of perturbation swaps: %d\n" , numPerturbationSwaps ) ;
+	if( performSolutionPerturbation )
+		printf( "Num. of perturbation swaps: %d\n" , numPerturbationSwaps ) ;
 }
 
 datastructures::BNStructure structureoptimizer::GreedySearch::search( int numSolutions ){
@@ -63,7 +64,7 @@ datastructures::BNStructure structureoptimizer::GreedySearch::search( int numSol
 		structureoptimizer::PermutationSet current = initializer->generate() ;
 		printf( " ======== Greedy Search ======== \n" ) ;
 		printf(" === Iteration %d ===\n" , 0 ) ;
-		current.print() ;
+		current.print( true ) ;
 		numIterations = 0 ;
 		for(int i = 0 ; i < maxIterations ; i++){
 			structureoptimizer::PermutationSet bestNeighbor = findBestNeighbor( current ) ;
