@@ -47,8 +47,8 @@ OBJECTFILES= \
 	${OBJECTDIR}/greedy_search.o \
 	${OBJECTDIR}/greedy_selection.o \
 	${OBJECTDIR}/independence_selection.o \
+	${OBJECTDIR}/learner.o \
 	${OBJECTDIR}/log_likelihood_calculator.o \
-	${OBJECTDIR}/main_learner.o \
 	${OBJECTDIR}/parent_set_selection.o \
 	${OBJECTDIR}/permutation_set.o \
 	${OBJECTDIR}/random_initializer.o \
@@ -146,15 +146,15 @@ ${OBJECTDIR}/independence_selection.o: independence_selection.cpp
 	${RM} "$@.d"
 	$(COMPILE.cc) -O3 -s -I/usr/local/include -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/independence_selection.o independence_selection.cpp
 
+${OBJECTDIR}/learner.o: learner.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O3 -s -I/usr/local/include -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/learner.o learner.cpp
+
 ${OBJECTDIR}/log_likelihood_calculator.o: log_likelihood_calculator.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -O3 -s -I/usr/local/include -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/log_likelihood_calculator.o log_likelihood_calculator.cpp
-
-${OBJECTDIR}/main_learner.o: main_learner.cpp 
-	${MKDIR} -p ${OBJECTDIR}
-	${RM} "$@.d"
-	$(COMPILE.cc) -O3 -s -I/usr/local/include -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/main_learner.o main_learner.cpp
 
 ${OBJECTDIR}/parent_set_selection.o: parent_set_selection.cpp 
 	${MKDIR} -p ${OBJECTDIR}

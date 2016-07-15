@@ -30,10 +30,10 @@
         <itemPath>initializer_creator.h</itemPath>
         <itemPath>random_initializer.h</itemPath>
       </logicalFolder>
-      <logicalFolder name="f5" displayName="main" projectFiles="true">
-        <itemPath>parent_set_selection_main.h</itemPath>
-        <itemPath>structure_optimizer_main.h</itemPath>
-        <itemPath>utils_main.h</itemPath>
+      <logicalFolder name="f5" displayName="learner" projectFiles="true">
+        <itemPath>learner_parameters.h</itemPath>
+        <itemPath>learner_pselection.h</itemPath>
+        <itemPath>learner_structure.h</itemPath>
       </logicalFolder>
       <logicalFolder name="f4" displayName="parentselection" projectFiles="true">
         <itemPath>greedy_selection.h</itemPath>
@@ -112,7 +112,7 @@
         <itemPath>simulated_annealing.cpp</itemPath>
         <itemPath>structure_optimizer.cpp</itemPath>
       </logicalFolder>
-      <itemPath>main_learner.cpp</itemPath>
+      <itemPath>learner.cpp</itemPath>
     </logicalFolder>
     <logicalFolder name="TestFiles"
                    displayName="Test Files"
@@ -233,11 +233,17 @@
       </item>
       <item path="initializer_creator.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="learner.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="learner_parameters.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="learner_pselection.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="learner_structure.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="log_likelihood_calculator.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="log_likelihood_calculator.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="main_learner.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="node.h" ex="false" tool="3" flavor2="0">
       </item>
@@ -246,8 +252,6 @@
       <item path="parent_set_selection.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="parent_set_selection_creator.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="parent_set_selection_main.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="permutation_set.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -297,13 +301,9 @@
       </item>
       <item path="structure_optimizer_creator.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="structure_optimizer_main.h" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="typedefs.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="utils.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="utils_main.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="variable.h" ex="false" tool="3" flavor2="0">
       </item>
@@ -413,11 +413,17 @@
       </item>
       <item path="initializer_creator.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="learner.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="learner_parameters.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="learner_pselection.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="learner_structure.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="log_likelihood_calculator.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="log_likelihood_calculator.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="main_learner.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="node.h" ex="false" tool="3" flavor2="0">
       </item>
@@ -426,8 +432,6 @@
       <item path="parent_set_selection.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="parent_set_selection_creator.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="parent_set_selection_main.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="permutation_set.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -477,13 +481,9 @@
       </item>
       <item path="structure_optimizer_creator.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="structure_optimizer_main.h" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="typedefs.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="utils.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="utils_main.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="variable.h" ex="false" tool="3" flavor2="0">
       </item>
