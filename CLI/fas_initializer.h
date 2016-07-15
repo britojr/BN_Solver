@@ -10,6 +10,7 @@
 
 #include <vector>
 
+#include "bn_structure.h"
 #include "node.h"
 #include "best_score_calculator.h"
 #include "initializer.h"
@@ -29,12 +30,11 @@ namespace initializers {
 			std::vector<int> traverse( int index ) ;
 			void removeFeedbackArcSet() ;
 			bool hasCycle() ;
-			void printGraph() ;
 			
 			varset unvisitedVariables ;
-			std::vector<structureoptimizer::Node*> nodes ;
 			std::vector<edge> cycle ;
-			std::vector<int> inGrades ;
+			std::vector<int> inDegree ;
+			datastructures::BNStructure H ;
 	} ;
 }
 
