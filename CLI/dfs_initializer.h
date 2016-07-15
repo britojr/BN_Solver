@@ -12,6 +12,7 @@
 
 #include <vector>
 
+#include "bn_structure.h"
 #include "node.h"
 #include "typedefs.h"
 #include "permutation_set.h"
@@ -32,7 +33,7 @@ namespace initializers {
 			void updateNodeWeights() ;
 			int getUnvisitedInDegree( int n ) ;
 			
-			std::vector<structureoptimizer::Node*> nodes ;
+			datastructures::BNStructure H ;
 			varset unvisitedVariables ;
 			std::vector<hnode> unvisitedNodes ;
 	} ;

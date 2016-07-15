@@ -1,5 +1,5 @@
 /* 
- * File:   DFSInitializer.cpp
+ * File:   dfs_initializer.cpp
  * Author: nonwhite
  * 
  * Created on 26 de enero de 2016, 05:00 PM
@@ -11,6 +11,7 @@
 #include "node.h"
 #include "dfs_initializer.h"
 #include "utils.h"
+#include "bn_structure.h"
 
 initializers::DFSInitializer::DFSInitializer(){
 	// Do nothing
@@ -27,35 +28,10 @@ initializers::DFSInitializer::~DFSInitializer(){
 }
 
 void initializers::DFSInitializer::initialize(){
-	// Initialize adjacent lists
-	nodes.clear() ;
-	for(int i = 0 ; i < variableCount ; i++){
-		structureoptimizer::Node* var = new structureoptimizer::Node( i , variableCount ) ;
-		nodes.push_back( var ) ;
-	}
-
-	printf("Getting best possible parents for every variable\n" ) ;
-	VARSET_NEW( all , variableCount ) ;
-	VARSET_SET_ALL( all , variableCount ) ;
-	float totalScore = 0. , indegree = 0. ;
-	for(int i = 0 ; i < variableCount ; i++){
-		VARSET_CLEAR( all , i ) ;
-
-		float score = bestScoreCalculators[ i ]->getScore( all ) ; 
-		nodes[ i ]->setScore( score ) ;
-		varset parents = bestScoreCalculators[ i ]->getParents() ;
-		nodes[ i ]->setParents( parents ) ;
-		indegree += cardinality( parents ) ;
-		for(int j = 0 ; j < variableCount ; j++){
-			if( !VARSET_GET( parents , j ) ) continue ;
-			nodes[ j ]->addChild( i ) ;
-		}
-		totalScore += score ;
-
-		VARSET_SET( all , i ) ;
-	}
-	printf("sc( H^* ) = %.3f\n" , -totalScore ) ;
-	printf("m/n = %.2f\n" , indegree / variableCount ) ;
+	// Get the cyclic graph H
+	H = datastructures::BNStructure( bestScoreCalculators ) ;
+	printf("sc( H^* ) = %.3f\n" , -H.getScore() ) ;
+	printf("m/n = %.3f\n" , H.getMeanInDegree() ) ;
 }
 
 bool cmpNodes( hnode node1 , hnode node2 ){
@@ -69,8 +45,8 @@ bool cmpNodes( hnode node1 , hnode node2 ){
 }
 
 structureoptimizer::PermutationSet initializers::DFSInitializer::generate(){
-	this->unvisitedVariables = varset( variableCount ) ;
-	VARSET_SET_ALL( this->unvisitedVariables , variableCount ) ;
+	unvisitedVariables = varset( variableCount ) ;
+	VARSET_SET_ALL( unvisitedVariables , variableCount ) ;
 
 	// Traverse graph and obtain an order
 	std::vector<int> order ;
@@ -98,14 +74,15 @@ void initializers::DFSInitializer::updateNodeWeights(){
 	unvisitedNodes.clear() ;
 	std::vector<int> indegree( variableCount ) ;
 	for(int i = 0 ; i < variableCount ; i++)
-		indegree.push_back( getUnvisitedInDegree( i ) ) ;
+		indegree[ i ] = getUnvisitedInDegree( i ) ;
 	for(int i = 0 ; i < variableCount ; i++){
 		if( VARSET_GET( unvisitedVariables , i ) ){
-			std::vector<int> children = nodes[ i ]->getChildrenVector() ;
+			std::vector<int> children = H[ i ]->getChildrenVector() ;
 			int h = 1 ;
 			for(int j = 0 ; j < children.size() ; j++){
-				if( indegree[ children[ j ] ] == 0 ) continue ;
-				h *= ( indegree[ children[ j ] ] - 1 ) ;
+				int ch = children[ j ] ;
+				if( indegree[ ch ] == 0 ) continue ;
+				h *= ( indegree[ ch ] - 1 ) ;
 			}
 			unvisitedNodes.push_back( PAIR( i , PAIR( indegree[ i ] , h ) ) ) ;
 		}
@@ -113,6 +90,6 @@ void initializers::DFSInitializer::updateNodeWeights(){
 }
 
 int initializers::DFSInitializer::getUnvisitedInDegree( int n ){
-	varset currentParents = VARSET_AND( nodes[ n ]->getParents() , unvisitedVariables ) ;
+	varset currentParents = VARSET_AND( H[ n ]->getParents() , unvisitedVariables ) ;
 	return cardinality( currentParents ) ;
 }
