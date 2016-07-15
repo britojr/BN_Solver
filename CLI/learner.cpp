@@ -6,8 +6,8 @@
  */
 #include <boost/program_options.hpp>
 
-#include "parent_set_selection_main.h"
-#include "structure_optimizer_main.h"
+#include "learner_pselection.h"
+#include "learner_structure.h"
 
 namespace po = boost::program_options ;
 
@@ -124,7 +124,8 @@ int main( int argc , char** argv ){
 	}
 
 	printf( " ============================== BN_LEARNING ============================== \n" ) ;
-	datasetFile = ( stepsToPerform & PERFORM_SCORE_CALCULATION ? datasetFile : "NO SPECIFIED" ) ;
+	datasetFile = ( datasetFile.size() == 0 ? "NO SPECIFIED" : datasetFile ) ;
+	bnetFile = ( bnetFile.size() == 0 ? "NO SPECIFIED" : bnetFile ) ;
 	printf( "Dataset file: '%s'\n" , datasetFile.c_str() ) ;
 	printf( "Score file: '%s'\n" , scoresFile.c_str() ) ;
 	printf( "Bnet file: '%s'\n" , bnetFile.c_str() ) ;
