@@ -13,11 +13,10 @@ struct compareSecond {
 	bool operator()(std::pair<varset, float> lhs, std::pair<varset, float> rhs) const {
 		float val = lhs.second - rhs.second;
 
-		if (fabs(val) > 2 * std::numeric_limits<float>::epsilon()) {
-			return val > 0;
+		if( fabs( val ) > 2 * std::numeric_limits<float>::epsilon() ){
+			return val > 0 ;
 		}
-
-		return lhs.first < rhs.first;
+		return lhs.first < rhs.first ;
 	}
 } comparatorPrune ;
 
@@ -83,7 +82,7 @@ void parentselection::ParentSetSelection::calculateScores( int variable , FloatM
 		workerThread.join() ;
 		io_t.stop() ;
 	}else{
-		printf("I am executing without time limit\n" ) ;
+		printf( "I am executing without time limit\n" ) ;
 		calculateScores_internal( variable , pruned , cache ) ;
 	}
 }
