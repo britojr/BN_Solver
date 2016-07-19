@@ -28,11 +28,8 @@ namespace initializers {
 
 		private :
 			std::vector<int> traverse( int index ) ;
-			void removeFeedbackArcSet() ;
-			bool hasCycle() ;
 			
 			varset unvisitedVariables ;
-			std::vector<edge> cycle ;
 			std::vector<int> inDegree ;
 			datastructures::BNStructure H ;
 	} ;
