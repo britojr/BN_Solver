@@ -26,6 +26,7 @@
         <itemPath>bfirst_initializer.h</itemPath>
         <itemPath>dfs_initializer.h</itemPath>
         <itemPath>fas_initializer.h</itemPath>
+        <itemPath>fas_solver.h</itemPath>
         <itemPath>initializer.h</itemPath>
         <itemPath>initializer_creator.h</itemPath>
         <itemPath>random_initializer.h</itemPath>
@@ -215,6 +216,8 @@
       </item>
       <item path="fas_initializer.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="fas_solver.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="files.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="greedy_search.cpp" ex="false" tool="1" flavor2="0">
@@ -394,6 +397,8 @@
       <item path="fas_initializer.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="fas_initializer.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="fas_solver.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="files.h" ex="false" tool="3" flavor2="0">
       </item>
