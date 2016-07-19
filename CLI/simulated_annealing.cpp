@@ -25,7 +25,7 @@ structureoptimizer::SimulatedAnnealing::SimulatedAnnealing( initializers::Initia
 }
 
 void structureoptimizer::SimulatedAnnealing::setDefaultParameters(){
-	this->maxIterations = 500 ;
+	this->maxIterations = 10000 ;
 	this->t_max = 2500.0 ;
 	this->t_min = 5.0 ;
 }
@@ -58,18 +58,16 @@ datastructures::BNStructure structureoptimizer::SimulatedAnnealing::search( int 
 		printf( " ======== Simulated Annealing ======== \n" ) ;
 		structureoptimizer::PermutationSet current = initializer->generate() ;
 		printf(" === Iteration %d ===\n" , 0 ) ;
-		current.print() ;
+		current.print( true ) ;
 		for(int i = 0 ; i < maxIterations ; i++){
 			printf(" === Iteration %d ===\n" , i+1 ) ;
-//			current.print() ;
 			float temperature = t_max * exp( cooling_rate * i / maxIterations ) ;
-			structureoptimizer::PermutationSet move = neighbour( current ) ;
-			float accProb = acceptanceProbability( current , move , temperature ) ;
-			if( compare( accProb , random_generator( gen ) ) >= 0 ){
-				current = move ;
-				if( best.size() == 0 || current.isBetter( best ) )
-					best = current ;
-			}
+			structureoptimizer::PermutationSet neigh = neighbour( current ) ;
+			float accProb = acceptanceProbability( current , neigh , temperature ) ;
+			if( compare( accProb , random_generator( gen ) ) >= 0 )
+				current = neigh ;
+			if( best.size() == 0 || current.isBetter( best ) )
+				best = current ;
 			best.print() ;
 		}
 	}
@@ -84,11 +82,11 @@ structureoptimizer::PermutationSet structureoptimizer::SimulatedAnnealing::neigh
 }
 
 float structureoptimizer::SimulatedAnnealing::acceptanceProbability( structureoptimizer::PermutationSet oldState ,
-												structureoptimizer::PermutationSet newState ,
-												float temperature ){
+																	structureoptimizer::PermutationSet newState ,
+																	float temperature ){
+	if( newState.isBetter( oldState ) ) return 1.0 ;
 	float oldEnergy = oldState.getScore() ;
 	float newEnergy = newState.getScore() ;
 	float diffE = newEnergy - oldEnergy ;
-	if( compare( diffE ) < 0 ) return 1.0 ;
 	return exp( -diffE / temperature ) ;
 }
