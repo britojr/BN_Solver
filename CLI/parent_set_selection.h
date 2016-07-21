@@ -35,7 +35,6 @@ namespace parentselection {
 			int variableCount ;
 			int runningTime ;
 			scoring::Constraints *constraints ;
-			int highestCompletedLayer ;
 	} ;
 }
 

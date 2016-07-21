@@ -10,8 +10,8 @@
 #include "parent_set_selection.h"
 
 struct compareSecond {
-	bool operator()(std::pair<varset, float> lhs, std::pair<varset, float> rhs) const {
-		float val = lhs.second - rhs.second;
+	bool operator()( std::pair<varset,float> lhs , std::pair<varset,float> rhs ) const {
+		float val = lhs.second - rhs.second ;
 
 		if( fabs( val ) > 2 * std::numeric_limits<float>::epsilon() ){
 			return val > 0 ;
@@ -33,12 +33,6 @@ void parentselection::ParentSetSelection::prune( FloatMap &cache ){
 		if( prunedSets.test( i ) ) continue ;
 
 		varset pi = pairs[ i ].first ;
-
-		// make sure this variable set is not in an incomplete last layer
-		if( cardinality( pi ) > highestCompletedLayer ){
-			prunedSets.set( i ) ;
-			continue ;
-		}
 
 		for( int j = i + 1 ; j < pairs.size() ; j++){
 			if( prunedSets.test( j ) ) continue ;
