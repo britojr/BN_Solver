@@ -1,6 +1,7 @@
 # Other files
 dist/
 build/
+CLI/test.pss
 
 # Compiled Object files
 *.slo
