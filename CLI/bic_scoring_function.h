@@ -5,8 +5,8 @@
  * Created on November 23, 2012, 9:15 PM
  */
 
-#ifndef MDL_SCORE_CALCULATOR_H
-#define	MDL_SCORE_CALCULATOR_H
+#ifndef BIC_SCORING_FUNCTION_H
+#define	BIC_SCORING_FUNCTION_H
 
 #include <stdint.h>
 #include <vector>
@@ -31,17 +31,14 @@ namespace scoring {
 								Constraints *constraints ,
 								bool enableDeCamposPruning ) ;
 
-			~BICScoringFunction(){
-				// no pointers
-			}
+			~BICScoringFunction() ;
 
 			float calculateScore( int variable , varset parents , 
 									FloatMap &pruned , FloatMap &cache ) ;
 			approxStruct approximateScore( int variable , varset parents ,
 											FloatMap &pruned , FloatMap &cache ) ;
-			float getFromApproximation( int variable , varset &p1 , varset &p2 ,
-										float approxValue , FloatMap &pruned ,
-										FloatMap &cache ) ;
+			float getFromApproximation( int variable , approxStruct &approximation , 
+										FloatMap &pruned , FloatMap &cache ) ;
 
 		private:
 			float t( int variable , varset parents ) ;
@@ -58,4 +55,4 @@ namespace scoring {
 	} ;
 }
 
-#endif	/* MDL_SCORE_CALCULATOR_H */
+#endif	/* BIC_SCORING_FUNCTION_H */

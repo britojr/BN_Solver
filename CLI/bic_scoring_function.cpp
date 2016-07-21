@@ -1,25 +1,35 @@
 /* 
- * File:   mdl_score_calculator.cpp
+ * File:   bic_scoring_function.cpp
  * Author: malone
+ * Modified by: nonwhite
  * 
  * Created on November 23, 2012, 9:15 PM
+ * Last Modified on July 21, 2016
  */
 
 #include "typedefs.h"
 #include "bic_scoring_function.h"
 #include "log_likelihood_calculator.h"
 
-scoring::BICScoringFunction::BICScoringFunction(datastructures::BayesianNetwork &network, datastructures::RecordFile &recordFile, LogLikelihoodCalculator *llc, scoring::Constraints *constraints, bool enableDeCamposPruning) {
-	this->network = network;
-	this->baseComplexityPenalty = log(recordFile.size()) / 2;
+scoring::BICScoringFunction::BICScoringFunction( datastructures::BayesianNetwork &network ,
+												datastructures::RecordFile &recordFile ,
+												LogLikelihoodCalculator *llc ,
+												scoring::Constraints *constraints ,
+												bool enableDeCamposPruning ){
+	this->network = network ;
+	this->baseComplexityPenalty = log( recordFile.size() ) / 2 ;
 	this->recordFileSize = recordFile.size() ;
-	this->constraints = constraints;
+	this->constraints = constraints ;
 
-	this->llc = llc;
-	this->enableDeCamposPruning = enableDeCamposPruning;
+	this->llc = llc ;
+	this->enableDeCamposPruning = enableDeCamposPruning ;
 }
 
-float scoring::BICScoringFunction::t(int variable, varset parents) {
+scoring::BICScoringFunction::~BICScoringFunction(){
+	// no pointers
+}
+
+float scoring::BICScoringFunction::t( int variable , varset parents ){
 	float penalty = network.getCardinality(variable) - 1;
 
 	for (int pa = 0; pa < network.size(); pa++) {
@@ -37,7 +47,7 @@ float scoring::BICScoringFunction::calculateScore( int variable , varset parents
 	auto s = cache.find( parents ) ;
 	if( s != cache.end() ) return cache[ parents ] ;
 	
-	// check if this violates the constraints
+	// Check if this violates the constraints
 	if( constraints != NULL && !constraints->satisfiesConstraints( variable , parents ) ){
 		invalidParents.insert( parents ) ;
 		return 1 ;
@@ -79,11 +89,10 @@ float scoring::BICScoringFunction::calculateScore( int variable , varset parents
 		}
 	}
 
-	float score = llc->calculate(variable, parents);
+	float score = llc->calculate( variable , parents ) ;
 	// structure penalty
-	score -= tVal * baseComplexityPenalty;
-
-	return score;
+	score -= tVal * baseComplexityPenalty ;
+	return score ;
 }
 
 approxStruct scoring::BICScoringFunction::approximateScore( int variable , varset parents ,
@@ -136,12 +145,13 @@ approxStruct scoring::BICScoringFunction::approximateScore( int variable , varse
 	return PAIR( approxScore , PAIR( p1 , p2 ) ) ;
 }
 
-float scoring::BICScoringFunction::getFromApproximation( int variable , varset &p1 , varset &p2 , 
-														float approxValue , FloatMap &pruned ,
+float scoring::BICScoringFunction::getFromApproximation( int variable ,
+														approxStruct &approximation ,
+														FloatMap &pruned ,
 														FloatMap &cache ){
 	VARSET_NEW( parents , network.size() ) ;
-	VARSET_OR( parents , p1 ) ;
-	VARSET_OR( parents , p2 ) ;
+	VARSET_OR( parents , approximation.second.first ) ;
+	VARSET_OR( parents , approximation.second.second ) ;
 	return calculateScore( variable , parents , pruned , cache ) ;
 	// BIC( X , p1 U p2 ) = BIC*( X , p1 , p2 ) + N * ii( p1 , p2 , X )
 //    float interInfo = llc->interactionInformation( p1 , p2 , variable ) ;
