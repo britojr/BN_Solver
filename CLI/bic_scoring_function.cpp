@@ -134,8 +134,13 @@ approxStruct scoring::BICScoringFunction::approximateScore( int variable , varse
 
 	// inter( X , p1 , p2 ) = log( N ) / 2 ( |X| - 1 ) ( |p1| + |p2| - |p1||p2| - 1 ) - BIC( X , empty )
 	float cardVar = network.getCardinality( variable ) ;
-	float cardP1 = cardinality( p1 ) ;
-	float cardP2 = cardinality( p2 ) ;
+	float cardP1 = 1. , cardP2 = 1. ;
+	for(int i = 0 ; i < variableCount ; i++){
+		if( VARSET_GET( p1 , i ) )
+			cardP1 *= network.getCardinality( i ) ;
+		if( VARSET_GET( p2 , i ) )
+			cardP2 *= network.getCardinality( i ) ;
+	}
 	VARSET_NEW( empty , variableCount ) ;
 	VARSET_CLEAR_ALL( empty ) ;
 	float inter = baseComplexityPenalty * ( cardVar - 1 ) * ( cardP1 + cardP2 - cardP1 * cardP2 - 1 ) - cache[ empty ] ;
@@ -156,5 +161,6 @@ float scoring::BICScoringFunction::getFromApproximation( int variable ,
 	// BIC( X , p1 U p2 ) = BIC*( X , p1 , p2 ) + N * ii( p1 , p2 , X )
 //    float interInfo = llc->interactionInformation( p1 , p2 , variable ) ;
 //    float N = recordFileSize ;
-//    return approxValue + N * interInfo ;
+//	float approxScore = approximation.first ;
+//    return approxScore + N * interInfo ;
 }
