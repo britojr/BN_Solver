@@ -30,16 +30,16 @@ void parentselection::IndependenceSelection::calculateScores_internal( int varia
 	
 	while( !open.empty() && !outOfTime ){
 		// Get best approx score
-		approxStruct best = open.top() ; open.pop() ;
-		varset p1 = best.second.first ;
-		varset p2 = best.second.second ;
-		float approxValue = best.first ;
+		approxStruct approximation = open.top() ; open.pop() ;
+		varset p1 = approximation.second.first ;
+		varset p2 = approximation.second.second ;
+		float approxScore = approximation.first ;
 
 		// Get real score from approximation
 		VARSET_NEW( parents , variableCount ) ;
 		VARSET_OR( parents , p1 ) ;
 		VARSET_OR( parents , p2 ) ;
-		float score = scoringFunction->getFromApproximation( variable , p1 , p2 , approxValue , pruned , cache ) ;
+		float score = scoringFunction->getFromApproximation( variable , approximation , pruned , cache ) ;
 		if( compare( score ) < 0 ){
 			cache[ parents ] = score ;
 		}
