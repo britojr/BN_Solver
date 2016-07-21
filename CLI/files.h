@@ -104,7 +104,8 @@ inline void concatenateScoreFiles( std::string outputFile , std::map<std::string
 
 	// first, the header information
 	std::string header = "META pss_version = 0.1\n" ;
-	header += "META input_file=" + metadata[ "inputFile" ] + "\n" ;
+	header += "META input_file=" + metadata[ "datasetFile" ] + "\n" ;
+	header += "META num_variables=" + metadata[ "variableCount" ] + "\n" ;
 	header += "META num_records=" + metadata[ "numRecords" ] + "\n" ;
 	header += "META parent_limit=" + metadata[ "maxParents" ] + "\n" ;
 	header += "META score_type=" + metadata[ "scoringFunction" ] + "\n" ;
