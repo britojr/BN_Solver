@@ -20,9 +20,8 @@ namespace scoring {
 											FloatMap &pruned , FloatMap &cache ) = 0 ;
 			virtual approxStruct approximateScore( int variable , varset parents ,
 													FloatMap &pruned , FloatMap &cache) = 0 ;
- 			virtual float getFromApproximation( int variable , varset &p1 , varset &p2 ,
-												float approxValue , FloatMap &pruned ,
-												FloatMap &cache ) = 0 ;
+ 			virtual float getFromApproximation( int variable , approxStruct &approximation ,
+												FloatMap &pruned , FloatMap &cache ) = 0 ;
 
 	} ;
 }
