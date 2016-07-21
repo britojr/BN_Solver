@@ -23,7 +23,7 @@ datastructures::BayesianNetwork::~BayesianNetwork() {
 }
 
 void datastructures::BayesianNetwork::initialize(datastructures::RecordFile &recordFile) {
-	printf("recordFile.getRecords()[0].size(): %d\n", recordFile.getRecords()[0].size());
+	printf("Num. of variables: %d\n", recordFile.getRecords()[0].size());
 	for (int i = 0; i < recordFile.getRecords()[0].size(); i++) {
 		datastructures::Variable *v = new datastructures::Variable(this, i);
 		variables.push_back(v);
