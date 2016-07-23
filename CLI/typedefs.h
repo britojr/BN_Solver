@@ -289,7 +289,7 @@ typedef struct BitSetStruct bitset;
 #include <boost/unordered_map.hpp>
 //typedef boost::unordered_map<varset, Node*> NodeMap;
 //typedef boost::unordered_map<varset, DFSNode*> DFSNodeMap;
-typedef boost::unordered_map<varset, float> FloatMap;
+typedef boost::unordered_map<varset,float> FloatMap;
 
 
 #elif defined GOOGLE_SPARSE_MAP
@@ -341,5 +341,6 @@ typedef std::pair<float,pii> edge ;
 typedef std::pair<int,pii> hnode ; // ID node, in-degree, product of children's in-degrees
 
 typedef std::pair<float,std::pair<varset,varset> > approxStruct ;
+typedef boost::unordered_map<varset,approxStruct> ApproxMap ;
 
 #endif	/* TYPEDEFS_H */
