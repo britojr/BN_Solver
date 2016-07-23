@@ -36,7 +36,8 @@ namespace scoring {
 			float calculateScore( int variable , varset parents , 
 									FloatMap &pruned , FloatMap &cache ) ;
 			approxStruct approximateScore( int variable , varset parents ,
-											FloatMap &pruned , FloatMap &cache ) ;
+											FloatMap &pruned , FloatMap &cache ,
+											ApproxMap &openCache ) ;
 			float getFromApproximation( int variable , approxStruct &approximation , 
 										FloatMap &pruned , FloatMap &cache ) ;
 
