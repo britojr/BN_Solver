@@ -41,6 +41,7 @@ namespace datastructures {
 			Variable *addVariable(std::string name);
 
 			int getCardinality(int variable);
+			int getCardinality( varset set ) ;
 			int getMaxCardinality();
 
 			std::vector< std::vector< bitset > > getConsistentRecords(RecordFile &recordFile);

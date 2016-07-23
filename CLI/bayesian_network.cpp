@@ -130,6 +130,14 @@ int datastructures::BayesianNetwork::getCardinality(int variable) {
 	return variables[variable]->getCardinality();
 }
 
+int datastructures::BayesianNetwork::getCardinality( varset set ){
+	float card = 1. ;
+	for(int i = 0 ; i < size() ; i++)
+		if( VARSET_GET( set , i ) )
+			card *= getCardinality( i ) ;
+	return card ;
+}
+
 int datastructures::BayesianNetwork::getMaxCardinality() {
 	int max = 0;
 	for(int i = 0; i < size(); i++) {
