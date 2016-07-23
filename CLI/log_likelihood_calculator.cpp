@@ -10,12 +10,17 @@ scoring::LogLikelihoodCalculator::LogLikelihoodCalculator( scoring::ADTree *adTr
 	initialize( adTree , network , ilogi ) ;
 }
 
+scoring::LogLikelihoodCalculator::~LogLikelihoodCalculator(){
+	// no pointers that aren't deleted elsewhere	
+}
+
 void scoring::LogLikelihoodCalculator::initialize( ADTree *adTree ,
 												datastructures::BayesianNetwork& network ,
 												std::vector<float>& ilogi ){
 	this->adTree = adTree ;
 	this->network = network ;
 	this->ilogi = ilogi ;
+	this->recordFileSize = ilogi.size() - 2 ;
 }
 
 float scoring::LogLikelihoodCalculator::calculate( int variable , varset& parents ){
@@ -45,7 +50,7 @@ float scoring::LogLikelihoodCalculator::calculate( int variable , varset& parent
 
 void scoring::LogLikelihoodCalculator::calculate( ContingencyTableNode *ct ,
 												uint64_t base , uint64_t index ,
-												boost::unordered_map<uint64_t, int> &paCounts ,
+												boost::unordered_map<uint64_t,int> &paCounts ,
 												int variable , varset variables ,
 												int previousVariable , float &score ){
 	// if this is a leaf
@@ -86,18 +91,14 @@ void scoring::LogLikelihoodCalculator::calculate( ContingencyTableNode *ct ,
 	}
 }
 
-float scoring::LogLikelihoodCalculator::interactionInformation( varset& p1 , varset& p2 , int variable ){
-	float uncond = mutualInformation( p1 , p2 ) ;
-	float cond = mutualInformation( p1 , p2 , variable ) ;
-	return cond - uncond ;
-}
-
-float scoring::LogLikelihoodCalculator::mutualInformation( varset &p1 , varset &p2 ){
-	// TODO: Implement this
-	return 0.0 ;
-}
-
-float scoring::LogLikelihoodCalculator::mutualInformation( varset &p1 , varset &p2 , int variable ){
-	// TODO: Implement this
-	return 0.0 ;
+float scoring::LogLikelihoodCalculator::interactionInformation( varset &p1 , varset &p2 , int variable ){
+	// I( X , p1 , p2 ) = I( X , p1 | p2 ) - I( X , p1 )
+	// I( X , p1 , p2 ) = [ H( X | p2 ) - H( X | p1+p2 ) ] - [ H( X | empty ) - H( X | p1 ) ]
+	VARSET_NEW( set , network.size() ) ;
+	VARSET_OR( set , p1 ) ;
+	VARSET_OR( set , p2 ) ;
+	float cond = calculate( variable , p2 ) - calculate( variable , set ) ;
+	VARSET_CLEAR_ALL( set ) ;
+	float unco = calculate( variable , set ) - calculate( variable , p1 ) ;
+	return -( cond - unco ) / recordFileSize ;
 }
