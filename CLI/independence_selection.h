@@ -30,7 +30,7 @@ namespace parentselection {
 			void initialize( int variable , FloatMap &pruned , FloatMap &cache ) ;
 
 			std::priority_queue<approxStruct,std::vector<approxStruct>,compareIndependence> open ;
-			FloatMap openCache ;
+			ApproxMap openCache ;
 	} ;
 }
 

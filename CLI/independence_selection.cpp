@@ -27,7 +27,6 @@ parentselection::IndependenceSelection::IndependenceSelection( scoring::ScoringF
 void parentselection::IndependenceSelection::calculateScores_internal( int variable , FloatMap &pruned , FloatMap& cache ){
 	// Get possible parents for variable based on constraints
 	std::vector<int> options = constraints->getPossibleParents( variable ) ;
-	
 	while( !open.empty() && !outOfTime ){
 		// Get best approx score
 		approxStruct approximation = open.top() ; open.pop() ;
@@ -50,17 +49,20 @@ void parentselection::IndependenceSelection::calculateScores_internal( int varia
 		VARSET_NEW( superset , variableCount ) ;
 		superset = parents ;
 		for(int i = 0 ; i < options.size() && !outOfTime ; i++){
-			if( options[ i ] == variable ) continue ;
-			VARSET_SET( superset , options[ i ] ) ;
+			int nextVar = options[ i ] ;
+			if( nextVar == variable ) continue ;
+			VARSET_SET( superset , nextVar ) ;
 			// Expand only if it is not already visited/calculated
-			if( constraints->satisfiesConstraints( variable , parents ) ){
+			if( constraints->satisfiesConstraints( variable , superset ) ){
 				if( !cache.count( superset ) && !openCache.count( superset ) ){
-					approxStruct approximation = scoringFunction->approximateScore( variable , superset , pruned , cache ) ;
-					open.push( approximation ) ;
-					openCache[ superset ] = 0.0 ;
+					approxStruct approximation = scoringFunction->approximateScore( variable , superset , pruned , cache , openCache ) ;
+					if( compare( approximation.first ) < 0 ){
+						open.push( approximation ) ;
+						openCache[ superset ] = approximation ;
+					}
 				}
 			}
-			VARSET_CLEAR( superset , options[ i ] ) ;
+			VARSET_CLEAR( superset , nextVar ) ;
 		}
 	}
 	openCache.clear() ;
@@ -110,10 +112,10 @@ void parentselection::IndependenceSelection::initialize( int variable , FloatMap
 			if( options[ j ] == variable ) continue ;
 			VARSET_SET( parents , options[ j ] ) ;
 			if( constraints->satisfiesConstraints( variable , parents ) ){
-				approxStruct approximation = scoringFunction->approximateScore( variable , parents , pruned , cache ) ;
-				if( compare( approximation.first ) < 0 ){
+				approxStruct approximation = scoringFunction->approximateScore( variable , parents , pruned , cache , openCache ) ;
+				if( compare( approximation.first ) < 0 ){ // Check if it was not pruned
 					open.push( approximation ) ;
-					openCache[ parents ] = 0.0 ;
+					openCache[ parents ] = approximation ;
 				}
 			}
 			VARSET_CLEAR( parents , options[ j ] ) ;
