@@ -32,11 +32,7 @@ scoring::BICScoringFunction::~BICScoringFunction(){
 
 float scoring::BICScoringFunction::t( int variable , varset parents ){
 	float penalty = network.getCardinality( variable ) - 1 ;
-	for(int pa = 0; pa < network.size(); pa++){
-		if( VARSET_GET( parents , pa ) ){
-			penalty *= network.getCardinality( pa ) ;
-		}
-	}
+	penalty *= network.getCardinality( parents ) ;
 	return penalty ;
 }
 

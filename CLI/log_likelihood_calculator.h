@@ -28,7 +28,7 @@ namespace scoring {
 			float calculate( int variable , varset &parents ,
 							boost::unordered_map<uint64_t,int> &paCounts ) ;
 			float interactionInformation( varset &p1 , varset &p2 , int variable ) ;
-
+			
 			static std::vector<float> getLogCache( int recordCount ){
 				std::vector<float> logCache;
 				logCache.push_back( 0.0f ) ;

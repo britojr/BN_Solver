@@ -1,7 +1,7 @@
 #include "log_likelihood_calculator.h"
 
 scoring::LogLikelihoodCalculator::LogLikelihoodCalculator() {
-	// nothing
+	// Do nothing
 }
 
 scoring::LogLikelihoodCalculator::LogLikelihoodCalculator( scoring::ADTree *adTree ,
@@ -11,7 +11,7 @@ scoring::LogLikelihoodCalculator::LogLikelihoodCalculator( scoring::ADTree *adTr
 }
 
 scoring::LogLikelihoodCalculator::~LogLikelihoodCalculator(){
-	// no pointers that aren't deleted elsewhere	
+	// Do nothing
 }
 
 void scoring::LogLikelihoodCalculator::initialize( ADTree *adTree ,
@@ -24,7 +24,7 @@ void scoring::LogLikelihoodCalculator::initialize( ADTree *adTree ,
 }
 
 float scoring::LogLikelihoodCalculator::calculate( int variable , varset& parents ){
-	boost::unordered_map<uint64_t, int> paCounts ;
+	boost::unordered_map<uint64_t,int> paCounts ;
 	return calculate( variable , parents , paCounts ) ;
 }
 
@@ -44,7 +44,7 @@ float scoring::LogLikelihoodCalculator::calculate( int variable , varset& parent
 	}
 
 	VARSET_CLEAR( parents , variable ) ;
-
+	
 	return score ;
 }
 
