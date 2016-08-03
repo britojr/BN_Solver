@@ -58,7 +58,7 @@ void initializers::FASInitializer::initialize(){
 	printf( "sc H = %.3f\n" , -H.getScore() ) ;
 	printf( "dg H = %.3f\n" , H.getMeanInDegree() ) ;
 	printf( "max degree H  = %d\n" , H.getMaxInDegree() ) ;
-	initializers::MinCostFASSolver::MinCostFASSolver solver = MinCostFASSolver() ;
+	initializers::MinCostFASSolver solver = MinCostFASSolver() ;
 	H = solver.removeFAS( H ) ;
 }
 

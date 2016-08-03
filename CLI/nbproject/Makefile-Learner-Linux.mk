@@ -23,7 +23,7 @@ AS=as
 # Macros
 CND_PLATFORM=GNU-Linux
 CND_DLIB_EXT=so
-CND_CONF=Learner-Cluster
+CND_CONF=Learner-Linux
 CND_DISTDIR=dist
 CND_BUILDDIR=build
 
@@ -76,7 +76,7 @@ FFLAGS=
 ASFLAGS=
 
 # Link Libraries and Options
-LDLIBSOPTIONS=-L/opt/apps/programas/gnu/old_boost.1.58.0/lib -lboost_system -lboost_thread -lboost_chrono -lboost_timer -lboost_program_options -lboost_serialization
+LDLIBSOPTIONS=-L/usr/local/lib -lboost_system -lboost_thread -lboost_chrono -lboost_timer -lboost_program_options -lboost_serialization
 
 # Build Targets
 .build-conf: ${BUILD_SUBPROJECTS}
@@ -89,127 +89,127 @@ ${CND_DISTDIR}/Learner/GNU-Linux/bn_learning: ${OBJECTFILES}
 ${OBJECTDIR}/acyclic_selection.o: acyclic_selection.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O3 -s -I/opt/apps/programas/gnu/old_boost.1.58.0/include -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/acyclic_selection.o acyclic_selection.cpp
+	$(COMPILE.cc) -O3 -s -I/usr/local/include -I/usr/include -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/acyclic_selection.o acyclic_selection.cpp
 
 ${OBJECTDIR}/ad_node.o: ad_node.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O3 -s -I/opt/apps/programas/gnu/old_boost.1.58.0/include -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/ad_node.o ad_node.cpp
+	$(COMPILE.cc) -O3 -s -I/usr/local/include -I/usr/include -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/ad_node.o ad_node.cpp
 
 ${OBJECTDIR}/ad_tree.o: ad_tree.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O3 -s -I/opt/apps/programas/gnu/old_boost.1.58.0/include -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/ad_tree.o ad_tree.cpp
+	$(COMPILE.cc) -O3 -s -I/usr/local/include -I/usr/include -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/ad_tree.o ad_tree.cpp
 
 ${OBJECTDIR}/bayesian_network.o: bayesian_network.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O3 -s -I/opt/apps/programas/gnu/old_boost.1.58.0/include -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/bayesian_network.o bayesian_network.cpp
+	$(COMPILE.cc) -O3 -s -I/usr/local/include -I/usr/include -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/bayesian_network.o bayesian_network.cpp
 
 ${OBJECTDIR}/bfirst_initializer.o: bfirst_initializer.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O3 -s -I/opt/apps/programas/gnu/old_boost.1.58.0/include -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/bfirst_initializer.o bfirst_initializer.cpp
+	$(COMPILE.cc) -O3 -s -I/usr/local/include -I/usr/include -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/bfirst_initializer.o bfirst_initializer.cpp
 
 ${OBJECTDIR}/bic_scoring_function.o: bic_scoring_function.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O3 -s -I/opt/apps/programas/gnu/old_boost.1.58.0/include -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/bic_scoring_function.o bic_scoring_function.cpp
+	$(COMPILE.cc) -O3 -s -I/usr/local/include -I/usr/include -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/bic_scoring_function.o bic_scoring_function.cpp
 
 ${OBJECTDIR}/bn_structure.o: bn_structure.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O3 -s -I/opt/apps/programas/gnu/old_boost.1.58.0/include -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/bn_structure.o bn_structure.cpp
+	$(COMPILE.cc) -O3 -s -I/usr/local/include -I/usr/include -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/bn_structure.o bn_structure.cpp
 
 ${OBJECTDIR}/dfs_initializer.o: dfs_initializer.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O3 -s -I/opt/apps/programas/gnu/old_boost.1.58.0/include -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/dfs_initializer.o dfs_initializer.cpp
+	$(COMPILE.cc) -O3 -s -I/usr/local/include -I/usr/include -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/dfs_initializer.o dfs_initializer.cpp
 
 ${OBJECTDIR}/fas_initializer.o: fas_initializer.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O3 -s -I/opt/apps/programas/gnu/old_boost.1.58.0/include -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/fas_initializer.o fas_initializer.cpp
+	$(COMPILE.cc) -O3 -s -I/usr/local/include -I/usr/include -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/fas_initializer.o fas_initializer.cpp
 
 ${OBJECTDIR}/greedy_search.o: greedy_search.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O3 -s -I/opt/apps/programas/gnu/old_boost.1.58.0/include -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/greedy_search.o greedy_search.cpp
+	$(COMPILE.cc) -O3 -s -I/usr/local/include -I/usr/include -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/greedy_search.o greedy_search.cpp
 
 ${OBJECTDIR}/greedy_selection.o: greedy_selection.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O3 -s -I/opt/apps/programas/gnu/old_boost.1.58.0/include -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/greedy_selection.o greedy_selection.cpp
+	$(COMPILE.cc) -O3 -s -I/usr/local/include -I/usr/include -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/greedy_selection.o greedy_selection.cpp
 
 ${OBJECTDIR}/independence_selection.o: independence_selection.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O3 -s -I/opt/apps/programas/gnu/old_boost.1.58.0/include -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/independence_selection.o independence_selection.cpp
+	$(COMPILE.cc) -O3 -s -I/usr/local/include -I/usr/include -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/independence_selection.o independence_selection.cpp
 
 ${OBJECTDIR}/learner.o: learner.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O3 -s -I/opt/apps/programas/gnu/old_boost.1.58.0/include -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/learner.o learner.cpp
+	$(COMPILE.cc) -O3 -s -I/usr/local/include -I/usr/include -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/learner.o learner.cpp
 
 ${OBJECTDIR}/log_likelihood_calculator.o: log_likelihood_calculator.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O3 -s -I/opt/apps/programas/gnu/old_boost.1.58.0/include -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/log_likelihood_calculator.o log_likelihood_calculator.cpp
+	$(COMPILE.cc) -O3 -s -I/usr/local/include -I/usr/include -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/log_likelihood_calculator.o log_likelihood_calculator.cpp
 
 ${OBJECTDIR}/parent_set_selection.o: parent_set_selection.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O3 -s -I/opt/apps/programas/gnu/old_boost.1.58.0/include -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/parent_set_selection.o parent_set_selection.cpp
+	$(COMPILE.cc) -O3 -s -I/usr/local/include -I/usr/include -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/parent_set_selection.o parent_set_selection.cpp
 
 ${OBJECTDIR}/permutation_set.o: permutation_set.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O3 -s -I/opt/apps/programas/gnu/old_boost.1.58.0/include -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/permutation_set.o permutation_set.cpp
+	$(COMPILE.cc) -O3 -s -I/usr/local/include -I/usr/include -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/permutation_set.o permutation_set.cpp
 
 ${OBJECTDIR}/random_initializer.o: random_initializer.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O3 -s -I/opt/apps/programas/gnu/old_boost.1.58.0/include -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/random_initializer.o random_initializer.cpp
+	$(COMPILE.cc) -O3 -s -I/usr/local/include -I/usr/include -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/random_initializer.o random_initializer.cpp
 
 ${OBJECTDIR}/score_cache.o: score_cache.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O3 -s -I/opt/apps/programas/gnu/old_boost.1.58.0/include -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/score_cache.o score_cache.cpp
+	$(COMPILE.cc) -O3 -s -I/usr/local/include -I/usr/include -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/score_cache.o score_cache.cpp
 
 ${OBJECTDIR}/sequential_selection.o: sequential_selection.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O3 -s -I/opt/apps/programas/gnu/old_boost.1.58.0/include -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/sequential_selection.o sequential_selection.cpp
+	$(COMPILE.cc) -O3 -s -I/usr/local/include -I/usr/include -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/sequential_selection.o sequential_selection.cpp
 
 ${OBJECTDIR}/simulated_annealing.o: simulated_annealing.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O3 -s -I/opt/apps/programas/gnu/old_boost.1.58.0/include -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/simulated_annealing.o simulated_annealing.cpp
+	$(COMPILE.cc) -O3 -s -I/usr/local/include -I/usr/include -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/simulated_annealing.o simulated_annealing.cpp
 
 ${OBJECTDIR}/sparse_parent_bitwise.o: sparse_parent_bitwise.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O3 -s -I/opt/apps/programas/gnu/old_boost.1.58.0/include -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/sparse_parent_bitwise.o sparse_parent_bitwise.cpp
+	$(COMPILE.cc) -O3 -s -I/usr/local/include -I/usr/include -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/sparse_parent_bitwise.o sparse_parent_bitwise.cpp
 
 ${OBJECTDIR}/sparse_parent_list.o: sparse_parent_list.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O3 -s -I/opt/apps/programas/gnu/old_boost.1.58.0/include -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/sparse_parent_list.o sparse_parent_list.cpp
+	$(COMPILE.cc) -O3 -s -I/usr/local/include -I/usr/include -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/sparse_parent_list.o sparse_parent_list.cpp
 
 ${OBJECTDIR}/sparse_parent_tree.o: sparse_parent_tree.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O3 -s -I/opt/apps/programas/gnu/old_boost.1.58.0/include -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/sparse_parent_tree.o sparse_parent_tree.cpp
+	$(COMPILE.cc) -O3 -s -I/usr/local/include -I/usr/include -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/sparse_parent_tree.o sparse_parent_tree.cpp
 
 ${OBJECTDIR}/structure_optimizer.o: structure_optimizer.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O3 -s -I/opt/apps/programas/gnu/old_boost.1.58.0/include -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/structure_optimizer.o structure_optimizer.cpp
+	$(COMPILE.cc) -O3 -s -I/usr/local/include -I/usr/include -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/structure_optimizer.o structure_optimizer.cpp
 
 ${OBJECTDIR}/vary_node.o: vary_node.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O3 -s -I/opt/apps/programas/gnu/old_boost.1.58.0/include -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/vary_node.o vary_node.cpp
+	$(COMPILE.cc) -O3 -s -I/usr/local/include -I/usr/include -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/vary_node.o vary_node.cpp
 
 # Subprojects
 .build-subprojects:

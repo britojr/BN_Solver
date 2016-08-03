@@ -7,7 +7,7 @@
 # Macros
 TOP=`pwd`
 CND_PLATFORM=GNU-Linux
-CND_CONF=Learner-Linux
+CND_CONF=Learner-Cluster
 CND_DISTDIR=dist
 CND_BUILDDIR=build
 CND_DLIB_EXT=so

@@ -5,3 +5,4 @@
 #
 # Learner-Mac configuration
 # Learner-Linux configuration
+# Learner-Cluster configuration

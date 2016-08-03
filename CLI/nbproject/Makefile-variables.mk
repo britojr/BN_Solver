@@ -15,13 +15,21 @@ CND_PACKAGE_DIR_Learner-Mac=dist/Learner-Mac/GNU-MacOSX/package
 CND_PACKAGE_NAME_Learner-Mac=cli.tar
 CND_PACKAGE_PATH_Learner-Mac=dist/Learner-Mac/GNU-MacOSX/package/cli.tar
 # Learner-Linux configuration
-CND_PLATFORM_Learner-Linux=GNU-MacOSX
+CND_PLATFORM_Learner-Linux=GNU-Linux
 CND_ARTIFACT_DIR_Learner-Linux=dist/Learner/GNU-Linux
 CND_ARTIFACT_NAME_Learner-Linux=bn_learning
 CND_ARTIFACT_PATH_Learner-Linux=dist/Learner/GNU-Linux/bn_learning
-CND_PACKAGE_DIR_Learner-Linux=dist/Learner-Linux/GNU-MacOSX/package
+CND_PACKAGE_DIR_Learner-Linux=dist/Learner-Linux/GNU-Linux/package
 CND_PACKAGE_NAME_Learner-Linux=cli.tar
-CND_PACKAGE_PATH_Learner-Linux=dist/Learner-Linux/GNU-MacOSX/package/cli.tar
+CND_PACKAGE_PATH_Learner-Linux=dist/Learner-Linux/GNU-Linux/package/cli.tar
+# Learner-Cluster configuration
+CND_PLATFORM_Learner-Cluster=GNU-Linux
+CND_ARTIFACT_DIR_Learner-Cluster=dist/Learner/GNU-Linux
+CND_ARTIFACT_NAME_Learner-Cluster=bn_learning
+CND_ARTIFACT_PATH_Learner-Cluster=dist/Learner/GNU-Linux/bn_learning
+CND_PACKAGE_DIR_Learner-Cluster=dist/Learner-Cluster/GNU-Linux/package
+CND_PACKAGE_NAME_Learner-Cluster=cli.tar
+CND_PACKAGE_PATH_Learner-Cluster=dist/Learner-Cluster/GNU-Linux/package/cli.tar
 #
 # include compiler specific variables
 #
