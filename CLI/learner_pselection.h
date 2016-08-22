@@ -130,7 +130,7 @@ void scoringThread( int thread ){
 		}
 
 		createVariableScoreFile( varFilename , network , variable , sc ) ;
-		
+
 		sc.clear() ;
 	}
 }
