@@ -16,7 +16,7 @@ inline bool file_exists( std::string filePath ){
 }
 
 inline int compare( float a , float b = 0.0 ){
-    float EPS = 1e-7 ;
+    float EPS = 1e-6 ;
     return ( a + EPS < b ? -1 : a - EPS > b ? 1 : 0 ) ;
 }
 

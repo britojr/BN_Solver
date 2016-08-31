@@ -25,52 +25,114 @@ structureoptimizer::SimulatedAnnealing::SimulatedAnnealing( initializers::Initia
 }
 
 void structureoptimizer::SimulatedAnnealing::setDefaultParameters(){
-	this->maxIterations = 10000 ;
-	this->t_max = 2500.0 ;
-	this->t_min = 5.0 ;
+	this->maxIterations = 10000.0 ;
+	this->unchangedIterations = maxIterations ;
+	this->numRepeats = 1 ;
+	this->useMaxDifference = true ;
+	this->tempMax = 5000.0 ;
+	this->tempMin = 1.0 ;
 }
 
 void structureoptimizer::SimulatedAnnealing::setFileParameters( std::map<std::string,std::string> params ){
 	if( params.count( "max_iterations" ) )
 		sscanf( params[ "max_iterations" ].c_str() , "%d" , &maxIterations ) ;
+
+	if( params.count( "unchanged_iterations" ) )
+		sscanf( params[ "unchanged_iterations" ].c_str() , "%d" , &unchangedIterations ) ;
+
+	if( params.count( "num_repeat" ) )
+		sscanf( params[ "num_repeat" ].c_str() , "%d" , &numRepeats ) ;
+
+	if( params.count( "use_max_difference" ) ){
+		int p ;
+		sscanf( params[ "use_max_difference" ].c_str() , "%d" , &p ) ;
+		useMaxDifference = ( p > 0 ) ;
+	}
 	
-	if( params.count( "max_temperature" ) )
-		sscanf( params[ "max_temperature" ].c_str() , "%f" , &t_max ) ;
-	
+	if( useMaxDifference ){
+		tempMax = getBestParentSetGraphScore() - getEmptyGraphScore() ;
+	}else if( params.count( "max_temperature" ) )
+		sscanf( params[ "max_temperature" ].c_str() , "%f" , &tempMax ) ;
+
 	if( params.count( "min_temperature" ) )
-		sscanf( params[ "min_temperature" ].c_str() , "%f" , &t_min ) ;
+		sscanf( params[ "min_temperature" ].c_str() , "%f" , &tempMin ) ;
 }
 
 void structureoptimizer::SimulatedAnnealing::printParameters(){
-	printf( "Max number of iterations: '%d'\n" , maxIterations ) ;
-	printf( "Initial temperature: %.6f\n" , t_max ) ;
-	printf( "Final temperature: %.6f\n" , t_min ) ;
+	printf( "Max number of iterations: %d\n" , maxIterations ) ;
+	printf( "Iterations at same temperature: %d\n" , numRepeats ) ;
+	printf( "Iterations without changes: %d\n" , unchangedIterations ) ;
+	printf( "Use max difference: %s\n" , useMaxDifference ? "true" : "false" ) ;
+	printf( "Initial temperature: %.6f\n" , tempMax ) ;
+	printf( "Final temperature: %.6f\n" , tempMin ) ;
 }
 
 structureoptimizer::SimulatedAnnealing::~SimulatedAnnealing(){
 	// Do nothing
 }
 
+float structureoptimizer::SimulatedAnnealing::getBestParentSetGraphScore(){
+	float score = 0. ;
+	VARSET_NEW( all , variableCount ) ;
+	VARSET_SET_ALL( all , variableCount ) ;
+	for(int i = 0 ; i < variableCount ; i++){
+		VARSET_CLEAR( all , i ) ;
+		score -= bestScoreCalculators[ i ]->getScore( all ) ;
+		VARSET_SET( all , i ) ;
+	}
+	printf("BEST SCORE = %.6f\n" , score ) ;
+	return score ;
+}
+
+float structureoptimizer::SimulatedAnnealing::getEmptyGraphScore(){
+	float score = 0. ;
+	VARSET_NEW( empty , variableCount ) ;
+	VARSET_CLEAR_ALL( empty ) ;
+	for(int i = 0 ; i < variableCount ; i++)
+		score -= bestScoreCalculators[ i ]->getScore( empty ) ;
+	printf("EMPT SCORE = %.6f\n" , score ) ;
+	return score ;
+}
+
+
 datastructures::BNStructure structureoptimizer::SimulatedAnnealing::search( int numSolutions ){
 	structureoptimizer::PermutationSet best ;
-	float cooling_rate = -log( t_max / t_min ) ;
+	float cooling_rate = -log( tempMax / tempMin ) ;
 	for(int k = 0 ; k < numSolutions ; k++){
 		printf( " ======== Simulated Annealing ======== \n" ) ;
 		structureoptimizer::PermutationSet current = initializer->generate() ;
 		printf(" === Iteration %d ===\n" , 0 ) ;
 		current.print( true ) ;
-		for(int i = 0 ; i < maxIterations ; i++){
-			printf(" === Iteration %d ===\n" , i+1 ) ;
-			float temperature = t_max * exp( cooling_rate * i / maxIterations ) ;
-			structureoptimizer::PermutationSet neigh = neighbour( current ) ;
-			float accProb = acceptanceProbability( current , neigh , temperature ) ;
-			if( compare( accProb , random_generator( gen ) ) >= 0 )
-				current = neigh ;
-			if( best.size() == 0 || current.isBetter( best ) )
-				best = current ;
-			best.print() ;
+		int counter = 0 ;
+		int numIterations = 0 ;
+		for(int i = 0 ; i < maxIterations && counter != unchangedIterations ; i++,numIterations++){
+			float temperature = tempMax * exp( cooling_rate * i / maxIterations ) ;
+//			printf("Temperature = %.6f\n" , temperature ) ;
+			bool hasChange = false ;
+			for(int j = 0 ; j < numRepeats ; j++){
+//				printf("\t Repeat %d" , j + 1 ) ;
+				structureoptimizer::PermutationSet neigh = neighbour( current ) ;
+				float accProb = acceptanceProbability( current , neigh , temperature ) ;
+//				printf("\tProb = %.6f\n" , accProb ) ;
+				if( compare( accProb , random_generator( gen ) ) >= 0 )
+					current = neigh ;
+				if( best.size() == 0 || current.isBetter( best ) ){
+					best = current ;
+					counter = 0 ;
+					hasChange = true ;
+				}
+			}
+			if( hasChange ){
+				printf(" === Iteration %d ===\n" , i+1 ) ;
+				best.print() ;
+			}else{
+				counter++ ;
+			}
 		}
+		printf("Iterations = %d\n" , numIterations ) ;
 	}
+	printf(" === BEST === \n" ) ;
+	printf( "Score = %.6f\n" , best.getScore() ) ;
 	return datastructures::BNStructure( best , bestScoreCalculators ) ;
 }
 
@@ -88,5 +150,6 @@ float structureoptimizer::SimulatedAnnealing::acceptanceProbability( structureop
 	float oldEnergy = oldState.getScore() ;
 	float newEnergy = newState.getScore() ;
 	float diffE = newEnergy - oldEnergy ;
+	if( isZero( diffE ) ) return temperature / tempMax ;
 	return exp( -diffE / temperature ) ;
 }

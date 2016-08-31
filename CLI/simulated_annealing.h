@@ -35,10 +35,16 @@ namespace structureoptimizer {
 			void setDefaultParameters() ;
 			void setFileParameters( std::map<std::string,std::string> params ) ;
 
+			float getBestParentSetGraphScore() ;
+			float getEmptyGraphScore() ;
+			
 			// Configurable parameters
 			int maxIterations ;
-			float t_max ;
-			float t_min ;
+			int numRepeats ;
+			int unchangedIterations ;
+			bool useMaxDifference ;
+			float tempMax ;
+			float tempMin ;
 	} ;
 }
 

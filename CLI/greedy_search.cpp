@@ -77,7 +77,6 @@ datastructures::BNStructure structureoptimizer::GreedySearch::search( int numSol
 			current.print() ;
 			numIterations += 1 ;
 		}
-//                fflush( stdout ) ;
 		if( best.size() == 0 || current.isBetter( best ) )
 			best = current ;
 	}
