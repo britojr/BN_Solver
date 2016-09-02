@@ -25,11 +25,11 @@ structureoptimizer::SimulatedAnnealing::SimulatedAnnealing( initializers::Initia
 }
 
 void structureoptimizer::SimulatedAnnealing::setDefaultParameters(){
-	this->maxIterations = 10000.0 ;
-	this->unchangedIterations = maxIterations ;
+	this->maxIterations = 1000.0 ;
+	this->unchangedIterations = 10 ;
 	this->numRepeats = 1 ;
-	this->useMaxDifference = true ;
-	this->tempMax = 5000.0 ;
+	this->useDiffZero = true ;
+	this->tempMax = 100.0 ;
 	this->tempMin = 1.0 ;
 }
 
@@ -42,16 +42,14 @@ void structureoptimizer::SimulatedAnnealing::setFileParameters( std::map<std::st
 
 	if( params.count( "num_repeat" ) )
 		sscanf( params[ "num_repeat" ].c_str() , "%d" , &numRepeats ) ;
-
-	if( params.count( "use_max_difference" ) ){
-		int p ;
-		sscanf( params[ "use_max_difference" ].c_str() , "%d" , &p ) ;
-		useMaxDifference = ( p > 0 ) ;
-	}
 	
-	if( useMaxDifference ){
-		tempMax = getBestParentSetGraphScore() - getEmptyGraphScore() ;
-	}else if( params.count( "max_temperature" ) )
+	if( params.count( "use_diff_zero" ) ){
+		int p ;
+		sscanf( params[ "use_diff_zero" ].c_str() , "%d" , &p ) ;
+		useDiffZero = ( p > 0 ) ;
+	}
+
+	if( params.count( "max_temperature" ) )
 		sscanf( params[ "max_temperature" ].c_str() , "%f" , &tempMax ) ;
 
 	if( params.count( "min_temperature" ) )
@@ -62,7 +60,7 @@ void structureoptimizer::SimulatedAnnealing::printParameters(){
 	printf( "Max number of iterations: %d\n" , maxIterations ) ;
 	printf( "Iterations at same temperature: %d\n" , numRepeats ) ;
 	printf( "Iterations without changes: %d\n" , unchangedIterations ) ;
-	printf( "Use max difference: %s\n" , useMaxDifference ? "true" : "false" ) ;
+	printf( "Move always on diff zero: %s\n" , useDiffZero ? "true" : "false" ) ;
 	printf( "Initial temperature: %.6f\n" , tempMax ) ;
 	printf( "Final temperature: %.6f\n" , tempMin ) ;
 }
@@ -70,30 +68,6 @@ void structureoptimizer::SimulatedAnnealing::printParameters(){
 structureoptimizer::SimulatedAnnealing::~SimulatedAnnealing(){
 	// Do nothing
 }
-
-float structureoptimizer::SimulatedAnnealing::getBestParentSetGraphScore(){
-	float score = 0. ;
-	VARSET_NEW( all , variableCount ) ;
-	VARSET_SET_ALL( all , variableCount ) ;
-	for(int i = 0 ; i < variableCount ; i++){
-		VARSET_CLEAR( all , i ) ;
-		score -= bestScoreCalculators[ i ]->getScore( all ) ;
-		VARSET_SET( all , i ) ;
-	}
-	printf("BEST SCORE = %.6f\n" , score ) ;
-	return score ;
-}
-
-float structureoptimizer::SimulatedAnnealing::getEmptyGraphScore(){
-	float score = 0. ;
-	VARSET_NEW( empty , variableCount ) ;
-	VARSET_CLEAR_ALL( empty ) ;
-	for(int i = 0 ; i < variableCount ; i++)
-		score -= bestScoreCalculators[ i ]->getScore( empty ) ;
-	printf("EMPT SCORE = %.6f\n" , score ) ;
-	return score ;
-}
-
 
 datastructures::BNStructure structureoptimizer::SimulatedAnnealing::search( int numSolutions ){
 	structureoptimizer::PermutationSet best ;
@@ -107,13 +81,10 @@ datastructures::BNStructure structureoptimizer::SimulatedAnnealing::search( int 
 		int numIterations = 0 ;
 		for(int i = 0 ; i < maxIterations && counter != unchangedIterations ; i++,numIterations++){
 			float temperature = tempMax * exp( cooling_rate * i / maxIterations ) ;
-//			printf("Temperature = %.6f\n" , temperature ) ;
 			bool hasChange = false ;
 			for(int j = 0 ; j < numRepeats ; j++){
-//				printf("\t Repeat %d" , j + 1 ) ;
 				structureoptimizer::PermutationSet neigh = neighbour( current ) ;
 				float accProb = acceptanceProbability( current , neigh , temperature ) ;
-//				printf("\tProb = %.6f\n" , accProb ) ;
 				if( compare( accProb , random_generator( gen ) ) >= 0 )
 					current = neigh ;
 				if( best.size() == 0 || current.isBetter( best ) ){
@@ -150,6 +121,6 @@ float structureoptimizer::SimulatedAnnealing::acceptanceProbability( structureop
 	float oldEnergy = oldState.getScore() ;
 	float newEnergy = newState.getScore() ;
 	float diffE = newEnergy - oldEnergy ;
-	if( isZero( diffE ) ) return temperature / tempMax ;
+	if( !useDiffZero && isZero( diffE ) ) return temperature / tempMax ;
 	return exp( -diffE / temperature ) ;
 }
