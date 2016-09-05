@@ -60,7 +60,7 @@ void structureoptimizer::GreedySearch::printParameters(){
 
 datastructures::BNStructure structureoptimizer::GreedySearch::search( int numSolutions ){
 	structureoptimizer::PermutationSet best ;
-        setbuf( stdout , NULL ) ;
+	setbuf( stdout , NULL ) ;
 	for(int k = 0 ; k < numSolutions ; k++){
 		structureoptimizer::PermutationSet current = initializer->generate() ;
 		printf( " ======== Greedy Search ======== \n" ) ;
