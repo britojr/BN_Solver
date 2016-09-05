@@ -13,6 +13,7 @@
 #include "greedy_search.h"
 #include "acyclic_selection.h"
 #include "simulated_annealing.h"
+#include "tabu_search.h"
 
 namespace structureoptimizer {
 
@@ -28,10 +29,12 @@ namespace structureoptimizer {
 			sto = new structureoptimizer::AcyclicSelection( initializer , bestScoreCalculators , structureParameterFile ) ;
 		}else if( type == "simulated_annealing" ){
 			sto = new structureoptimizer::SimulatedAnnealing( initializer , bestScoreCalculators , structureParameterFile ) ;
+		}else if( type == "tabu_search" ){
+			sto = new structureoptimizer::TabuSearch( initializer , bestScoreCalculators , structureParameterFile ) ;
 		}else{
-			throw std::runtime_error( "Invalid SO selection: '" + type + 
+			throw std::runtime_error( "Invalid algorithm selection: '" + type + 
 					"'.  Valid options are 'greedy_search', " +
-					"'acyclic_selection' and 'simulated_annealing'." ) ;
+					"'acyclic_selection', 'simulated_annealing' and 'tabu_search'" ) ;
 		}
 		return sto ;
 	}
