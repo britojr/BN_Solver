@@ -26,7 +26,7 @@ structureoptimizer::SimulatedAnnealing::SimulatedAnnealing( initializers::Initia
 
 void structureoptimizer::SimulatedAnnealing::setDefaultParameters(){
 	this->maxIterations = 1000.0 ;
-	this->unchangedIterations = 10 ;
+	this->unchangedIterations = maxIterations ;
 	this->numRepeats = 1 ;
 	this->useDiffZero = true ;
 	this->tempMax = 100.0 ;
