@@ -37,7 +37,7 @@ structureoptimizer::TabuSearch::~TabuSearch(){
 
 void structureoptimizer::TabuSearch::setDefaultParameters(){
 	this->lengthTabuList = 0.2 * variableCount ;
-	this->maxIterations = 500 ;
+	this->maxIterations = 1000 ;
 	this->useAspirationCriterion = false ;
 }
 
@@ -88,14 +88,19 @@ datastructures::BNStructure structureoptimizer::TabuSearch::search( int numSolut
 structureoptimizer::PermutationSet structureoptimizer::TabuSearch::findBestNeighbour(
 														structureoptimizer::PermutationSet currentState ){
 	structureoptimizer::PermutationSet bestN( currentState ) ;
+	int cont = 0 ;
 	for(int i = 0 ; i < variableCount - 1 ; i++){
-		if( !useAspirationCriterion && isTabuMove( currentState , i ) ) continue ;
+		if( !useAspirationCriterion && isTabuMove( currentState , i ) ){
+			cont++ ;
+			continue ;
+		}
 		structureoptimizer::PermutationSet neighbour( currentState ) ;
 		neighbour.swap( i , i + 1 ) ;
 		if( !neighbour.isBetter( bestN ) ) continue ;
 		bestN = neighbour ;
 		bestSwap = i ;
 	}
+	if( cont > 1 ) printf("Tabu moves: %d\n" , cont ) ;
 	return bestN ;
 }
 

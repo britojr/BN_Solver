@@ -26,8 +26,8 @@ namespace datastructures {
 			}
 			
 			TabuList( int maxSize , int variableCount ){
-				this->maxSize = size ;
-				this->maxSize = 1 ;
+				this->maxSize = maxSize ;
+				this->size = 0 ;
 				this->variableCount = variableCount ;
 				
 				for(int i = 0 ; i < variableCount ; i++)
@@ -36,15 +36,25 @@ namespace datastructures {
 
 			void add( int variable1 , int variable2 ){
 				if( size == maxSize ) removeOldestMove() ;
+				if( variable1 > variable2 ){
+					int aux = variable1 ;
+					variable1 = variable2 ;
+					variable2 = aux ;
+				}
 				tlist.push( PAIR( variable1 , variable2 ) ) ;
 				VARSET_SET( swaps[ variable1 ] , variable2 ) ;
 				size++ ;
 			}
-						
+
 			bool has( int variable1 , int variable2 ){
+				if( variable1 > variable2 ){
+					int aux = variable1 ;
+					variable1 = variable2 ;
+					variable2 = aux ;
+				}
 				return VARSET_GET( swaps[ variable1 ] , variable2 ) ;
 			}
-		
+
 		private :
 			void removeOldestMove(){
 				if( !tlist.empty() ){
@@ -53,9 +63,9 @@ namespace datastructures {
 					int variable1 = oldest.first , variable2 = oldest.second ;
 					VARSET_CLEAR( swaps[ variable1 ] , variable2 ) ;
 					size-- ;
+					printf( "Removed: %d, %d\n" , variable1 , variable2 ) ;
 				}
 			}
-			
 			
 			int variableCount ;
 			int maxSize ;
