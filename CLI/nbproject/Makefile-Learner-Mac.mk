@@ -59,6 +59,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/sparse_parent_list.o \
 	${OBJECTDIR}/sparse_parent_tree.o \
 	${OBJECTDIR}/structure_optimizer.o \
+	${OBJECTDIR}/tabu_search.o \
 	${OBJECTDIR}/vary_node.o
 
 
@@ -205,6 +206,11 @@ ${OBJECTDIR}/structure_optimizer.o: structure_optimizer.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -O3 -s -I/usr/local/include -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/structure_optimizer.o structure_optimizer.cpp
+
+${OBJECTDIR}/tabu_search.o: tabu_search.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O3 -s -I/usr/local/include -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/tabu_search.o tabu_search.cpp
 
 ${OBJECTDIR}/vary_node.o: vary_node.cpp 
 	${MKDIR} -p ${OBJECTDIR}
