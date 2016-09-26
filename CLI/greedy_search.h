@@ -23,11 +23,11 @@ namespace structureoptimizer {
 						std::string parametersFile ) ;
 			~GreedySearch() ;
 		
-			datastructures::BNStructure search( int numSolutions ) ;
 			void printParameters() ;
 		
 		private :
-			structureoptimizer::PermutationSet findBestNeighbor( structureoptimizer::PermutationSet set ) ;
+			datastructures::BNStructure search_internal() ;
+			structureoptimizer::PermutationSet findBestNeighbour( structureoptimizer::PermutationSet set ) ;
 			structureoptimizer::PermutationSet perturbSet( structureoptimizer::PermutationSet set ) ;
 			structureoptimizer::PermutationSet doSwap( structureoptimizer::PermutationSet set , int index ) ;
 			

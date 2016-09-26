@@ -23,10 +23,11 @@ namespace structureoptimizer {
 						std::string parametersFile ) ;
 			~SimulatedAnnealing() ;
 
-			datastructures::BNStructure search( int numSolutions ) ;
 			void printParameters() ;
 
 		private :
+			datastructures::BNStructure search_internal() ;
+			
 			float acceptanceProbability( structureoptimizer::PermutationSet oldState ,
 										structureoptimizer::PermutationSet newState ,
 										float temperature ) ;

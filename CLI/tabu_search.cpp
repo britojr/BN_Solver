@@ -61,10 +61,10 @@ void structureoptimizer::TabuSearch::printParameters(){
 	printf( "Use aspiration criterion: %s\n" , useAspirationCriterion ? "true" : "false" ) ;
 }
 
-datastructures::BNStructure structureoptimizer::TabuSearch::search( int numSolutions ){
+datastructures::BNStructure structureoptimizer::TabuSearch::search_internal(){
 	structureoptimizer::PermutationSet best ;
 	setbuf( stdout , NULL ) ;
-	for(int k = 0 ; k < numSolutions ; k++){
+//	for(int k = 0 ; k < numSolutions ; k++){
 		structureoptimizer::PermutationSet current = initializer->generate() ;
 		printf( " ======== Tabu Search ======== \n" ) ;
 		printf(" === Iteration %d ===\n" , 0 ) ;
@@ -79,7 +79,7 @@ datastructures::BNStructure structureoptimizer::TabuSearch::search( int numSolut
 		}
 		if( best.size() == 0 || current.isBetter( best ) )
 			best = current ;
-	}
+//	}
 	printf(" === BEST === \n" ) ;
 	printf( "Score = %.6f\n" , best.getScore() ) ;
 	return datastructures::BNStructure( best , bestScoreCalculators ) ;

@@ -5,6 +5,7 @@
  * Created on 26 de enero de 2016, 03:37 PM
  */
 
+#include <boost/timer/timer.hpp>
 #include <cstdlib>
 #include <cstdio>
 
@@ -58,34 +59,28 @@ void structureoptimizer::GreedySearch::printParameters(){
 		printf( "Num. of perturbation swaps: %d\n" , numPerturbationSwaps ) ;
 }
 
-datastructures::BNStructure structureoptimizer::GreedySearch::search( int numSolutions ){
-	structureoptimizer::PermutationSet best ;
-	setbuf( stdout , NULL ) ;
-	for(int k = 0 ; k < numSolutions ; k++){
-		structureoptimizer::PermutationSet current = initializer->generate() ;
-		printf( " ======== Greedy Search ======== \n" ) ;
-		printf(" === Iteration %d ===\n" , 0 ) ;
-		current.print( true ) ;
-		numIterations = 0 ;
-		for(int i = 0 ; i < maxIterations ; i++){
-			structureoptimizer::PermutationSet bestNeighbor = findBestNeighbor( current ) ;
-			structureoptimizer::PermutationSet disturbedNeighbor = perturbSet( bestNeighbor ) ;
-			if( disturbedNeighbor.isBetter( bestNeighbor ) ) bestNeighbor = disturbedNeighbor ;
-			if( !bestNeighbor.isBetter( current ) ) break ;
-			printf(" === Iteration %d ===\n" , i+1 ) ;
-			current = bestNeighbor ;
-			current.print() ;
-			numIterations += 1 ;
-		}
-		if( best.size() == 0 || current.isBetter( best ) )
-			best = current ;
+datastructures::BNStructure structureoptimizer::GreedySearch::search_internal(){
+	boost::timer::auto_cpu_timer cpu( 6 , "CPU time = %w\n" ) ; // TODO: Rethink location of timer
+	structureoptimizer::PermutationSet current = initializer->generate() ;
+	printf( " ======== Greedy Search ======== \n" ) ;
+	printf(" === Iteration %d ===\n" , 0 ) ;
+	current.print( true ) ;
+	numIterations = 0 ;
+	for(int i = 0 ; i < maxIterations && !outOfTime ; i++){
+		structureoptimizer::PermutationSet bestNeighbour = findBestNeighbour( current ) ;
+		structureoptimizer::PermutationSet disturbedNeighbour = perturbSet( bestNeighbour ) ;
+		if( disturbedNeighbour.isBetter( bestNeighbour ) ) bestNeighbour = disturbedNeighbour ;
+		if( !bestNeighbour.isBetter( current ) ) break ;
+		printf(" === Iteration %d ===\n" , i+1 ) ;
+		current = bestNeighbour ;
+		current.print() ;
+		numIterations += 1 ;
 	}
-	printf(" === BEST === \n" ) ;
-	printf( "Score = %.6f\n" , best.getScore() ) ;
-	return datastructures::BNStructure( best , bestScoreCalculators ) ;
+	t->cancel() ;
+	return datastructures::BNStructure( current , bestScoreCalculators ) ;
 }
 
-structureoptimizer::PermutationSet structureoptimizer::GreedySearch::findBestNeighbor( structureoptimizer::PermutationSet set ){
+structureoptimizer::PermutationSet structureoptimizer::GreedySearch::findBestNeighbour( structureoptimizer::PermutationSet set ){
 	structureoptimizer::PermutationSet bestN( set ) ;
 	for(int i = 0 ; i < variableCount - 1 ; i++){
 		structureoptimizer::PermutationSet neighbor = doSwap( set , i ) ;

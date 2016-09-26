@@ -25,9 +25,9 @@ structureoptimizer::SimulatedAnnealing::SimulatedAnnealing( initializers::Initia
 }
 
 void structureoptimizer::SimulatedAnnealing::setDefaultParameters(){
-	this->maxIterations = 1000 ;
+	this->maxIterations = 500 ;
 	this->unchangedIterations = maxIterations / 2 ;
-	this->numRepeats = variableCount / 2 ;
+	this->numRepeats = 20 ;
 	this->useDiffZero = true ;
 	this->tempMax = 100.0 ;
 	this->tempMin = 1.0 ;
@@ -69,10 +69,10 @@ structureoptimizer::SimulatedAnnealing::~SimulatedAnnealing(){
 	// Do nothing
 }
 
-datastructures::BNStructure structureoptimizer::SimulatedAnnealing::search( int numSolutions ){
+datastructures::BNStructure structureoptimizer::SimulatedAnnealing::search_internal(){
 	structureoptimizer::PermutationSet best ;
 	float cooling_rate = -log( tempMax / tempMin ) ;
-	for(int k = 0 ; k < numSolutions ; k++){
+//	for(int k = 0 ; k < numSolutions ; k++){
 		printf( " ======== Simulated Annealing ======== \n" ) ;
 		structureoptimizer::PermutationSet current = initializer->generate() ;
 		printf(" === Iteration %d ===\n" , 0 ) ;
@@ -101,7 +101,7 @@ datastructures::BNStructure structureoptimizer::SimulatedAnnealing::search( int 
 			}
 		}
 		printf("Iterations = %d\n" , numIterations ) ;
-	}
+//	}
 	printf(" === BEST === \n" ) ;
 	printf( "Score = %.6f\n" , best.getScore() ) ;
 	return datastructures::BNStructure( best , bestScoreCalculators ) ;

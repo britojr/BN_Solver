@@ -14,6 +14,7 @@
 
 #include <boost/algorithm/string.hpp>
 #include <boost/algorithm/string/trim.hpp>
+#include <boost/thread.hpp>
 
 #include "utils.h"
 #include "structure_optimizer.h"
@@ -68,4 +69,41 @@ std::map<std::string,std::string> structureoptimizer::StructureOptimizer::readPa
 	}
 	in.close() ;
 	return params ;
+}
+
+void structureoptimizer::StructureOptimizer::timeout( const boost::system::error_code& /*e*/ ){
+//	printf( "Out of time\n" ) ;
+	outOfTime = true ;
+}
+
+datastructures::BNStructure structureoptimizer::StructureOptimizer::search( int numSolutions , int timePerSolution ){
+	setbuf( stdout , NULL ) ; // In case output to file
+
+	datastructures::BNStructure best ;
+	for(int k = 0 ; k < numSolutions ; k++){
+		// Timer
+		outOfTime = false ;
+		boost::asio::io_service io_t ;
+		t = new boost::asio::deadline_timer( io_t ) ;
+	
+		// Structure learning method
+		datastructures::BNStructure current ;
+		if( timePerSolution > 0 ){
+			t->expires_from_now( boost::posix_time::seconds( timePerSolution ) ) ;
+			t->async_wait( boost::bind( &structureoptimizer::StructureOptimizer::timeout, this, boost::asio::placeholders::error ) ) ;
+			boost::thread workerThread( [&]{current = search_internal() ; } );
+			io_t.run() ;
+			workerThread.join() ;
+			io_t.stop() ;
+		}else{
+			current = search_internal() ;
+		}
+				
+		// Update best solution
+		if( best.size() == 0 || current.isBetter( best ) )
+			best = current ;
+	}
+	printf(" === BEST === \n" ) ;
+	printf( "Score = %.6f\n" , best.getScore() ) ;
+	return best ;
 }

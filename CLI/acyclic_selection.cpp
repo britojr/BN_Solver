@@ -4,6 +4,7 @@
  * 
  * Created on 28 de mayo de 2016, 13:07
  */
+#include <boost/timer/timer.hpp>
 
 #include "acyclic_selection.h"
 #include "utils.h"
@@ -97,36 +98,30 @@ void structureoptimizer::AcyclicSelection::printParameters(){
 //	return best ;
 //}
 
-datastructures::BNStructure structureoptimizer::AcyclicSelection::search( int numSolutions ){
-	datastructures::BNStructure best ;
-	for(int k = 0 ; k < numSolutions ; k++){
-		printf( " ======== Acyclic Selection ======== \n" ) ;
-		structureoptimizer::PermutationSet initial = initializer->generate() ;
-		printf(" === Initial solution ===\n" ) ;
-		initial.print() ;
+datastructures::BNStructure structureoptimizer::AcyclicSelection::search_internal(){
+	boost::timer::auto_cpu_timer cpu( 6 , "CPU time = %w\n" ) ; // TODO: Rethink location of timer
+	printf( " ======== Acyclic Selection ======== \n" ) ;
+	structureoptimizer::PermutationSet initial = initializer->generate() ;
+	printf(" === Initial solution ===\n" ) ;
+	initial.print() ;
 		
-		m = std::vector<varset>( variableCount , VARSET( variableCount ) ) ;
-		todo = std::vector<std::vector<int> >( variableCount ) ;
-		partial_bn = datastructures::BNStructure( variableCount ) ;
-		
-		for(int j = variableCount - 1 ; j >= 0 ; j--){
-			// Extract variable at position j in initial
-			int v_j = initial[ j ] ;
-			
-			// Pick best parent set with no descendants of V_j
-			varset descendants = getDescendants( v_j ) ;
-			float score = bestScoreCalculators[ v_j ]->getScore( VARSET_NOT( descendants ) ) ;
-			varset parents = bestScoreCalculators[ v_j ]->getParents() ;
-			partial_bn.setParents( v_j , parents , score ) ;
-		}
-		printf( "Score = %.6f\n" , partial_bn.getScore() ) ;
-		if( best.size() == 0 || partial_bn.isBetter( best ) ){
-			best = partial_bn ;
-		}
+//	m = std::vector<varset>( variableCount , VARSET( variableCount ) ) ;
+//	todo = std::vector<std::vector<int> >( variableCount ) ;
+	partial_bn = datastructures::BNStructure( variableCount ) ;
+
+	for(int j = variableCount - 1 ; j >= 0 && !outOfTime ; j--){
+		// Extract variable at position j in initial
+		int v_j = initial[ j ] ;
+
+		// Pick best parent set with no descendants of V_j
+		varset descendants = getDescendants( v_j ) ;
+		float score = bestScoreCalculators[ v_j ]->getScore( VARSET_NOT( descendants ) ) ;
+		varset parents = bestScoreCalculators[ v_j ]->getParents() ;
+		partial_bn.setParents( v_j , parents , score ) ;
 	}
-	printf(" === BEST === \n" ) ;
-	printf( "Score = %.6f\n" , best.getScore() ) ;
-	return best ;
+	printf( "Score = %.6f\n" , partial_bn.getScore() ) ;
+	t->cancel() ;
+	return partial_bn ;
 }
 
 //void structureoptimizer::AcyclicSelection::visit( int x ){

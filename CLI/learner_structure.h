@@ -39,6 +39,12 @@ int numSolutions = numSolutionsDefault ;
 std::string numSolutionsString = "Number of initial solutions to be generated." ;
 std::string numSolutionsShortCut = "numSolutions,n" ;
 
+/* Maximum time to obtain results for one initial solution */
+int timePerSolutionDefault = 0 ; // Unlimited
+int timePerSolution = timePerSolutionDefault ; // Unlimited
+std::string timePerSolutionString = "Maximum time for processing each initial solution" ;
+std::string timePerSolutionsShortCut = "timePerSolution,e" ;
+
 /* Parameters file for structure learning algorithm */
 std::string structureParametersFile ;
 std::string structureParametersFileString = "Parameters file for structure learning algorithm" ;
@@ -62,6 +68,7 @@ void structureLearning(){
 	printf( "Best score calculator: '%s'\n" , bestScoreCalculator.c_str() ) ;
 	printf( "Initialization type: '%s'\n" , initializerType.c_str() ) ;
 	printf( "Learning algorithm: '%s'\n" , structureOptimizerType.c_str() ) ;
+	printf( "Max. time per solution (sec): %d\n" , timePerSolution ) ;
 
 	printf( "Reading score cache.\n" ) ;
 	scoring::ScoreCache cache ;
@@ -78,7 +85,7 @@ void structureLearning(){
 	printf( "Creating the order-based structure learning algorithm\n" ) ;
 	structureoptimizer::StructureOptimizer* algorithm = structureoptimizer::create( structureOptimizerType , initializer , bestScCalc , structureParametersFile ) ;
 	algorithm->printParameters() ;
-	datastructures::BNStructure solution = algorithm->search( numSolutions ) ;
+	datastructures::BNStructure solution = algorithm->search( numSolutions , timePerSolution ) ;
 //	printSolution( solution ) ;
 }
 

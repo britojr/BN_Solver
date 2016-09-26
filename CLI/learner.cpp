@@ -96,6 +96,7 @@ int main( int argc , char** argv ){
 		( bestScoreCalculatorShortCut.c_str() , po::value<std::string > (&bestScoreCalculator)->default_value( bestScoreCalculatorDefault ) , bestscorecalculators::bestScoreCalculatorString.c_str() )
 		( initializerShortCut.c_str() , po::value<std::string > (&initializerType)->default_value( initializerTypeDefault ) , initializers::initializerTypeString.c_str() )
 		( numSolutionsShortCut.c_str() , po::value<int> (&numSolutions)->default_value( numSolutionsDefault ) , numSolutionsString.c_str() )
+		( timePerSolutionsShortCut.c_str() , po::value<int> ( &timePerSolution)->default_value( timePerSolutionDefault ) , timePerSolutionString.c_str() )
 		( structureParametersFileShortCut.c_str() , po::value<std::string>(&structureParametersFile) , structureParametersFileString.c_str() )
 		( "help,h" , "Show this help message." ) ;
 

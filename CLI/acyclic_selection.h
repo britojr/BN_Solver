@@ -20,10 +20,11 @@ namespace structureoptimizer {
 						std::string parametersFile ) ;
 			~AcyclicSelection() ;
 
-			datastructures::BNStructure search( int numSolutions ) ;
 			void printParameters() ;
 
 		private :
+			datastructures::BNStructure search_internal() ;
+			
 			varset getDescendants( int index ) ;
 //			void visit( int index ) ;
 			void setDefaultParameters() ;

@@ -30,10 +30,11 @@ namespace structureoptimizer {
 						std::string parametersFile ) ;
 			~TabuSearch() ;
 
-			datastructures::BNStructure search( int numSolutions ) ;
 			void printParameters() ;
 
 		private :
+			datastructures::BNStructure search_internal() ;
+			
 			structureoptimizer::PermutationSet findBestNeighbour( structureoptimizer::PermutationSet currentState ) ;
 			bool isTabuMove( structureoptimizer::PermutationSet currentState , int swapIndex ) ;
 
