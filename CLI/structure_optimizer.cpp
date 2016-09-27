@@ -88,6 +88,7 @@ datastructures::BNStructure structureoptimizer::StructureOptimizer::search( int 
 	
 		// Structure learning method
 		datastructures::BNStructure current ;
+		initialize() ;
 		if( timePerSolution > 0 ){
 			t->expires_from_now( boost::posix_time::seconds( timePerSolution ) ) ;
 			t->async_wait( boost::bind( &structureoptimizer::StructureOptimizer::timeout, this, boost::asio::placeholders::error ) ) ;

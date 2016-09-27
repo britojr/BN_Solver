@@ -98,15 +98,16 @@ void structureoptimizer::AcyclicSelection::printParameters(){
 //	return best ;
 //}
 
-datastructures::BNStructure structureoptimizer::AcyclicSelection::search_internal(){
-	boost::timer::auto_cpu_timer cpu( 6 , "CPU time = %w\n" ) ; // TODO: Rethink location of timer
+void structureoptimizer::AcyclicSelection::initialize(){
 	printf( " ======== Acyclic Selection ======== \n" ) ;
-	structureoptimizer::PermutationSet initial = initializer->generate() ;
+	initial = initializer->generate() ;
 	printf(" === Initial solution ===\n" ) ;
 	initial.print() ;
-		
-//	m = std::vector<varset>( variableCount , VARSET( variableCount ) ) ;
-//	todo = std::vector<std::vector<int> >( variableCount ) ;
+}
+
+datastructures::BNStructure structureoptimizer::AcyclicSelection::search_internal(){
+	boost::timer::auto_cpu_timer cpu( 6 , "CPU time = %w\n" ) ; // TODO: Rethink location of timer
+	
 	partial_bn = datastructures::BNStructure( variableCount ) ;
 
 	for(int j = variableCount - 1 ; j >= 0 && !outOfTime ; j--){

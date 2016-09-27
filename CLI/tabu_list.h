@@ -55,6 +55,17 @@ namespace datastructures {
 				return VARSET_GET( swaps[ variable1 ] , variable2 ) ;
 			}
 
+			void clear(){
+				size = 0 ;
+				
+				std::queue<pii> aux_tlist ;
+				tlist = aux_tlist ;
+				
+				swaps.clear() ;
+				for(int i = 0 ; i < variableCount ; i++)
+					swaps.push_back( VARSET( variableCount ) ) ;
+			}
+			
 		private :
 			void removeOldestMove(){
 				if( !tlist.empty() ){

@@ -33,6 +33,7 @@ namespace structureoptimizer {
 			void printParameters() ;
 
 		private :
+			void initialize() ;
 			datastructures::BNStructure search_internal() ;
 			
 			structureoptimizer::PermutationSet findBestNeighbour( structureoptimizer::PermutationSet currentState ) ;
@@ -43,6 +44,7 @@ namespace structureoptimizer {
 
 			datastructures::TabuList tabuList ;
 			int bestSwap ;
+			structureoptimizer::PermutationSet current ;
 			
 			// Configurable parameters
 			int maxIterations ;

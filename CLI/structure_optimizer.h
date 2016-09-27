@@ -35,6 +35,7 @@ namespace structureoptimizer {
 			// Abstract methods
 			virtual void setDefaultParameters() = 0 ;
 			virtual void setFileParameters( std::map<std::string,std::string> params ) = 0 ;
+			virtual void initialize() = 0 ;
 			virtual datastructures::BNStructure search_internal() = 0 ;
 			
 			int variableCount ;

@@ -21,7 +21,6 @@ structureoptimizer::GreedySearch::GreedySearch( initializers::Initializer* initi
 										std::string parametersFile ){
 	this->initializer = initializer ;
 	this->bestScoreCalculators = bestScoreCalculator ;
-	this->numIterations = 0 ;
 	this->variableCount = bestScoreCalculator.size() ;
 	this->gen = boost::mt19937( time( NULL ) ) ;
 	
@@ -59,13 +58,17 @@ void structureoptimizer::GreedySearch::printParameters(){
 		printf( "Num. of perturbation swaps: %d\n" , numPerturbationSwaps ) ;
 }
 
-datastructures::BNStructure structureoptimizer::GreedySearch::search_internal(){
-	boost::timer::auto_cpu_timer cpu( 6 , "CPU time = %w\n" ) ; // TODO: Rethink location of timer
-	structureoptimizer::PermutationSet current = initializer->generate() ;
+void structureoptimizer::GreedySearch::initialize(){
+	current = initializer->generate() ;
 	printf( " ======== Greedy Search ======== \n" ) ;
 	printf(" === Iteration %d ===\n" , 0 ) ;
 	current.print( true ) ;
-	numIterations = 0 ;
+}
+
+datastructures::BNStructure structureoptimizer::GreedySearch::search_internal(){
+	boost::timer::auto_cpu_timer cpu( 6 , "CPU time = %w\n" ) ; // TODO: Rethink location of timer
+
+	int numIterations = 0 ;
 	for(int i = 0 ; i < maxIterations && !outOfTime ; i++){
 		structureoptimizer::PermutationSet bestNeighbour = findBestNeighbour( current ) ;
 		structureoptimizer::PermutationSet disturbedNeighbour = perturbSet( bestNeighbour ) ;
@@ -76,6 +79,7 @@ datastructures::BNStructure structureoptimizer::GreedySearch::search_internal(){
 		current.print() ;
 		numIterations += 1 ;
 	}
+	printf("Iterations = %d\n" , numIterations ) ;
 	t->cancel() ;
 	return datastructures::BNStructure( current , bestScoreCalculators ) ;
 }

@@ -10,6 +10,7 @@
  * 
  * Created on September 5, 2016, 3:37 PM
  */
+#include <boost/timer/timer.hpp>
 
 #include "tabu_search.h"
 #include "tabu_list.h"
@@ -37,7 +38,7 @@ structureoptimizer::TabuSearch::~TabuSearch(){
 
 void structureoptimizer::TabuSearch::setDefaultParameters(){
 	this->lengthTabuList = 0.2 * variableCount ;
-	this->maxIterations = 1000 ;
+	this->maxIterations = 500 ;
 	this->useAspirationCriterion = false ;
 }
 
@@ -61,28 +62,29 @@ void structureoptimizer::TabuSearch::printParameters(){
 	printf( "Use aspiration criterion: %s\n" , useAspirationCriterion ? "true" : "false" ) ;
 }
 
+void structureoptimizer::TabuSearch::initialize(){
+	tabuList.clear() ;
+	current = initializer->generate() ;
+	printf( " ======== Tabu Search ======== \n" ) ;
+	printf(" === Iteration %d ===\n" , 0 ) ;
+	current.print( true ) ;
+}
+
 datastructures::BNStructure structureoptimizer::TabuSearch::search_internal(){
-	structureoptimizer::PermutationSet best ;
-	setbuf( stdout , NULL ) ;
-//	for(int k = 0 ; k < numSolutions ; k++){
-		structureoptimizer::PermutationSet current = initializer->generate() ;
-		printf( " ======== Tabu Search ======== \n" ) ;
-		printf(" === Iteration %d ===\n" , 0 ) ;
-		current.print( true ) ;
-		for(int i = 0 ; i < maxIterations ; i++){
-			structureoptimizer::PermutationSet bestNeighbour = findBestNeighbour( current ) ;
-			if( !bestNeighbour.isBetter( current ) ) break ;
-			tabuList.add( current[ bestSwap ] , current[ bestSwap + 1 ] ) ;
-			printf(" === Iteration %d ===\n" , i+1 ) ;
-			current = bestNeighbour ;
-			current.print() ;
-		}
-		if( best.size() == 0 || current.isBetter( best ) )
-			best = current ;
-//	}
-	printf(" === BEST === \n" ) ;
-	printf( "Score = %.6f\n" , best.getScore() ) ;
-	return datastructures::BNStructure( best , bestScoreCalculators ) ;
+	boost::timer::auto_cpu_timer cpu( 6 , "CPU time = %w\n" ) ; // TODO: Rethink location of timer
+	
+	int numIterations = 0 ;
+	for(int i = 0 ; i < maxIterations && !outOfTime ; i++,numIterations++){
+		structureoptimizer::PermutationSet bestNeighbour = findBestNeighbour( current ) ;
+		if( !bestNeighbour.isBetter( current ) ) break ;
+		tabuList.add( current[ bestSwap ] , current[ bestSwap + 1 ] ) ;
+		printf(" === Iteration %d ===\n" , i+1 ) ;
+		current = bestNeighbour ;
+		current.print() ;
+	}
+	printf("Iterations = %d\n" , numIterations ) ;
+	t->cancel() ;
+	return datastructures::BNStructure( current , bestScoreCalculators ) ;
 }
 
 structureoptimizer::PermutationSet structureoptimizer::TabuSearch::findBestNeighbour(
@@ -100,7 +102,7 @@ structureoptimizer::PermutationSet structureoptimizer::TabuSearch::findBestNeigh
 		bestN = neighbour ;
 		bestSwap = i ;
 	}
-	if( cont > 1 ) printf("Tabu moves: %d\n" , cont ) ;
+//	if( cont > 1 ) printf("Tabu moves: %d\n" , cont ) ; // TODO: Delete this
 	return bestN ;
 }
 

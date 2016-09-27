@@ -26,6 +26,7 @@ namespace structureoptimizer {
 			void printParameters() ;
 
 		private :
+			void initialize() ;
 			datastructures::BNStructure search_internal() ;
 			
 			float acceptanceProbability( structureoptimizer::PermutationSet oldState ,
@@ -36,6 +37,8 @@ namespace structureoptimizer {
 			void setDefaultParameters() ;
 			void setFileParameters( std::map<std::string,std::string> params ) ;
 
+			structureoptimizer::PermutationSet current ;
+			
 			// Configurable parameters
 			int maxIterations ;
 			int numRepeats ;

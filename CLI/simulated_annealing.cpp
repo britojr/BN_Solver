@@ -4,6 +4,8 @@
  * 
  * Created on 8 de junio de 2016, 11:38
  */
+#include <boost/timer/timer.hpp>
+
 #include <cstdio>
 
 #include "simulated_annealing.h"
@@ -69,41 +71,42 @@ structureoptimizer::SimulatedAnnealing::~SimulatedAnnealing(){
 	// Do nothing
 }
 
+void structureoptimizer::SimulatedAnnealing::initialize(){
+	current = initializer->generate() ;
+	printf( " ======== Simulated Annealing ======== \n" ) ;
+	printf(" === Iteration %d ===\n" , 0 ) ;
+	current.print( true ) ;
+}
+
 datastructures::BNStructure structureoptimizer::SimulatedAnnealing::search_internal(){
-	structureoptimizer::PermutationSet best ;
+	boost::timer::auto_cpu_timer cpu( 6 , "CPU time = %w\n" ) ; // TODO: Rethink location of timer
+
 	float cooling_rate = -log( tempMax / tempMin ) ;
-//	for(int k = 0 ; k < numSolutions ; k++){
-		printf( " ======== Simulated Annealing ======== \n" ) ;
-		structureoptimizer::PermutationSet current = initializer->generate() ;
-		printf(" === Iteration %d ===\n" , 0 ) ;
-		current.print( true ) ;
-		int counter = 0 ;
-		int numIterations = 0 ;
-		for(int i = 0 ; i < maxIterations && counter != unchangedIterations ; i++,numIterations++){
-			float temperature = tempMax * exp( cooling_rate * i / maxIterations ) ;
-			bool hasChange = false ;
-			for(int j = 0 ; j < numRepeats ; j++){
-				structureoptimizer::PermutationSet neigh = neighbour( current ) ;
-				float accProb = acceptanceProbability( current , neigh , temperature ) ;
-				if( compare( accProb , random_generator( gen ) ) >= 0 )
-					current = neigh ;
-				if( best.size() == 0 || current.isBetter( best ) ){
-					best = current ;
-					counter = 0 ;
-					hasChange = true ;
-				}
-			}
-			if( hasChange ){
-				printf(" === Iteration %d ===\n" , i+1 ) ;
-				best.print() ;
-			}else{
-				counter++ ;
+	structureoptimizer::PermutationSet best ;
+	int counter = 0 , numIterations = 0 ;
+	for(int i = 0 ; i < maxIterations && counter != unchangedIterations && !outOfTime ; i++,numIterations++){
+		float temperature = tempMax * exp( cooling_rate * i / maxIterations ) ;
+		bool hasChange = false ;
+		for(int j = 0 ; j < numRepeats ; j++){
+			structureoptimizer::PermutationSet neigh = neighbour( current ) ;
+			float accProb = acceptanceProbability( current , neigh , temperature ) ;
+			if( compare( accProb , random_generator( gen ) ) >= 0 )
+				current = neigh ;
+			if( best.size() == 0 || current.isBetter( best ) ){
+				best = current ;
+				counter = 0 ;
+				hasChange = true ;
 			}
 		}
-		printf("Iterations = %d\n" , numIterations ) ;
-//	}
-	printf(" === BEST === \n" ) ;
-	printf( "Score = %.6f\n" , best.getScore() ) ;
+		if( hasChange ){
+			printf(" === Iteration %d ===\n" , i+1 ) ;
+			best.print() ;
+		}else{
+			counter++ ;
+		}
+	}
+	printf("Iterations = %d\n" , numIterations ) ;
+	t->cancel() ;
 	return datastructures::BNStructure( best , bestScoreCalculators ) ;
 }
 
