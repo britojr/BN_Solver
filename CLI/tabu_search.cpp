@@ -90,10 +90,10 @@ datastructures::BNStructure structureoptimizer::TabuSearch::search_internal(){
 structureoptimizer::PermutationSet structureoptimizer::TabuSearch::findBestNeighbour(
 														structureoptimizer::PermutationSet currentState ){
 	structureoptimizer::PermutationSet bestN( currentState ) ;
-	int cont = 0 ;
+//	int cont = 0 ;
 	for(int i = 0 ; i < variableCount - 1 ; i++){
 		if( !useAspirationCriterion && isTabuMove( currentState , i ) ){
-			cont++ ;
+//			cont++ ;
 			continue ;
 		}
 		structureoptimizer::PermutationSet neighbour( currentState ) ;

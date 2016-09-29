@@ -92,9 +92,9 @@ datastructures::BNStructure structureoptimizer::StructureOptimizer::search( int 
 		if( timePerSolution > 0 ){
 			t->expires_from_now( boost::posix_time::seconds( timePerSolution ) ) ;
 			t->async_wait( boost::bind( &structureoptimizer::StructureOptimizer::timeout, this, boost::asio::placeholders::error ) ) ;
-			boost::thread workerThread( [&]{current = search_internal() ; } );
+			auto thread = boost::async( boost::bind( &structureoptimizer::StructureOptimizer::search_internal , this ) ) ;
 			io_t.run() ;
-			workerThread.join() ;
+			current = thread.get() ;
 			io_t.stop() ;
 		}else{
 			current = search_internal() ;
