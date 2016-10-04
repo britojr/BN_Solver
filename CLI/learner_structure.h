@@ -72,6 +72,11 @@ inline void printSolution( std::string bnetFile , datastructures::BNStructure &s
 	FILE *out = fopen( bnetFile.c_str() , "w" ) ;
 	datastructures::BayesianNetwork* network = cache.getNetwork() ;
 	
+	fprintf( out , "META variables = %d\n" , solution.size() ) ;
+	fprintf( out , "META maxInDegree = %d\n" , solution.getMaxInDegree() ) ;
+	fprintf( out , "META meanInDegree = %.3f\n" , solution.getMeanInDegree() ) ;
+	fprintf( out , "META score = %.6f\n" , -solution.getScore() ) ;
+	
 	for(int i = 0 ; i < solution.size() ; i++){
 		fprintf( out , "%s:" , network->get( i )->getName().c_str() ) ;
 		std::vector<int> children = solution[ i ]->getChildrenVector() ;
