@@ -16,14 +16,14 @@ scoring::BICScoringFunction::BICScoringFunction( datastructures::BayesianNetwork
 												datastructures::RecordFile &recordFile ,
 												LogLikelihoodCalculator *llc ,
 												scoring::Constraints *constraints ,
-												bool enableDeCamposPruning ){
+												bool whileCalculatingPruning ){
 	this->network = network ;
 	this->baseComplexityPenalty = log( recordFile.size() ) / 2 ;
 	this->recordFileSize = recordFile.size() ;
 	this->constraints = constraints ;
 
 	this->llc = llc ;
-	this->enableDeCamposPruning = enableDeCamposPruning ;
+	this->whileCalculatingPruning = whileCalculatingPruning ;
 }
 
 scoring::BICScoringFunction::~BICScoringFunction(){
@@ -39,8 +39,7 @@ float scoring::BICScoringFunction::t( int variable , varset parents ){
 float scoring::BICScoringFunction::calculateScore( int variable , varset parents ,
 													FloatMap &pruned , FloatMap &cache ){
 	// Check if it was already calculated
-	auto s = cache.find( parents ) ;
-	if( s != cache.end() ) return cache[ parents ] ;
+	if( cache.count( parents ) ) return cache[ parents ] ;
 	
 	// Check if this violates the constraints
 	if( constraints != NULL && !constraints->satisfiesConstraints( variable , parents ) ){
@@ -51,10 +50,9 @@ float scoring::BICScoringFunction::calculateScore( int variable , varset parents
 	// check for pruning
 	float tVal = t( variable , parents ) ;
 
-	if( enableDeCamposPruning ){
-		auto s = pruned.find( parents ) ;
+	if( whileCalculatingPruning ){
 		// Check if it was already pruned
-		if( s != pruned.end() ) return 0 ;
+		if( pruned.count( parents ) ) return 1 ;
 		for( int x = 0 ; x < network.size() ; x++){
 			if( VARSET_GET( parents , x ) ){
 				VARSET_CLEAR( parents , x ) ;
@@ -65,18 +63,16 @@ float scoring::BICScoringFunction::calculateScore( int variable , varset parents
 					continue ;
 				}
 
-				auto s = cache.find( parents ) ;
-
-				if( s == cache.end() ){
+				if( !cache.count( parents ) ){
 					VARSET_SET( parents , x ) ;
 					pruned[ parents ] = 0. ;
-					return 0 ;
+					return 1 ;
 				}
 
-				if( s->second + tVal > 0 ){
+				if( compare( cache[ parents ] + tVal ) > 0 ){
 					VARSET_SET( parents , x ) ;
 					pruned[ parents ] = 0. ;
-					return 0 ;
+					return 1 ;
 				}
 
 				VARSET_SET( parents , x ) ;
@@ -121,7 +117,7 @@ approxStruct scoring::BICScoringFunction::approximateScore( int variable , varse
 
 	if( !canApproximate ) return PAIR( 1 , PAIR( p1 , p2 ) ) ;
 	
-	if( enableDeCamposPruning ){
+	if( whileCalculatingPruning ){
 		// Check if it was already PRUNED
 		auto s = pruned.find( parents ) ;
 		if( s != pruned.end() ) return PAIR( 1 , PAIR( p1 , p2 ) ) ;

@@ -52,7 +52,7 @@ namespace scoring {
 
 			float baseComplexityPenalty ;
 			int recordFileSize ;
-			bool enableDeCamposPruning ;
+			bool whileCalculatingPruning ;
 	} ;
 }
 
