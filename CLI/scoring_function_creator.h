@@ -25,13 +25,13 @@ namespace scoring {
 									datastructures::BayesianNetwork &network ,
 									datastructures::RecordFile &recordFile ,
 									scoring::Constraints *constraints ,
-									bool enableDeCamposPruning ){
+									bool whileCalculatingPruning ){
 		ScoringFunction *scoringFunction ;
 		boost::algorithm::to_lower( sf ) ;
 		if( sf == "bic" ){
 			std::vector<float> ilogi = scoring::LogLikelihoodCalculator::getLogCache( recordFile.size() ) ;
 			scoring::LogLikelihoodCalculator *llc = new scoring::LogLikelihoodCalculator( adTree , network , ilogi ) ;
-			scoringFunction = new scoring::BICScoringFunction( network , recordFile , llc , constraints , enableDeCamposPruning ) ;
+			scoringFunction = new scoring::BICScoringFunction( network , recordFile , llc , constraints , whileCalculatingPruning ) ;
 		}else{
 			throw std::runtime_error( "Invalid PS selection: '" + sf + "'.  Valid options are 'sequential', 'greedy' and 'independence'.");
 		}

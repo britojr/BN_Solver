@@ -87,8 +87,8 @@ int main( int argc , char** argv ){
 		( threadCountShortCut.c_str() , po::value<int> (&threadCount)->default_value( threadCountDefault ) , threadString.c_str() )
 		( runningTimeShortCut.c_str() , po::value<int> (&runningTime)->default_value( runningTimeDefault ) , runningTimeString.c_str() )
 		( hasHeaderShortCut.c_str() , hasHeaderString.c_str() )
-		( pruneShortCut.c_str() , pruneString.c_str() )
-		( deCamposPruningShortCut.c_str() , deCamposPruningString.c_str() )
+		( endOfCalculatingPruningShortCut.c_str() , endOfCalculatingPruningString.c_str() )
+		( whileCalculatingPruningShortCut.c_str() , whileCalculatingPruningString.c_str() )
 		( selectionTypeShortCut.c_str() , po::value<std::string>(&selectionType)->default_value( selectionTypeDefault ) , parentselection::parentSetSelectionString.c_str() )
 		( sfShortCut.c_str() , po::value<std::string>( &sf )->default_value( sfDefault ) , sfString.c_str() )
 		( constraintsFileShortCut.c_str() , po::value<std::string>( &constraintsFile ) , constraintsFileString.c_str() )
@@ -117,8 +117,8 @@ int main( int argc , char** argv ){
 	po::notify( vm ) ;
 
 	hasHeader = vm.count( "hasHeader" ) ;
-	prune = ( vm.count( "doNotPrune" ) == 0 ) ;
-	enableDeCamposPruning = vm.count( "enableDeCamposPruning" ) ;
+	endOfCalculatingPruning = vm.count( "endOfCalculatingPruning" ) ;
+	whileCalculatingPruning = vm.count( "whileCalculatingPruning" ) ;
 
 	if( threadCount < 1 ){
 		threadCount = 1 ;

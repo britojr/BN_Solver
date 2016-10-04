@@ -67,14 +67,14 @@ std::string hasHeaderString = "Add this flag if the first line of the input file
 std::string hasHeaderShortCut = "hasHeader,s" ;
 
 /* Whether to prune the scores before printing */
-bool prune = true ;
-std::string pruneString = "Add this flag if the scores should NOT be pruned at the end of the search." ;
-std::string pruneShortCut = "doNotPrune,o" ;
+bool endOfCalculatingPruning = true ;
+std::string endOfCalculatingPruningString = "Add this flag if the scores MUST be pruned at the end of the search." ;
+std::string endOfCalculatingPruningShortCut = "endOfCalculatingPruning,o" ;
 
 /* Whether to use deCampos-style pruning */
-bool enableDeCamposPruning = true ;
-std::string deCamposPruningString = "Add this flag if the scores should be pruned while calculating." ;
-std::string deCamposPruningShortCut = "enableDeCamposPruning,c" ;
+bool whileCalculatingPruning = true ;
+std::string whileCalculatingPruningString = "Add this flag if the scores should be pruned while calculating." ;
+std::string whileCalculatingPruningShortCut = "whileCalculatingPruning,c" ;
 
 /* Method to select parent sets */
 std::string selectionTypeDefault = "sequential" ;
@@ -123,7 +123,7 @@ void scoringThread( int thread ){
 		int size = sc.size() ;
 		printf( "Thread: %d , Variable: %d , Size before pruning: %d , Time: %s\n" , thread , variable , size , getTime().c_str() ) ;
 
-		if( prune ){
+		if( endOfCalculatingPruning ){
 			pss->prune( sc ) ;
 			int prunedSize = sc.size() ;
 			printf( "Thread: %d , Variable: %d , Size after pruning: %d , Time: %s\n" , thread , variable , prunedSize , getTime().c_str() ) ;
@@ -145,8 +145,8 @@ void calculateScore(){
 	printf( "Threads: '%d'\n" , threadCount ) ;
 	printf( "Running time (per variable): '%d'\n" , runningTime ) ;
 	printf( "Has header: '%s'\n" , ( hasHeader ? "true" : "false" ) ) ;
-	printf( "Enable end-of-scoring pruning: '%s'\n" , ( prune ? "true" : "false" ) ) ;
-	printf( "Enable DeCampos pruning: '%s'\n" , ( enableDeCamposPruning ? "true" : "false" ) ) ;
+	printf( "Enable while-calculating pruning: '%s'\n" , ( whileCalculatingPruning ? "true" : "false" ) ) ;
+	printf( "Enable end-of-calculating pruning: '%s'\n" , ( endOfCalculatingPruning ? "true" : "false" ) ) ;
 
 	printf( "Parsing input file.\n" ) ;
 	datastructures::RecordFile recordFile( datasetFile , delimiter , hasHeader ) ;
@@ -165,7 +165,7 @@ void calculateScore(){
 		constraints = scoring::parseConstraints( constraintsFile , network ) ;
 
 	printf( "Creating the score function calculator\n" ) ;
-	scoringFunction = scoring::create( sf , adTree , network , recordFile , constraints , enableDeCamposPruning ) ;
+	scoringFunction = scoring::create( sf , adTree , network , recordFile , constraints , whileCalculatingPruning ) ;
 	maxParents = scoring::parentsize( sf, maxParents , network , recordFile ) ;
 	
 	std::vector<boost::thread*> threads ;
