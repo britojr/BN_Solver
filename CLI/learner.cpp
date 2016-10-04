@@ -125,11 +125,9 @@ int main( int argc , char** argv ){
 	}
 
 	printf( " ============================== BN_LEARNING ============================== \n" ) ;
-	datasetFile = ( datasetFile.size() == 0 ? "NO SPECIFIED" : datasetFile ) ;
-	bnetFile = ( bnetFile.size() == 0 ? "NO SPECIFIED" : bnetFile ) ;
-	printf( "Dataset file: '%s'\n" , datasetFile.c_str() ) ;
+	printf( "Dataset file: '%s'\n" , datasetFile.size() == 0 ? "NO SPECIFIED" : datasetFile.c_str() ) ;
 	printf( "Score file: '%s'\n" , scoresFile.c_str() ) ;
-	printf( "Bnet file: '%s'\n" , bnetFile.c_str() ) ;
+	printf( "Bnet file: '%s'\n" , bnetFile.size() == 0 ? "NO SPECIFIED" : bnetFile.c_str() ) ;
 
 	if( stepsToPerform & PERFORM_SCORE_CALCULATION )
 		calculateScore() ;
