@@ -16,6 +16,7 @@
 #include "initializer_creator.h"
 #include "best_score_calculator.h"
 #include "best_score_creator.h"
+#include "variable.h"
 
 /* The algorithm for structure learning */
 std::string structureOptimizerTypeDefault = "greedy_search" ;
@@ -50,6 +51,9 @@ std::string structureParametersFile ;
 std::string structureParametersFileString = "Parameters file for structure learning algorithm" ;
 std::string structureParametersFileShortCut = "stparams,j" ;
 
+/* Scoring cache */
+scoring::ScoreCache cache ;
+
 void printSolution( datastructures::BNStructure solution ){
 	for(int i = 0 ; i < solution.size() ; i++){
 		varset vs = solution[ i ]->getParents() ;
@@ -63,6 +67,22 @@ void printSolution( datastructures::BNStructure solution ){
 	}
 }
 
+inline void printSolution( std::string bnetFile , datastructures::BNStructure &solution ){
+	if( bnetFile.size() == 0 ) return ;
+	FILE *out = fopen( bnetFile.c_str() , "w" ) ;
+	datastructures::BayesianNetwork* network = cache.getNetwork() ;
+	
+	for(int i = 0 ; i < solution.size() ; i++){
+		fprintf( out , "%s:" , network->get( i )->getName().c_str() ) ;
+		std::vector<int> children = solution[ i ]->getChildrenVector() ;
+		for(int j = 0 ; j < children.size() ; j++)
+			fprintf( out , " %s" , network->get( children[ j ] )->getName().c_str() ) ;
+		fprintf( out , "\n" ) ;
+	}
+
+	fclose( out ) ;
+}
+
 void structureLearning(){
 	printf( "========== STEP: STRUCTURE OPTIMIZATION ========== \n" ) ;
 	printf( "Best score calculator: '%s'\n" , bestScoreCalculator.c_str() ) ;
@@ -71,7 +91,6 @@ void structureLearning(){
 	printf( "Max. time per solution (sec): %d\n" , timePerSolution ) ;
 
 	printf( "Reading score cache.\n" ) ;
-	scoring::ScoreCache cache ;
 	cache.read( scoresFile ) ;
 	if( scoresFile.compare( scoresFileDefault ) == 0 )
 		remove( scoresFile.c_str() ) ;
@@ -86,7 +105,7 @@ void structureLearning(){
 	structureoptimizer::StructureOptimizer* algorithm = structureoptimizer::create( structureOptimizerType , initializer , bestScCalc , structureParametersFile ) ;
 	algorithm->printParameters() ;
 	datastructures::BNStructure solution = algorithm->search( numSolutions , timePerSolution ) ;
-//	printSolution( solution ) ;
+	printSolution( bnetFile , solution ) ;
 }
 
 #endif	/* STRUCTURE_OPTIMIZER_H */
