@@ -79,6 +79,10 @@ int structureoptimizer::PermutationSet::operator[]( int idx ) const {
 	return permutation[ idx ] ;
 }
 
+bool structureoptimizer::PermutationSet::operator <( structureoptimizer::PermutationSet other ) const {
+	return compare( other.getScore() , score ) > 0 ; // TODO: Check this, equal to isBetter
+}
+
 void structureoptimizer::PermutationSet::swap( int idx1 , int idx2 ){
 	int aux = permutation[ idx1 ] ;
 	permutation[ idx1 ] = permutation[ idx2 ] ;
