@@ -39,6 +39,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/ad_node.o \
 	${OBJECTDIR}/ad_tree.o \
 	${OBJECTDIR}/bayesian_network.o \
+	${OBJECTDIR}/beam_search.o \
 	${OBJECTDIR}/bfirst_initializer.o \
 	${OBJECTDIR}/bic_scoring_function.o \
 	${OBJECTDIR}/bn_structure.o \
@@ -106,6 +107,11 @@ ${OBJECTDIR}/bayesian_network.o: bayesian_network.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -O3 -s -I/usr/local/include -I/usr/include -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/bayesian_network.o bayesian_network.cpp
+
+${OBJECTDIR}/beam_search.o: beam_search.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O3 -s -I/usr/local/include -I/usr/include -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/beam_search.o beam_search.cpp
 
 ${OBJECTDIR}/bfirst_initializer.o: bfirst_initializer.cpp 
 	${MKDIR} -p ${OBJECTDIR}
