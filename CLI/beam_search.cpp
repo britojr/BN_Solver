@@ -14,6 +14,7 @@
 
 #include <queue>
 
+#include "beam_list.h"
 #include "beam_search.h"
 
 structureoptimizer::BeamSearch::BeamSearch(){
@@ -36,7 +37,7 @@ structureoptimizer::BeamSearch::~BeamSearch(){
 }
 
 void structureoptimizer::BeamSearch::setDefaultParameters(){
-	this->maxDepth = 10 ;
+	this->maxDepth = 500 ;
 	this->queueLength = log( variableCount ) ;
 }
 
@@ -63,56 +64,43 @@ void structureoptimizer::BeamSearch::initialize(){
 datastructures::BNStructure structureoptimizer::BeamSearch::search_internal(){
 	boost::timer::auto_cpu_timer cpu( 6 , "CPU time = %w\n" ) ; // TODO: Rethink location of timer
 
-	std::priority_queue<structureoptimizer::PermutationSet> q ;
-	q.push( current ) ;
-	
+	datastructures::BeamList<> q( queueLength ) ;
+	q.add( current ) ;
+
 	structureoptimizer::PermutationSet best = current ;
 	std::vector<structureoptimizer::PermutationSet> convergent ;
-	for(int i = 0 ; i < maxDepth && !q.empty() && !outOfTime ; i++){
-		printf("Depth #%d\n" , i+1 ) ;
-		convergent = updateLayer( q ) ;
-//		printf("Convergent = %d\n" , convergent.size() ) ;
-		for(int j = 0 ; j < convergent.size() ; j++){
-			if( convergent[ j ].isBetter( best ) ){
-				best = convergent[ j ] ;
-			}
+	int numIterations = 0 ;
+	for(int k = 0 ; k < maxDepth && !q.empty() && !outOfTime ; k++,numIterations++){
+		updateLayer( q ) ;
+		if( !q.empty() && q.top() < best ){
+			best = q.top() ;
+			printf(" === Iteration %d ===\n" , k+1 ) ;
+			best.print() ;
 		}
 	}
+	printf("Iterations = %d\n" , numIterations ) ;
 	t->cancel() ;
 	return datastructures::BNStructure( best , bestScoreCalculators ) ;
 }
 
-std::vector<structureoptimizer::PermutationSet> structureoptimizer::BeamSearch::updateLayer(
-									std::priority_queue<structureoptimizer::PermutationSet> &q ){
-	std::priority_queue<structureoptimizer::PermutationSet> beam ;
-	std::vector<structureoptimizer::PermutationSet> convergent ;
+void structureoptimizer::BeamSearch::updateLayer( datastructures::BeamList<> &q ){
+	datastructures::BeamList<> beam( queueLength ) ;
 	while( !q.empty() && !outOfTime ){
-		structureoptimizer::PermutationSet best = q.top() ; q.pop() ;
-		printf("\t" ) ; best.print() ;
-		std::vector<structureoptimizer::PermutationSet> neighbours = getNeighbours( best ) ;
-		printf("\tNeighbours = %d\n" , neighbours.size() ) ;
-		if( neighbours.empty() ){
-			convergent.push_back( best ) ;
-		}else{
-			for(int i = 0 ; i < neighbours.size() ; i++){
-				printf ("\t\t" ) ; neighbours[ i ].print() ;
-				beam.push( neighbours[ i ] ) ;
-				if( beam.size() >= queueLength ) beam.pop() ;
-			}
-		}
+		structureoptimizer::PermutationSet best = q.pop() ;
+		datastructures::BeamList<> neighbours = getNeighbours( best ) ;
+		if( !neighbours.empty() )
+			beam.add( neighbours ) ;
 	}
 	q = beam ;
-	return convergent ;
 }
 
-std::vector<structureoptimizer::PermutationSet> structureoptimizer::BeamSearch::getNeighbours(
+datastructures::BeamList<> structureoptimizer::BeamSearch::getNeighbours(
 									structureoptimizer::PermutationSet currentState ){
-	std::vector<structureoptimizer::PermutationSet> neighbours ;
-	// TODO: Improve to get only the 'queueLength' best ones
+	datastructures::BeamList<> neighbours( queueLength ) ;
 	for(int i = 0 ; i < variableCount - 1 ; i++){
 		structureoptimizer::PermutationSet neighbour = doSwap( currentState , i ) ;
-		if( !neighbour.isBetter( currentState ) ) continue ;
-		neighbours.push_back( neighbour ) ;
+		if( !neighbour.isBetter( currentState ) ) continue ; // Prune worse solutions
+		neighbours.add( neighbour ) ;
 	}
 	return neighbours ;
 }

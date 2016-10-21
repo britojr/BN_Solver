@@ -16,6 +16,7 @@
 
 #include "structure_optimizer.h"
 #include "permutation_set.h"
+#include "beam_list.h"
 
 namespace structureoptimizer {
 	class BeamSearch : public structureoptimizer::StructureOptimizer {
@@ -31,9 +32,8 @@ namespace structureoptimizer {
 		private :
 			void initialize() ;
 			datastructures::BNStructure search_internal() ;
-			std::vector<structureoptimizer::PermutationSet> updateLayer(
-						std::priority_queue<structureoptimizer::PermutationSet> &q ) ;
-			std::vector<structureoptimizer::PermutationSet> getNeighbours(
+			void updateLayer( datastructures::BeamList<> &q ) ;
+			datastructures::BeamList<> getNeighbours(
 						structureoptimizer::PermutationSet currentState ) ;
 			structureoptimizer::PermutationSet doSwap(
 						structureoptimizer::PermutationSet currentState , int index ) ;
