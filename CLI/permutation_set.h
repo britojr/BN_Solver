@@ -23,6 +23,7 @@ namespace structureoptimizer {
 			
 			int operator [] ( int idx ) const ;
 			bool operator < ( structureoptimizer::PermutationSet other ) const ;
+			bool operator == ( structureoptimizer::PermutationSet other ) const ;
 			
 			void swap( int idx1 , int idx2 ) ;
 			void reverse() ;

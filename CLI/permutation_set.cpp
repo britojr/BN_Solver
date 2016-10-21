@@ -46,11 +46,6 @@ void structureoptimizer::PermutationSet::setScore( float score ){
 	this->score = score ;
 }
 
-// Considering that minimizing is better
-bool structureoptimizer::PermutationSet::isBetter( structureoptimizer::PermutationSet other ){
-	return compare( other.getScore() , score ) > 0 ;
-}
-
 void structureoptimizer::PermutationSet::setPermutation( std::vector<int> permutation ){
 	this->permutation = permutation ;
 	updateScore() ;
@@ -80,7 +75,16 @@ int structureoptimizer::PermutationSet::operator[]( int idx ) const {
 }
 
 bool structureoptimizer::PermutationSet::operator <( structureoptimizer::PermutationSet other ) const {
-	return compare( other.getScore() , score ) > 0 ; // TODO: Check this, equal to isBetter
+	return compare( other.getScore() , score ) > 0 ; // TODO: Check this, it is equal to isBetter
+}
+
+bool structureoptimizer::PermutationSet::operator ==( structureoptimizer::PermutationSet other ) const {
+	return other.permutation == permutation ;
+}
+
+// Considering that minimizing is better
+bool structureoptimizer::PermutationSet::isBetter( structureoptimizer::PermutationSet other ){
+	return compare( other.getScore() , score ) > 0 ;
 }
 
 void structureoptimizer::PermutationSet::swap( int idx1 , int idx2 ){
