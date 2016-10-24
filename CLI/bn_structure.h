@@ -21,22 +21,22 @@ namespace datastructures {
 						std::vector<bestscorecalculators::BestScoreCalculator*> &bsc ) ;
 			BNStructure( std::vector<bestscorecalculators::BestScoreCalculator*> &bsc ,
 							bool calculateEdgeWeights = false ) ;
-			
+
 			structureoptimizer::Node* operator []( int index ) ;
-			
+
 			void print() ;
-			
+
 			float getScore() ;
-			
+
 			int size() ;
-			
+
 			bool isBetter( datastructures::BNStructure other ) ;
-			
+
 			void setParents( int indexnode , varset parents , float score ) ;
-			
+
 			float getMeanInDegree() ;
 			int getMaxInDegree() ;
-			
+
 		private :
 			std::vector<structureoptimizer::Node*> nodes ;
 			float structureScore ;
@@ -45,4 +45,3 @@ namespace datastructures {
 }
 
 #endif	/* BNSTRUCTURE_H */
-
