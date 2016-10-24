@@ -28,7 +28,7 @@ namespace structureoptimizer {
 			~BeamSearch() ;
 		
 			void printParameters() ;
-		
+
 		private :
 			void initialize() ;
 			datastructures::BNStructure search_internal() ;
@@ -40,9 +40,9 @@ namespace structureoptimizer {
 
 			void setDefaultParameters() ;
 			void setFileParameters( std::map<std::string,std::string> params ) ;
-			
+
 			structureoptimizer::PermutationSet current ;
-			
+
 			// Configurable Parameters
 			int maxDepth ;
 			int queueLength ;

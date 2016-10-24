@@ -27,7 +27,6 @@ structureoptimizer::BeamSearch::BeamSearch( initializers::Initializer* initializ
 	this->initializer = initializer ;
 	this->bestScoreCalculators = bestScoreCalculator ;
 	this->variableCount = bestScoreCalculator.size() ;
-	this->gen = boost::mt19937( time( NULL ) ) ;
 	
 	setParameters( parametersFile ) ;
 }
