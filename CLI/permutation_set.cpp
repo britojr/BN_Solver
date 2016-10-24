@@ -75,7 +75,7 @@ int structureoptimizer::PermutationSet::operator[]( int idx ) const {
 }
 
 bool structureoptimizer::PermutationSet::operator <( structureoptimizer::PermutationSet other ) const {
-	return compare( other.getScore() , score ) > 0 ; // TODO: Check this, it is equal to isBetter
+	return compare( other.getScore() , score ) > 0 ;
 }
 
 bool structureoptimizer::PermutationSet::operator ==( structureoptimizer::PermutationSet other ) const {
@@ -84,7 +84,7 @@ bool structureoptimizer::PermutationSet::operator ==( structureoptimizer::Permut
 
 // Considering that minimizing is better
 bool structureoptimizer::PermutationSet::isBetter( structureoptimizer::PermutationSet other ){
-	return compare( other.getScore() , score ) > 0 ;
+	return (*this) < other ;
 }
 
 void structureoptimizer::PermutationSet::swap( int idx1 , int idx2 ){
@@ -93,16 +93,6 @@ void structureoptimizer::PermutationSet::swap( int idx1 , int idx2 ){
 	permutation[ idx2 ] = aux ;
 	bool isAdjacentMove = abs( idx1 - idx2 ) == 1 ;
 	isAdjacentMove ? updateScore( std::min( idx1 , idx2 ) ) : updateScore() ;
-}
-
-void structureoptimizer::PermutationSet::reverse(){
-	int n = size() ;
-	for(int i = 0 ; i < n / 2 ; i++){
-		int aux = permutation[ i ] ;
-		permutation[ i ] = permutation[ n - i - 1 ] ;
-		permutation[ n - i - 1 ] = aux ;
-	}
-	updateScore() ;
 }
 
 varset structureoptimizer::PermutationSet::getVarset( int index ){
