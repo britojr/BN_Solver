@@ -62,7 +62,7 @@ namespace datastructures {
 				q.erase( *q.begin() ) ;
 				return node ;
 			}
-			
+
 			_ItemType top(){
 				return *q.begin() ;
 			}
