@@ -20,12 +20,8 @@ namespace structureoptimizer {
 				this->variableIndex = variable ;
 				this->score = 0. ;
 				
-				VARSET_NEW( parentsAux , size ) ;
-				this->parents = parentsAux ;
-				
-				VARSET_NEW( childrenAux , size ) ;
-				this->children = childrenAux ;
-				
+				this->parents = VARSET( size ) ;
+				this->children = VARSET( size ) ;				
 				for(int i = 0 ; i < size ; i++) weights.push_back( 0. ) ;
 			}
 
@@ -60,11 +56,19 @@ namespace structureoptimizer {
 
 			void setParents( varset parents ){
 				this->parents = parents ;
+//				parentsVector.clear() ;
+//				for(int i = 0 ; i < weights.size() ; i++)
+//					if( VARSET_GET( parents , i ) )
+//						parentsVector.push_back( i ) ;
 			}
 			
 			varset getParents(){
 				return parents ;
 			}
+			
+//			std::vector<int> getParentsVector(){
+//				return parentsVector ;
+//			}
 			
 			void removeParent( int index ){
 				if( VARSET_GET( parents , index ) ){
@@ -99,6 +103,7 @@ namespace structureoptimizer {
 			float score ;
 			std::vector<float> weights ;
 			std::vector<int> childrenVector ;
+//			std::vector<int> parentsVector ;
 	} ;
 }
 
