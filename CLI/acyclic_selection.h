@@ -25,19 +25,25 @@ namespace structureoptimizer {
 		private :
 			void initialize() ;
 			datastructures::BNStructure search_internal() ;
-			
+
 			varset getDescendants( int index ) ;
-//			void visit( int index ) ;
 			void setDefaultParameters() ;
 			void setFileParameters( std::map<std::string, std::string> params ) ;
-			
+
+			// Test methods
+			datastructures::BNStructure searchEfficient() ;
+			datastructures::BNStructure searchBruteForce() ;
+			void visit( int index ) ;
+
 			structureoptimizer::PermutationSet initial ;
-			
+
 			std::vector<varset> m ; // Descendants
-			std::vector<std::vector<int> > todo ; // To-Do lists
+			std::vector<varset> todo ; // To-Do lists
 			datastructures::BNStructure partial_bn ; // Partial BN structure
+
+			// Configuration variables
+			bool testFlag ;
 	} ;
 }
 
 #endif	/* ACYCLIC_SELECTION_H */
-
