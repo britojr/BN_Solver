@@ -8,6 +8,7 @@
 #include <cstdlib>
 
 #include "random_initializer.h"
+#include "permutation_set_creator.h"
 #include "utils.h"
 
 initializers::RandomInitializer::RandomInitializer(){
@@ -24,10 +25,10 @@ initializers::RandomInitializer::~RandomInitializer(){
 	// Do nothing
 }
 
-structureoptimizer::PermutationSet initializers::RandomInitializer::generate(){
-	structureoptimizer::PermutationSet set( variableCount , bestScoreCalculators ) ;
-	std::vector<int> permut = shuffle( set.getPermutation() , gen ) ;
-	set.setPermutation( permut ) ;
+structureoptimizer::PermutationSet* initializers::RandomInitializer::generate( int setType ){
+	structureoptimizer::PermutationSet* set = structureoptimizer::createSet( setType , variableCount , bestScoreCalculators ) ;
+	std::vector<int> permut = shuffle( set->getPermutation() , gen ) ;
+	set->setPermutation( permut ) ;
 	return set ;
 }
 

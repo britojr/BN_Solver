@@ -21,7 +21,7 @@ namespace initializers {
 			RandomInitializer( std::vector<bestscorecalculators::BestScoreCalculator*> bestScoreCalculator ) ;
 			~RandomInitializer() ;
 			
-			structureoptimizer::PermutationSet generate() ;
+			structureoptimizer::PermutationSet* generate( int setType ) ;
 			void initialize() ;
 	} ;
 }

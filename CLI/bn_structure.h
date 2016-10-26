@@ -17,7 +17,7 @@ namespace datastructures {
 		public :
 			BNStructure() ;
 			BNStructure( int size ) ;
-			BNStructure( structureoptimizer::PermutationSet order ,
+			BNStructure( structureoptimizer::PermutationSet* order ,
 						std::vector<bestscorecalculators::BestScoreCalculator*> &bsc ) ;
 			BNStructure( std::vector<bestscorecalculators::BestScoreCalculator*> &bsc ,
 							bool calculateEdgeWeights = false ) ;

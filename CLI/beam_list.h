@@ -17,7 +17,7 @@
 #include "permutation_set.h"
 
 namespace datastructures {
-	template <typename _ItemType = structureoptimizer::PermutationSet> class BeamList {
+	template <typename _ItemType = structureoptimizer::PermutationSet*> class BeamList {
 		public:
 			BeamList(){
 				// Do nothing

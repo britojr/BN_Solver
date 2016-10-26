@@ -20,13 +20,13 @@
 #include "best_score_calculator.h"
 
 namespace initializers {
-	class DFSInitializer : public initializers::Initializer {
+	class DFSInitializer : public Initializer {
 		public :
 			DFSInitializer() ;
 			DFSInitializer( std::vector<bestscorecalculators::BestScoreCalculator*> bestScoreCalculators ) ;
 			~DFSInitializer() ;
 			
-			structureoptimizer::PermutationSet generate() ;
+			structureoptimizer::PermutationSet* generate( int setType = 0 ) ;
 			void initialize() ;
 
 		private :

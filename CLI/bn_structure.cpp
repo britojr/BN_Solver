@@ -24,16 +24,16 @@ datastructures::BNStructure::BNStructure( int size ){
 }
 
 // Create structure based on a fixed order
-datastructures::BNStructure::BNStructure( structureoptimizer::PermutationSet order ,
+datastructures::BNStructure::BNStructure( structureoptimizer::PermutationSet* order ,
 											std::vector<bestscorecalculators::BestScoreCalculator*> &bsc ){
-	for(int i = 0 ; i < order.size() ; i++){
-		structureoptimizer::Node* var = new structureoptimizer::Node( i , order.size() ) ;
+	for(int i = 0 ; i < order->size() ; i++){
+		structureoptimizer::Node* var = new structureoptimizer::Node( i , order->size() ) ;
 		nodes.push_back( var ) ;
 	}
 	variableCount = nodes.size() ;
 	for(int i = 0 ; i < variableCount ; i++){
-		varset options = order.getVarset( i ) ;
-		int variable = order[ i ] ;
+		varset options = order->getVarset( i ) ;
+		int variable = (*order)[ i ] ;
 		float score = bsc[ variable ]->getScore( options ) ;
 		varset parents = bsc[ variable ]->getParents() ;
 		setParents( variable , parents , score ) ;

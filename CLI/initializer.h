@@ -15,7 +15,7 @@
 namespace initializers {
 	class Initializer {
 		public :
-			virtual structureoptimizer::PermutationSet generate() = 0 ;
+			virtual structureoptimizer::PermutationSet* generate( int setType = 0 ) = 0 ;
 			virtual void initialize() = 0 ;
 			
 		protected :

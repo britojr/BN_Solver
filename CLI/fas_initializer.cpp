@@ -8,6 +8,7 @@
 #include "fas_solver.h"
 #include "fas_initializer.h"
 #include "bn_structure.h"
+#include "permutation_set_creator.h"
 
 initializers::FASInitializer::FASInitializer(){
 	// Do nothing
@@ -24,7 +25,7 @@ initializers::FASInitializer::~FASInitializer(){
 	// Do nothing
 }
 
-structureoptimizer::PermutationSet initializers::FASInitializer::generate(){
+structureoptimizer::PermutationSet* initializers::FASInitializer::generate( int setType ){
 	this->unvisitedVariables = varset( variableCount ) ; 
 	VARSET_SET_ALL( this->unvisitedVariables , variableCount ) ;
 
@@ -47,8 +48,8 @@ structureoptimizer::PermutationSet initializers::FASInitializer::generate(){
 	}
 
 	// Build the permutation set
-	structureoptimizer::PermutationSet set( variableCount , bestScoreCalculators ) ;
-	set.setPermutation( order ) ;
+	structureoptimizer::PermutationSet* set = structureoptimizer::createSet( setType , variableCount , bestScoreCalculators ) ;
+	set->setPermutation( order ) ;
 	return set ;
 }
 

@@ -75,24 +75,24 @@ void structureoptimizer::SimulatedAnnealing::initialize(){
 	current = initializer->generate() ;
 	printf( " ======== Simulated Annealing ======== \n" ) ;
 	printf(" === Iteration %d ===\n" , 0 ) ;
-	current.print( true ) ;
+	current->print( true ) ;
 }
 
 datastructures::BNStructure structureoptimizer::SimulatedAnnealing::search_internal(){
 	boost::timer::auto_cpu_timer cpu( 6 , "CPU time = %w\n" ) ; // TODO: Rethink location of timer
 
 	float cooling_rate = -log( tempMax / tempMin ) ;
-	structureoptimizer::PermutationSet best ;
+	structureoptimizer::PermutationSet* best ;
 	int counter = 0 , numIterations = 0 ;
 	for(int i = 0 ; i < maxIterations && counter != unchangedIterations && !outOfTime ; i++,numIterations++){
 		float temperature = tempMax * exp( cooling_rate * i / maxIterations ) ;
 		bool hasChange = false ;
 		for(int j = 0 ; j < numRepeats ; j++){
-			structureoptimizer::PermutationSet neigh = neighbour( current ) ;
+			structureoptimizer::PermutationSet* neigh = neighbour( current ) ;
 			float accProb = acceptanceProbability( current , neigh , temperature ) ;
 			if( compare( accProb , random_generator( gen ) ) >= 0 )
 				current = neigh ;
-			if( best.size() == 0 || current.isBetter( best ) ){
+			if( best->size() == 0 || current->isBetter( *best ) ){
 				best = current ;
 				counter = 0 ;
 				hasChange = true ;
@@ -100,7 +100,7 @@ datastructures::BNStructure structureoptimizer::SimulatedAnnealing::search_inter
 		}
 		if( hasChange ){
 			printf(" === Iteration %d ===\n" , i+1 ) ;
-			best.print() ;
+			best->print() ;
 		}else{
 			counter++ ;
 		}
@@ -110,19 +110,19 @@ datastructures::BNStructure structureoptimizer::SimulatedAnnealing::search_inter
 	return datastructures::BNStructure( best , bestScoreCalculators ) ;
 }
 
-structureoptimizer::PermutationSet structureoptimizer::SimulatedAnnealing::neighbour( structureoptimizer::PermutationSet set ){
+structureoptimizer::PermutationSet* structureoptimizer::SimulatedAnnealing::neighbour( structureoptimizer::PermutationSet* set ){
 	int index = random_generator( variableCount - 1 , gen ) ;
-	structureoptimizer::PermutationSet newSet( set ) ;
-	newSet.swap( index , index + 1 ) ;
+	structureoptimizer::PermutationSet* newSet = set ;
+	newSet->swap( index , index + 1 ) ;
 	return newSet ;
 }
 
-float structureoptimizer::SimulatedAnnealing::acceptanceProbability( structureoptimizer::PermutationSet oldState ,
-																	structureoptimizer::PermutationSet newState ,
+float structureoptimizer::SimulatedAnnealing::acceptanceProbability( structureoptimizer::PermutationSet* oldState ,
+																	structureoptimizer::PermutationSet* newState ,
 																	float temperature ){
-	if( newState.isBetter( oldState ) ) return 1.0 ;
-	float oldEnergy = oldState.getScore() ;
-	float newEnergy = newState.getScore() ;
+	if( newState->isBetter( *oldState ) ) return 1.0 ;
+	float oldEnergy = oldState->getScore() ;
+	float newEnergy = newState->getScore() ;
 	float diffE = newEnergy - oldEnergy ;
 	if( !useDiffZero && isZero( diffE ) ) return temperature / tempMax ;
 	return exp( -diffE / temperature ) ;

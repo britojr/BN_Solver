@@ -23,7 +23,7 @@ namespace initializers {
 			FASInitializer( std::vector<bestscorecalculators::BestScoreCalculator*> bestScoreCalculators ) ;
 			~FASInitializer() ;
 			
-			structureoptimizer::PermutationSet generate() ;
+			structureoptimizer::PermutationSet* generate( int setType = 0 ) ;
 			void initialize() ;
 
 		private :

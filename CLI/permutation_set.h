@@ -17,33 +17,35 @@ namespace structureoptimizer {
 	class PermutationSet {
 		public :
 			PermutationSet() ;
-			PermutationSet( int size , std::vector<bestscorecalculators::BestScoreCalculator*> &bestScoreCalculator ) ;
 			PermutationSet( const PermutationSet &other ) ;
 			~PermutationSet() ;
 
 			int operator [] ( int idx ) const ;
-			bool operator < ( structureoptimizer::PermutationSet other ) const ;
-			bool operator == ( structureoptimizer::PermutationSet other ) const ;
+			bool operator < ( PermutationSet &other ) const ;
+			bool operator == ( PermutationSet &other ) const ;
 
 			void swap( int idx1 , int idx2 ) ;
 
-			float getScore() ;
-			void updateScore( int adjacentPos = -1 ) ;
-			bool isBetter( PermutationSet other ) ;
+			float getScore() const ;
+			bool isBetter( PermutationSet &other ) ;
 
 			void setPermutation( std::vector<int> permutation ) ;
 			std::vector<int> getPermutation() ;
 
 			int size() const ;
 
-			void print( bool printPermutation = false ) ;
-
 			varset getVarset( int index ) ;
 
 			std::vector<bestscorecalculators::BestScoreCalculator*> getBestScoreCalculators() const ;
 
-		private :
+			// Abstract methods
+			virtual void print( bool printPermutation = false ) = 0 ;
+
+		protected :
 			void setScore( float score ) ;
+			
+			// Abstract methods
+			virtual void updateScore( int adjacentPos = -1 ) = 0 ;
 
 			std::vector<int> permutation ;
 			std::vector<bestscorecalculators::BestScoreCalculator*> bestScoreCalculator ;

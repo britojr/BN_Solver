@@ -33,15 +33,13 @@ namespace structureoptimizer {
 			void initialize() ;
 			datastructures::BNStructure search_internal() ;
 			void updateLayer( datastructures::BeamList<> &q ) ;
-			datastructures::BeamList<> getNeighbours(
-						structureoptimizer::PermutationSet currentState ) ;
-			structureoptimizer::PermutationSet doSwap(
-						structureoptimizer::PermutationSet currentState , int index ) ;
+			datastructures::BeamList<> getNeighbours( PermutationSet* currentState ) ;
+			PermutationSet* doSwap( PermutationSet* currentState , int index ) ;
 
 			void setDefaultParameters() ;
 			void setFileParameters( std::map<std::string,std::string> params ) ;
 
-			structureoptimizer::PermutationSet current ;
+			PermutationSet* current ;
 
 			// Configurable Parameters
 			int maxDepth ;

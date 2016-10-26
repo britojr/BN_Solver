@@ -35,7 +35,7 @@ namespace structureoptimizer {
 			datastructures::BNStructure searchBruteForce() ;
 			void visit( int index ) ;
 
-			structureoptimizer::PermutationSet initial ;
+			structureoptimizer::PermutationSet* initial ;
 
 			std::vector<varset> m ; // Descendants
 			std::vector<varset> todo ; // To-Do lists

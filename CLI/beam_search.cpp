@@ -57,7 +57,7 @@ void structureoptimizer::BeamSearch::initialize(){
 	current = initializer->generate() ;
 	printf( " ======== Greedy Search ======== \n" ) ;
 	printf(" === Iteration %d ===\n" , 0 ) ;
-	current.print( true ) ;
+	current->print( true ) ;
 }
 
 datastructures::BNStructure structureoptimizer::BeamSearch::search_internal(){
@@ -66,15 +66,15 @@ datastructures::BNStructure structureoptimizer::BeamSearch::search_internal(){
 	datastructures::BeamList<> q( queueLength ) ;
 	q.add( current ) ;
 
-	structureoptimizer::PermutationSet best = current ;
-	std::vector<structureoptimizer::PermutationSet> convergent ;
+	structureoptimizer::PermutationSet* best = current ;
+	std::vector<structureoptimizer::PermutationSet*> convergent ;
 	int numIterations = 0 ;
 	for(int k = 0 ; k < maxDepth && !q.empty() && !outOfTime ; k++,numIterations++){
 		updateLayer( q ) ;
 		if( !q.empty() && q.top() < best ){
 			best = q.top() ;
 			printf(" === Iteration %d ===\n" , k+1 ) ;
-			best.print() ;
+			best->print() ;
 		}
 	}
 	printf("Iterations = %d\n" , numIterations ) ;
@@ -85,7 +85,7 @@ datastructures::BNStructure structureoptimizer::BeamSearch::search_internal(){
 void structureoptimizer::BeamSearch::updateLayer( datastructures::BeamList<> &q ){
 	datastructures::BeamList<> beam( queueLength ) ;
 	while( !q.empty() && !outOfTime ){
-		structureoptimizer::PermutationSet best = q.pop() ;
+		structureoptimizer::PermutationSet* best = q.pop() ;
 		datastructures::BeamList<> neighbours = getNeighbours( best ) ;
 		if( !neighbours.empty() )
 			beam.add( neighbours ) ;
@@ -94,19 +94,19 @@ void structureoptimizer::BeamSearch::updateLayer( datastructures::BeamList<> &q 
 }
 
 datastructures::BeamList<> structureoptimizer::BeamSearch::getNeighbours(
-									structureoptimizer::PermutationSet currentState ){
+									structureoptimizer::PermutationSet* currentState ){
 	datastructures::BeamList<> neighbours( queueLength ) ;
 	for(int i = 0 ; i < variableCount - 1 ; i++){
-		structureoptimizer::PermutationSet neighbour = doSwap( currentState , i ) ;
-		if( !neighbour.isBetter( currentState ) ) continue ; // Prune worse solutions
+		structureoptimizer::PermutationSet* neighbour = doSwap( currentState , i ) ;
+		if( !neighbour->isBetter( *currentState ) ) continue ; // Prune worse solutions
 		neighbours.add( neighbour ) ;
 	}
 	return neighbours ;
 }
 
-structureoptimizer::PermutationSet structureoptimizer::BeamSearch::doSwap(
-									structureoptimizer::PermutationSet set , int index ){
-	structureoptimizer::PermutationSet newSet( set ) ;
-	newSet.swap( index , index + 1 ) ;
+structureoptimizer::PermutationSet* structureoptimizer::BeamSearch::doSwap(
+									structureoptimizer::PermutationSet* set , int index ){
+	structureoptimizer::PermutationSet* newSet = set ;
+	newSet->swap( index , index + 1 ) ;
 	return newSet ;
 }

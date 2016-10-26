@@ -12,6 +12,7 @@
 #include "dfs_initializer.h"
 #include "utils.h"
 #include "bn_structure.h"
+#include "permutation_set_creator.h"
 
 initializers::DFSInitializer::DFSInitializer(){
 	// Do nothing
@@ -44,7 +45,7 @@ bool cmpNodes( hnode node1 , hnode node2 ){
 	return node1.first < node2.first ;
 }
 
-structureoptimizer::PermutationSet initializers::DFSInitializer::generate(){
+structureoptimizer::PermutationSet* initializers::DFSInitializer::generate( int setType ){
 	unvisitedVariables = varset( variableCount ) ;
 	VARSET_SET_ALL( unvisitedVariables , variableCount ) ;
 
@@ -65,8 +66,8 @@ structureoptimizer::PermutationSet initializers::DFSInitializer::generate(){
 	}
 	
 	// Build the permutation set
-	structureoptimizer::PermutationSet set( variableCount , bestScoreCalculators ) ;
-	set.setPermutation( order ) ;
+	structureoptimizer::PermutationSet* set = structureoptimizer::createSet( setType , variableCount , bestScoreCalculators ) ;
+	set->setPermutation( order ) ;
 	return set ;
 }
 

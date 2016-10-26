@@ -15,7 +15,7 @@
 #include "permutation_set.h"
 
 namespace structureoptimizer {
-	class SimulatedAnnealing : public structureoptimizer::StructureOptimizer {
+	class SimulatedAnnealing : public StructureOptimizer {
 		public :
 			SimulatedAnnealing() ;
 			SimulatedAnnealing( initializers::Initializer* initializer ,
@@ -28,17 +28,17 @@ namespace structureoptimizer {
 		private :
 			void initialize() ;
 			datastructures::BNStructure search_internal() ;
-			
-			float acceptanceProbability( structureoptimizer::PermutationSet oldState ,
-										structureoptimizer::PermutationSet newState ,
+
+			float acceptanceProbability( PermutationSet* oldState ,
+										PermutationSet* newState ,
 										float temperature ) ;
-			structureoptimizer::PermutationSet neighbour( structureoptimizer::PermutationSet currentState ) ;
-			
+			PermutationSet* neighbour( PermutationSet* currentState ) ;
+
 			void setDefaultParameters() ;
 			void setFileParameters( std::map<std::string,std::string> params ) ;
 
-			structureoptimizer::PermutationSet current ;
-			
+			PermutationSet* current ;
+
 			// Configurable parameters
 			int maxIterations ;
 			int numRepeats ;

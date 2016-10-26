@@ -67,7 +67,7 @@ void structureoptimizer::TabuSearch::initialize(){
 	current = initializer->generate() ;
 	printf( " ======== Tabu Search ======== \n" ) ;
 	printf(" === Iteration %d ===\n" , 0 ) ;
-	current.print( true ) ;
+	current->print( true ) ;
 }
 
 datastructures::BNStructure structureoptimizer::TabuSearch::search_internal(){
@@ -75,30 +75,30 @@ datastructures::BNStructure structureoptimizer::TabuSearch::search_internal(){
 	
 	int numIterations = 0 ;
 	for(int i = 0 ; i < maxIterations && !outOfTime ; i++,numIterations++){
-		structureoptimizer::PermutationSet bestNeighbour = findBestNeighbour( current ) ;
-		if( !bestNeighbour.isBetter( current ) ) break ;
-		tabuList.add( current[ bestSwap ] , current[ bestSwap + 1 ] ) ;
+		structureoptimizer::PermutationSet* bestNeighbour = findBestNeighbour( current ) ;
+		if( !bestNeighbour->isBetter( *current ) ) break ;
+		tabuList.add( (*current)[ bestSwap ] , (*current)[ bestSwap + 1 ] ) ;
 		printf(" === Iteration %d ===\n" , i+1 ) ;
 		current = bestNeighbour ;
-		current.print() ;
+		current->print() ;
 	}
 	printf("Iterations = %d\n" , numIterations ) ;
 	t->cancel() ;
 	return datastructures::BNStructure( current , bestScoreCalculators ) ;
 }
 
-structureoptimizer::PermutationSet structureoptimizer::TabuSearch::findBestNeighbour(
-														structureoptimizer::PermutationSet currentState ){
-	structureoptimizer::PermutationSet bestN( currentState ) ;
+structureoptimizer::PermutationSet* structureoptimizer::TabuSearch::findBestNeighbour(
+														structureoptimizer::PermutationSet* currentState ){
+	structureoptimizer::PermutationSet* bestN = currentState ;
 //	int cont = 0 ;
 	for(int i = 0 ; i < variableCount - 1 ; i++){
 		if( !useAspirationCriterion && isTabuMove( currentState , i ) ){
 //			cont++ ;
 			continue ;
 		}
-		structureoptimizer::PermutationSet neighbour( currentState ) ;
-		neighbour.swap( i , i + 1 ) ;
-		if( !neighbour.isBetter( bestN ) ) continue ;
+		structureoptimizer::PermutationSet* neighbour( currentState ) ;
+		neighbour->swap( i , i + 1 ) ;
+		if( !neighbour->isBetter( *bestN ) ) continue ;
 		bestN = neighbour ;
 		bestSwap = i ;
 	}
@@ -106,8 +106,8 @@ structureoptimizer::PermutationSet structureoptimizer::TabuSearch::findBestNeigh
 	return bestN ;
 }
 
-bool structureoptimizer::TabuSearch::isTabuMove( structureoptimizer::PermutationSet currentState , int swapIndex ){
-	int variable1 = currentState[ swapIndex + 0 ] ;
-	int variable2 = currentState[ swapIndex + 1 ] ;
+bool structureoptimizer::TabuSearch::isTabuMove( structureoptimizer::PermutationSet* currentState , int swapIndex ){
+	int variable1 = (*currentState)[ swapIndex + 0 ] ;
+	int variable2 = (*currentState)[ swapIndex + 1 ] ;
 	return tabuList.has( variable1 , variable2 ) ;
 }

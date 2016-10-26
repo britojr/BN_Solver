@@ -16,13 +16,13 @@
 #include "typedefs.h"
 
 namespace initializers {
-	class BFirstInitializer : public initializers::Initializer {
+	class BFirstInitializer : public Initializer {
 		public :
 			BFirstInitializer() ;
 			BFirstInitializer( std::vector<bestscorecalculators::BestScoreCalculator*> bestScoreCalculators ) ;
 			~BFirstInitializer() ;
 			
-			structureoptimizer::PermutationSet generate() ;
+			structureoptimizer::PermutationSet* generate( int setType = 0 ) ;
 			void initialize() ;
 
 		private :

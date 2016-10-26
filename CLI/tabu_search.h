@@ -22,7 +22,7 @@
 #include "tabu_list.h"
 
 namespace structureoptimizer {
-	class TabuSearch : public structureoptimizer::StructureOptimizer {
+	class TabuSearch : public StructureOptimizer {
 		public :
 			TabuSearch() ;
 			TabuSearch( initializers::Initializer* initializer ,
@@ -36,15 +36,15 @@ namespace structureoptimizer {
 			void initialize() ;
 			datastructures::BNStructure search_internal() ;
 			
-			structureoptimizer::PermutationSet findBestNeighbour( structureoptimizer::PermutationSet currentState ) ;
-			bool isTabuMove( structureoptimizer::PermutationSet currentState , int swapIndex ) ;
+			PermutationSet* findBestNeighbour( PermutationSet* currentState ) ;
+			bool isTabuMove( PermutationSet* currentState , int swapIndex ) ;
 
 			void setDefaultParameters() ;
 			void setFileParameters( std::map<std::string,std::string> params ) ;
 
 			datastructures::TabuList tabuList ;
 			int bestSwap ;
-			structureoptimizer::PermutationSet current ;
+			PermutationSet* current ;
 			
 			// Configurable parameters
 			int maxIterations ;

@@ -51,7 +51,7 @@ void structureoptimizer::AcyclicSelection::initialize(){
 	printf( " ======== Acyclic Selection ======== \n" ) ;
 	initial = initializer->generate() ;
 	printf(" === Initial solution ===\n" ) ;
-	initial.print() ;
+	initial->print() ;
 }
 
 datastructures::BNStructure structureoptimizer::AcyclicSelection::search_internal(){
@@ -67,7 +67,7 @@ datastructures::BNStructure structureoptimizer::AcyclicSelection::searchEfficien
 
 	for(int j = variableCount - 1 ; j >= 0 ; j--){
 		// Extract variable at position j
-		int v_j = initial[ j ] ;
+		int v_j = (*initial)[ j ] ;
 
 		// (a1) Pick best parent set with no descendants of V_j
 		float score = bestScoreCalculators[ v_j ]->getScore( VARSET_NOT( m[ v_j ] ) ) ;
@@ -109,7 +109,7 @@ datastructures::BNStructure structureoptimizer::AcyclicSelection::searchBruteFor
 
 	for(int j = variableCount - 1 ; j >= 0 && !outOfTime ; j--){
 		// Extract variable at position j in initial
-		int v_j = initial[ j ] ;
+		int v_j = (*initial)[ j ] ;
 
 		// Pick best parent set with no descendants of V_j
 		varset descendants = getDescendants( v_j ) ;

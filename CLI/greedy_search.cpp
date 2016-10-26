@@ -62,7 +62,7 @@ void structureoptimizer::GreedySearch::initialize(){
 	current = initializer->generate() ;
 	printf( " ======== Greedy Search ======== \n" ) ;
 	printf(" === Iteration %d ===\n" , 0 ) ;
-	current.print( true ) ;
+	current->print( true ) ;
 }
 
 datastructures::BNStructure structureoptimizer::GreedySearch::search_internal(){
@@ -70,13 +70,13 @@ datastructures::BNStructure structureoptimizer::GreedySearch::search_internal(){
 
 	int numIterations = 0 ;
 	for(int i = 0 ; i < maxIterations && !outOfTime ; i++){
-		structureoptimizer::PermutationSet bestNeighbour = findBestNeighbour( current ) ;
-		structureoptimizer::PermutationSet disturbedNeighbour = perturbSet( bestNeighbour ) ;
-		if( disturbedNeighbour.isBetter( bestNeighbour ) ) bestNeighbour = disturbedNeighbour ;
-		if( !bestNeighbour.isBetter( current ) ) break ;
+		structureoptimizer::PermutationSet* bestNeighbour = findBestNeighbour( current ) ;
+		structureoptimizer::PermutationSet* disturbedNeighbour = perturbSet( bestNeighbour ) ;
+		if( disturbedNeighbour->isBetter( *bestNeighbour ) ) bestNeighbour = disturbedNeighbour ;
+		if( !bestNeighbour->isBetter( *current ) ) break ;
 		printf(" === Iteration %d ===\n" , i+1 ) ;
 		current = bestNeighbour ;
-		current.print() ;
+		current->print() ;
 		numIterations += 1 ;
 	}
 	printf("Iterations = %d\n" , numIterations ) ;
@@ -84,31 +84,31 @@ datastructures::BNStructure structureoptimizer::GreedySearch::search_internal(){
 	return datastructures::BNStructure( current , bestScoreCalculators ) ;
 }
 
-structureoptimizer::PermutationSet structureoptimizer::GreedySearch::findBestNeighbour( structureoptimizer::PermutationSet set ){
-	structureoptimizer::PermutationSet bestN( set ) ;
+structureoptimizer::PermutationSet* structureoptimizer::GreedySearch::findBestNeighbour( structureoptimizer::PermutationSet* set ){
+	structureoptimizer::PermutationSet* bestN = set ;
 	for(int i = 0 ; i < variableCount - 1 ; i++){
-		structureoptimizer::PermutationSet neighbor = doSwap( set , i ) ;
-		if( !neighbor.isBetter( bestN ) ) continue ;
+		structureoptimizer::PermutationSet* neighbor = doSwap( set , i ) ;
+		if( !neighbor->isBetter( *bestN ) ) continue ;
 		bestN = neighbor ;
 	}
 	return bestN ;
 }
 
-structureoptimizer::PermutationSet structureoptimizer::GreedySearch::perturbSet( structureoptimizer::PermutationSet set ){
-	structureoptimizer::PermutationSet newSet( set ) ;
+structureoptimizer::PermutationSet* structureoptimizer::GreedySearch::perturbSet( structureoptimizer::PermutationSet* set ){
+	structureoptimizer::PermutationSet* newSet = set ;
 	if( performSolutionPerturbation ){
 		// Perform swaps
 		for(int i = 0 ; i < numPerturbationSwaps ; i++){
-			int idx1 = random_generator( set.size() , gen ) ;
-			int idx2 = random_generator( set.size() , gen ) ;
-			newSet.swap( idx1 , idx2 ) ;
+			int idx1 = random_generator( set->size() , gen ) ;
+			int idx2 = random_generator( set->size() , gen ) ;
+			newSet->swap( idx1 , idx2 ) ;
 		}
 	}
 	return newSet ;
 }
 
-structureoptimizer::PermutationSet structureoptimizer::GreedySearch::doSwap( structureoptimizer::PermutationSet set , int index ){
-	structureoptimizer::PermutationSet newSet( set ) ;
-	newSet.swap( index , index + 1 ) ;
+structureoptimizer::PermutationSet* structureoptimizer::GreedySearch::doSwap( structureoptimizer::PermutationSet* set , int index ){
+	structureoptimizer::PermutationSet* newSet = set ;
+	newSet->swap( index , index + 1 ) ;
 	return newSet ;
 }

@@ -28,29 +28,27 @@ namespace structureoptimizer {
 
 		protected :
 			void timeout( const boost::system::error_code &/*e*/ ) ;
-			
+
 			void setParameters( std::string parametersFile ) ;
 			std::map<std::string,std::string> readParametersFile( std::string parametersFile ) ;
-			
+
 			// Abstract methods
 			virtual void setDefaultParameters() = 0 ;
 			virtual void setFileParameters( std::map<std::string,std::string> params ) = 0 ;
 			virtual void initialize() = 0 ;
 			virtual datastructures::BNStructure search_internal() = 0 ;
-			
+
 			int variableCount ;
 			boost::mt19937 gen ;
 
 			initializers::Initializer* initializer ;
 			std::vector<bestscorecalculators::BestScoreCalculator*> bestScoreCalculators ;
-			
+
 			// Timer variables
 			boost::asio::io_service io ;
 			boost::asio::deadline_timer *t ;
 			bool outOfTime ;
-
 	} ;
 }
 
 #endif	/* STRUCTUREOPTIMIZER_H */
-

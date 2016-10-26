@@ -5,6 +5,7 @@
  * Created on 10 de julio de 2016, 21:05
  */
 #include "bfirst_initializer.h"
+#include "permutation_set_creator.h"
 #include "utils.h"
 
 initializers::BFirstInitializer::BFirstInitializer(){
@@ -25,7 +26,7 @@ void initializers::BFirstInitializer::initialize(){
 	// Do nothing
 }
 
-structureoptimizer::PermutationSet initializers::BFirstInitializer::generate(){
+structureoptimizer::PermutationSet* initializers::BFirstInitializer::generate( int setType ){
 	std::vector<int> order( variableCount ) ;
 	unvisitedVariables = varset( variableCount ) ;
 	VARSET_SET_ALL( unvisitedVariables , variableCount ) ;
@@ -34,8 +35,8 @@ structureoptimizer::PermutationSet initializers::BFirstInitializer::generate(){
 		order[ i ] = rvar ;
 		VARSET_CLEAR( unvisitedVariables , rvar ) ;
 	}
-	structureoptimizer::PermutationSet set( variableCount , bestScoreCalculators ) ;
-	set.setPermutation( order ) ;
+	structureoptimizer::PermutationSet* set = structureoptimizer::createSet( setType , variableCount , bestScoreCalculators ) ;
+	set->setPermutation( order ) ;
 	return set ;
 }
 
