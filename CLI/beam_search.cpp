@@ -55,7 +55,7 @@ void structureoptimizer::BeamSearch::printParameters(){
 
 void structureoptimizer::BeamSearch::initialize(){
 	current = initializer->generate() ;
-	printf( " ======== Greedy Search ======== \n" ) ;
+	printf( " ======== Beam Search ======== \n" ) ;
 	printf(" === Iteration %d ===\n" , 0 ) ;
 	current->print( true ) ;
 }
@@ -71,8 +71,8 @@ datastructures::BNStructure structureoptimizer::BeamSearch::search_internal(){
 	int numIterations = 0 ;
 	for(int k = 0 ; k < maxDepth && !q.empty() && !outOfTime ; k++,numIterations++){
 		updateLayer( q ) ;
-		if( !q.empty() && q.top() < best ){
-			best = q.top() ;
+		if( !q.empty() && (*q.top()) < (*best) ){
+			best = q.top()->clone() ;
 			printf(" === Iteration %d ===\n" , k+1 ) ;
 			best->print() ;
 		}
@@ -85,7 +85,7 @@ datastructures::BNStructure structureoptimizer::BeamSearch::search_internal(){
 void structureoptimizer::BeamSearch::updateLayer( datastructures::BeamList<> &q ){
 	datastructures::BeamList<> beam( queueLength ) ;
 	while( !q.empty() && !outOfTime ){
-		structureoptimizer::PermutationSet* best = q.pop() ;
+		structureoptimizer::PermutationSet* best = q.pop()->clone() ;
 		datastructures::BeamList<> neighbours = getNeighbours( best ) ;
 		if( !neighbours.empty() )
 			beam.add( neighbours ) ;
@@ -99,14 +99,14 @@ datastructures::BeamList<> structureoptimizer::BeamSearch::getNeighbours(
 	for(int i = 0 ; i < variableCount - 1 ; i++){
 		structureoptimizer::PermutationSet* neighbour = doSwap( currentState , i ) ;
 		if( !neighbour->isBetter( *currentState ) ) continue ; // Prune worse solutions
-		neighbours.add( neighbour ) ;
+		neighbours.add( neighbour->clone() ) ;
 	}
 	return neighbours ;
 }
 
 structureoptimizer::PermutationSet* structureoptimizer::BeamSearch::doSwap(
 									structureoptimizer::PermutationSet* set , int index ){
-	structureoptimizer::PermutationSet* newSet = set ;
+	structureoptimizer::PermutationSet* newSet = set->clone() ;
 	newSet->swap( index , index + 1 ) ;
 	return newSet ;
 }
