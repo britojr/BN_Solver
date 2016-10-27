@@ -82,7 +82,7 @@ datastructures::BNStructure structureoptimizer::SimulatedAnnealing::search_inter
 	boost::timer::auto_cpu_timer cpu( 6 , "CPU time = %w\n" ) ; // TODO: Rethink location of timer
 
 	float cooling_rate = -log( tempMax / tempMin ) ;
-	structureoptimizer::PermutationSet* best ;
+	structureoptimizer::PermutationSet* best = NULL ;
 	int counter = 0 , numIterations = 0 ;
 	for(int i = 0 ; i < maxIterations && counter != unchangedIterations && !outOfTime ; i++,numIterations++){
 		float temperature = tempMax * exp( cooling_rate * i / maxIterations ) ;
@@ -91,9 +91,9 @@ datastructures::BNStructure structureoptimizer::SimulatedAnnealing::search_inter
 			structureoptimizer::PermutationSet* neigh = neighbour( current ) ;
 			float accProb = acceptanceProbability( current , neigh , temperature ) ;
 			if( compare( accProb , random_generator( gen ) ) >= 0 )
-				current = neigh ;
-			if( best->size() == 0 || current->isBetter( *best ) ){
-				best = current ;
+				current = neigh->clone() ;
+			if( best == NULL || current->isBetter( *best ) ){
+				best = current->clone() ;
 				counter = 0 ;
 				hasChange = true ;
 			}
@@ -112,7 +112,7 @@ datastructures::BNStructure structureoptimizer::SimulatedAnnealing::search_inter
 
 structureoptimizer::PermutationSet* structureoptimizer::SimulatedAnnealing::neighbour( structureoptimizer::PermutationSet* set ){
 	int index = random_generator( variableCount - 1 , gen ) ;
-	structureoptimizer::PermutationSet* newSet = set ;
+	structureoptimizer::PermutationSet* newSet = set->clone() ;
 	newSet->swap( index , index + 1 ) ;
 	return newSet ;
 }

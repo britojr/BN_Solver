@@ -79,7 +79,7 @@ datastructures::BNStructure structureoptimizer::TabuSearch::search_internal(){
 		if( !bestNeighbour->isBetter( *current ) ) break ;
 		tabuList.add( (*current)[ bestSwap ] , (*current)[ bestSwap + 1 ] ) ;
 		printf(" === Iteration %d ===\n" , i+1 ) ;
-		current = bestNeighbour ;
+		current = bestNeighbour->clone() ;
 		current->print() ;
 	}
 	printf("Iterations = %d\n" , numIterations ) ;
@@ -89,17 +89,17 @@ datastructures::BNStructure structureoptimizer::TabuSearch::search_internal(){
 
 structureoptimizer::PermutationSet* structureoptimizer::TabuSearch::findBestNeighbour(
 														structureoptimizer::PermutationSet* currentState ){
-	structureoptimizer::PermutationSet* bestN = currentState ;
+	structureoptimizer::PermutationSet* bestN = currentState->clone() ;
 //	int cont = 0 ;
 	for(int i = 0 ; i < variableCount - 1 ; i++){
 		if( !useAspirationCriterion && isTabuMove( currentState , i ) ){
 //			cont++ ;
 			continue ;
 		}
-		structureoptimizer::PermutationSet* neighbour( currentState ) ;
+		structureoptimizer::PermutationSet* neighbour = currentState->clone() ;
 		neighbour->swap( i , i + 1 ) ;
 		if( !neighbour->isBetter( *bestN ) ) continue ;
-		bestN = neighbour ;
+		bestN = neighbour->clone() ;
 		bestSwap = i ;
 	}
 //	if( cont > 1 ) printf("Tabu moves: %d\n" , cont ) ; // TODO: Delete this
