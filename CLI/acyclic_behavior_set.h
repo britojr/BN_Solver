@@ -15,6 +15,7 @@
 #define ACYCLIC_BEHAVIOR_SET_H
 
 #include "permutation_set.h"
+#include "bn_structure.h"
 
 namespace structureoptimizer {
 	class AcyclicBehaviorSet : public PermutationSet {
@@ -46,20 +47,44 @@ namespace structureoptimizer {
 			}
 			
 			PermutationSet* clone() {
+				// TODO: Do not recalculate structure
 				AcyclicBehaviorSet* set ;
-//				set = new AcyclicBehaviorSet( permutation.size() , bestScoreCalculator ) ;
-//				set->setPermutation( getPermutation() ) ;
+				set = new AcyclicBehaviorSet( permutation.size() , bestScoreCalculator ) ;
+				set->setPermutation( permutation ) ;
 				return set ;
 			}
 
 		private :
 			void updateScore( int adjacentPos = -1 ){
-				// TODO: implement this
+				// TODO: implement this efficiently
+				structure = new datastructures::BNStructure( size() ) ;
+				for(int j = size() - 1 ; j >= 0 ; j--){
+					// Extract variable at position j in initial
+					int v_j = permutation[ j ] ;
+
+					// Pick best parent set with no descendants of V_j
+					varset descendants = getDescendants( v_j ) ;
+					float score = bestScoreCalculator[ v_j ]->getScore( VARSET_NOT( descendants ) ) ;
+					varset parents = bestScoreCalculator[ v_j ]->getParents() ;
+					structure->setParents( v_j , parents , score ) ;
+				}
+				score = structure->getScore() ;
+			}
+			
+			varset getDescendants( int index ){
+				VARSET_NEW( visited , size() ) ;
+				VARSET_SET( visited , index ) ;
+				std::vector<int> children = (*structure)[ index ]->getChildrenVector() ;
+				for(int i = 0 ; i < children.size() ; i++){
+					varset chVisited = getDescendants( children[ i ] ) ;
+					VARSET_OR( visited , chVisited ) ;
+				}
+				return visited ;
 			}
 			
 			std::vector<varset> m ; // Descendants
 			std::vector<varset> todo ; // To-Do lists
-			datastructures::BNStructure* partial_bn ; // Partial BN structure
+			datastructures::BNStructure* structure ; // Partial BN structure
 	} ;
 }
 #endif /* ACYCLIC_BEHAVIOR_SET_H */
