@@ -13,6 +13,10 @@
 #include "best_score_calculator.h"
 #include "typedefs.h"
 
+namespace datastructures {
+	class BNStructure ;
+}
+
 namespace structureoptimizer {
 	class PermutationSet {
 		public :
@@ -40,6 +44,8 @@ namespace structureoptimizer {
 
 			// Abstract methods
 			virtual void print( bool printPermutation = false ) = 0 ;
+			virtual PermutationSet* clone() = 0 ;
+//			virtual datastructures::BNStructure* getStructure() = 0 ; // TODO: Implement and test this
 
 		protected :
 			void setScore( float score ) ;
