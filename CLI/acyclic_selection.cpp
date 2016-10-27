@@ -61,6 +61,7 @@ datastructures::BNStructure structureoptimizer::AcyclicSelection::search_interna
 	}
 	printf("Iterations = %d\n" , numIterations ) ;
 	t->cancel() ;
+	// TODO: Check this, add a method to return a BNStructure in PermutationSet
 	return datastructures::BNStructure( current , bestScoreCalculators ) ;
 }
 
@@ -123,26 +124,6 @@ structureoptimizer::PermutationSet* structureoptimizer::AcyclicSelection::doSwap
 //	return best ;
 //}
 
-//datastructures::BNStructure structureoptimizer::AcyclicSelection::searchBruteForce(){
-//	boost::timer::auto_cpu_timer cpu( 6 , "CPU time = %w\n" ) ; // TODO: Rethink location of timer
-//
-//	partial_bn = datastructures::BNStructure( variableCount ) ;
-//
-//	for(int j = variableCount - 1 ; j >= 0 && !outOfTime ; j--){
-//		// Extract variable at position j in initial
-//		int v_j = (*initial)[ j ] ;
-//
-//		// Pick best parent set with no descendants of V_j
-//		varset descendants = getDescendants( v_j ) ;
-//		float score = bestScoreCalculators[ v_j ]->getScore( VARSET_NOT( descendants ) ) ;
-//		varset parents = bestScoreCalculators[ v_j ]->getParents() ;
-//		partial_bn.setParents( v_j , parents , score ) ;
-//	}
-//	printf( "Score = %.6f\n" , partial_bn.getScore() ) ;
-//	t->cancel() ;
-//	return partial_bn ;
-//}
-
 //void structureoptimizer::AcyclicSelection::visit( int x ){
 //	for(int i = 0 ; i < todo[ x ].size() ; i++){
 //		int y = todo[ x ][ i ] ;
@@ -163,15 +144,4 @@ structureoptimizer::PermutationSet* structureoptimizer::AcyclicSelection::doSwap
 //				if( !in_todo ) todo[ j ].push_back( y ) ;
 //			}
 //	}
-//}
-
-//varset structureoptimizer::AcyclicSelection::getDescendants( int index ){
-//	VARSET_NEW( visited , variableCount ) ;
-//	VARSET_SET( visited , index ) ;
-//	std::vector<int> children = partial_bn[ index ]->getChildrenVector() ;
-//	for(int i = 0 ; i < children.size() ; i++){
-//		varset chVisited = getDescendants( children[ i ] ) ;
-//		VARSET_OR( visited , chVisited ) ;
-//	}
-//	return visited ;
 //}
