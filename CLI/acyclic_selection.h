@@ -25,23 +25,16 @@ namespace structureoptimizer {
 		private :
 			void initialize() ;
 			datastructures::BNStructure search_internal() ;
+			structureoptimizer::PermutationSet* findBestNeighbour( structureoptimizer::PermutationSet* set ) ;
+			structureoptimizer::PermutationSet* doSwap( structureoptimizer::PermutationSet* set , int index ) ;
 
-			varset getDescendants( int index ) ;
 			void setDefaultParameters() ;
 			void setFileParameters( std::map<std::string, std::string> params ) ;
 
-			// Test methods
-			datastructures::BNStructure searchEfficient() ;
-			datastructures::BNStructure searchBruteForce() ;
-			void visit( int index ) ;
-
-			structureoptimizer::PermutationSet* initial ;
-
-			std::vector<varset> m ; // Descendants
-			std::vector<varset> todo ; // To-Do lists
-			datastructures::BNStructure partial_bn ; // Partial BN structure
+			structureoptimizer::PermutationSet* current ;
 
 			// Configuration variables
+			int maxIterations ;
 			bool testFlag ;
 	} ;
 }
