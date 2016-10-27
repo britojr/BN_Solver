@@ -33,14 +33,33 @@ namespace structureoptimizer {
 				updateScore() ;
 			}
 			
-			void print( bool printPermutation = false ){
-				// TODO: Impleent this
+			void print( bool printPermutation ){
+				// TODO: Check if changes needed
+				if( printPermutation ){
+					for(int i = 0 ; i < permutation.size() ; i++){
+						if( i ) printf(" " ) ;
+						printf("%d" , permutation[ i ] ) ;
+					}
+					printf("\n" ) ;
+				}
+				printf("Score = %.6f\n" , score ) ;
+			}
+			
+			PermutationSet* clone() {
+				AcyclicBehaviorSet* set ;
+//				set = new AcyclicBehaviorSet( permutation.size() , bestScoreCalculator ) ;
+//				set->setPermutation( getPermutation() ) ;
+				return set ;
 			}
 
 		private :
 			void updateScore( int adjacentPos = -1 ){
 				// TODO: implement this
 			}
+			
+			std::vector<varset> m ; // Descendants
+			std::vector<varset> todo ; // To-Do lists
+			datastructures::BNStructure* partial_bn ; // Partial BN structure
 	} ;
 }
 #endif /* ACYCLIC_BEHAVIOR_SET_H */
