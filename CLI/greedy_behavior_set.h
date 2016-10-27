@@ -21,6 +21,10 @@
 namespace structureoptimizer {
 	class GreedyBehaviorSet : public PermutationSet {
 		public :
+			GreedyBehaviorSet(){
+				// Do nothing
+			}
+			
 			GreedyBehaviorSet( int size ,
 						std::vector<bestscorecalculators::BestScoreCalculator*> &bestScoreCalculator ){
 				boost::mt19937 gen( time( NULL ) ) ;
@@ -40,6 +44,13 @@ namespace structureoptimizer {
 					printf("\n" ) ;
 				}
 				printf("Score = %.6f\n" , score ) ;
+			}
+			
+			PermutationSet* clone() {
+				GreedyBehaviorSet* set ;
+				set = new GreedyBehaviorSet( permutation.size() , bestScoreCalculator ) ;
+				set->setPermutation( getPermutation() ) ;
+				return set ;
 			}
 
 		private :
