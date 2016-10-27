@@ -72,10 +72,10 @@ datastructures::BNStructure structureoptimizer::GreedySearch::search_internal(){
 	for(int i = 0 ; i < maxIterations && !outOfTime ; i++){
 		structureoptimizer::PermutationSet* bestNeighbour = findBestNeighbour( current ) ;
 		structureoptimizer::PermutationSet* disturbedNeighbour = perturbSet( bestNeighbour ) ;
-		if( disturbedNeighbour->isBetter( *bestNeighbour ) ) bestNeighbour = disturbedNeighbour ;
+		if( disturbedNeighbour->isBetter( *bestNeighbour ) ) bestNeighbour = disturbedNeighbour->clone() ;
 		if( !bestNeighbour->isBetter( *current ) ) break ;
 		printf(" === Iteration %d ===\n" , i+1 ) ;
-		current = bestNeighbour ;
+		current = bestNeighbour->clone() ;
 		current->print() ;
 		numIterations += 1 ;
 	}
@@ -85,17 +85,17 @@ datastructures::BNStructure structureoptimizer::GreedySearch::search_internal(){
 }
 
 structureoptimizer::PermutationSet* structureoptimizer::GreedySearch::findBestNeighbour( structureoptimizer::PermutationSet* set ){
-	structureoptimizer::PermutationSet* bestN = set ;
+	structureoptimizer::PermutationSet* bestN = set->clone() ;
 	for(int i = 0 ; i < variableCount - 1 ; i++){
-		structureoptimizer::PermutationSet* neighbor = doSwap( set , i ) ;
-		if( !neighbor->isBetter( *bestN ) ) continue ;
-		bestN = neighbor ;
+		structureoptimizer::PermutationSet* neighbour = doSwap( set , i ) ;
+		if( !neighbour->isBetter( *bestN ) ) continue ;
+		bestN = neighbour->clone() ;
 	}
 	return bestN ;
 }
 
 structureoptimizer::PermutationSet* structureoptimizer::GreedySearch::perturbSet( structureoptimizer::PermutationSet* set ){
-	structureoptimizer::PermutationSet* newSet = set ;
+	structureoptimizer::PermutationSet* newSet = set->clone() ;
 	if( performSolutionPerturbation ){
 		// Perform swaps
 		for(int i = 0 ; i < numPerturbationSwaps ; i++){
@@ -108,7 +108,7 @@ structureoptimizer::PermutationSet* structureoptimizer::GreedySearch::perturbSet
 }
 
 structureoptimizer::PermutationSet* structureoptimizer::GreedySearch::doSwap( structureoptimizer::PermutationSet* set , int index ){
-	structureoptimizer::PermutationSet* newSet = set ;
+	structureoptimizer::PermutationSet* newSet = set->clone();
 	newSet->swap( index , index + 1 ) ;
 	return newSet ;
 }
