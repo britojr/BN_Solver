@@ -17,6 +17,7 @@
 #include "permutation_set.h"
 #include "best_score_calculator.h"
 #include "utils.h"
+#include "bn_structure.h"
 
 namespace structureoptimizer {
 	class GreedyBehaviorSet : public PermutationSet {
@@ -32,6 +33,7 @@ namespace structureoptimizer {
 					permutation.push_back( i ) ;
 				permutation = shuffle( permutation , gen ) ;
 				this->bestScoreCalculator = bestScoreCalculator ;
+				structure = new datastructures::BNStructure( size ) ;
 				updateScore() ;
 			}
 
@@ -45,14 +47,19 @@ namespace structureoptimizer {
 				}
 				printf("Score = %.6f\n" , score ) ;
 			}
-			
+
 			PermutationSet* clone() {
 				GreedyBehaviorSet* set ;
 				set = new GreedyBehaviorSet( permutation.size() , bestScoreCalculator ) ;
 				set->setPermutation( getPermutation() ) ;
 				return set ;
 			}
-
+			
+			datastructures::BNStructure* getStructure(){
+				structure = new datastructures::BNStructure( this , bestScoreCalculator ) ;
+				return structure ;
+			}
+			
 		private :
 			void updateScore( int adjacentPos = -1 ){
 				if( adjacentPos < 0 ){ // Not adjacent move
