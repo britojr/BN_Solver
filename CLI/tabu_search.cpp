@@ -84,7 +84,7 @@ datastructures::BNStructure structureoptimizer::TabuSearch::search_internal(){
 	}
 	printf("Iterations = %d\n" , numIterations ) ;
 	t->cancel() ;
-	return datastructures::BNStructure( current , bestScoreCalculators ) ;
+	return *(current->getStructure()) ;
 }
 
 structureoptimizer::PermutationSet* structureoptimizer::TabuSearch::findBestNeighbour(

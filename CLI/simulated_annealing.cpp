@@ -107,7 +107,7 @@ datastructures::BNStructure structureoptimizer::SimulatedAnnealing::search_inter
 	}
 	printf("Iterations = %d\n" , numIterations ) ;
 	t->cancel() ;
-	return datastructures::BNStructure( best , bestScoreCalculators ) ;
+	return *(best->getStructure()) ;
 }
 
 structureoptimizer::PermutationSet* structureoptimizer::SimulatedAnnealing::neighbour( structureoptimizer::PermutationSet* set ){
