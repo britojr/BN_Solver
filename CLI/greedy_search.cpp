@@ -81,7 +81,7 @@ datastructures::BNStructure structureoptimizer::GreedySearch::search_internal(){
 	}
 	printf("Iterations = %d\n" , numIterations ) ;
 	t->cancel() ;
-	return datastructures::BNStructure( current , bestScoreCalculators ) ;
+	return *(current->getStructure()) ;
 }
 
 structureoptimizer::PermutationSet* structureoptimizer::GreedySearch::findBestNeighbour( structureoptimizer::PermutationSet* set ){
