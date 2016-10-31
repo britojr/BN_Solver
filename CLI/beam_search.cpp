@@ -79,7 +79,7 @@ datastructures::BNStructure structureoptimizer::BeamSearch::search_internal(){
 	}
 	printf("Iterations = %d\n" , numIterations ) ;
 	t->cancel() ;
-	return datastructures::BNStructure( best , bestScoreCalculators ) ;
+	return *(best->getStructure()) ;
 }
 
 void structureoptimizer::BeamSearch::updateLayer( datastructures::BeamList<> &q ){
