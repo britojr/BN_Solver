@@ -24,15 +24,15 @@ namespace structureoptimizer {
 										std::string structureParameterFile ){
 		StructureOptimizer *sto ;
 		if( type == "greedy_search" ){
-			sto = new structureoptimizer::GreedySearch( initializer , bestScoreCalculators , structureParameterFile ) ;
+			sto = new GreedySearch( initializer , bestScoreCalculators , structureParameterFile ) ;
 		}else if( type == "acyclic_selection" ){
-			sto = new structureoptimizer::AcyclicSelection( initializer , bestScoreCalculators , structureParameterFile ) ;
+			sto = new AcyclicSelection( initializer , bestScoreCalculators , structureParameterFile ) ;
 		}else if( type == "simulated_annealing" ){
-			sto = new structureoptimizer::SimulatedAnnealing( initializer , bestScoreCalculators , structureParameterFile ) ;
+			sto = new SimulatedAnnealing( initializer , bestScoreCalculators , structureParameterFile ) ;
 		}else if( type == "tabu_search" ){
-			sto = new structureoptimizer::TabuSearch( initializer , bestScoreCalculators , structureParameterFile ) ;
+			sto = new TabuSearch( initializer , bestScoreCalculators , structureParameterFile ) ;
 		}else if( type == "beam_search" ){
-			sto = new structureoptimizer::BeamSearch( initializer , bestScoreCalculators , structureParameterFile ) ;
+			sto = new BeamSearch( initializer , bestScoreCalculators , structureParameterFile ) ;
 		}else{
 			throw std::runtime_error( "Invalid algorithm selection: '" + type + 
 					"'.  Valid options are 'greedy_search', " +

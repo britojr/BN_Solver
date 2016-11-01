@@ -19,7 +19,7 @@ struct compareGreedy {
 } ;
 
 namespace parentselection {
-	class GreedySelection : public parentselection::ParentSetSelection {
+	class GreedySelection : public ParentSetSelection {
 		public :
 			GreedySelection( scoring::ScoringFunction *scoringFunction ,
 								int maxParents , int variableCount ,

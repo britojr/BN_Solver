@@ -17,7 +17,7 @@
 #include "typedefs.h"
 
 namespace initializers {
-	class FASInitializer : public initializers::Initializer {
+	class FASInitializer : public Initializer {
 		public :
 			FASInitializer() ;
 			FASInitializer( std::vector<bestscorecalculators::BestScoreCalculator*> bestScoreCalculators ) ;

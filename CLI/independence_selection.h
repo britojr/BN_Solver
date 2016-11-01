@@ -19,7 +19,7 @@ struct compareIndependence {
 } ;
 
 namespace parentselection {
-	class IndependenceSelection : public parentselection::ParentSetSelection {
+	class IndependenceSelection : public ParentSetSelection {
 		public :
 			IndependenceSelection( scoring::ScoringFunction *scoringFunction ,
 								int maxParents , int variableCount ,

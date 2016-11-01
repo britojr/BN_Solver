@@ -22,11 +22,11 @@ namespace parentselection {
 										scoring::Constraints *constraints ){
 		ParentSetSelection *pss ;
 		if( type == "sequential" ){
-			pss = new parentselection::SequentialSelection( scoringFunction , maxParents , variableCount , runningTime , constraints ) ;
+			pss = new SequentialSelection( scoringFunction , maxParents , variableCount , runningTime , constraints ) ;
 		}else if( type == "greedy" ){
-			pss = new parentselection::GreedySelection( scoringFunction , maxParents , variableCount , runningTime , constraints ) ;
+			pss = new GreedySelection( scoringFunction , maxParents , variableCount , runningTime , constraints ) ;
 		}else if( type == "independence" ){
-			pss = new parentselection::IndependenceSelection( scoringFunction , maxParents , variableCount , runningTime , constraints ) ;
+			pss = new IndependenceSelection( scoringFunction , maxParents , variableCount , runningTime , constraints ) ;
 		}else{
 			throw std::runtime_error( "Invalid PS selection: '" + type + "'.  Valid options are 'sequential', 'greedy' and 'independence'.");
 		}

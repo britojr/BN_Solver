@@ -23,16 +23,16 @@ namespace bestscorecalculators {
     
 	static std::string bestScoreCalculatorString = "The data structure to use for BestScore calculations. [\"list\", \"tree\", \"bitwise\"]";
 
-	inline std::vector<bestscorecalculators::BestScoreCalculator*> create(std::string type, scoring::ScoreCache &cache) {
-		std::vector<bestscorecalculators::BestScoreCalculator*> spgs;
+	inline std::vector<BestScoreCalculator*> create(std::string type, scoring::ScoreCache &cache) {
+		std::vector<BestScoreCalculator*> spgs;
 		for (int i = 0; i < cache.getVariableCount(); i++) {
-			bestscorecalculators::BestScoreCalculator *spg;
+			BestScoreCalculator *spg;
 			if (type == "tree") {
-				spg = new bestscorecalculators::SparseParentTree(i, cache.getVariableCount());
+				spg = new SparseParentTree(i, cache.getVariableCount());
 			} else if (type == "bitwise") {
-				spg = new bestscorecalculators::SparseParentBitwise(i, cache.getVariableCount());
+				spg = new SparseParentBitwise(i, cache.getVariableCount());
 			} else if (type == "list") {
-				spg = new bestscorecalculators::SparseParentList(i, cache.getVariableCount());
+				spg = new SparseParentList(i, cache.getVariableCount());
 			} else {
 				throw std::runtime_error("Invalid BestScore calculator type: '" + type + "'.  Valid options are 'tree', 'bitwise' and 'list'.");
 			}

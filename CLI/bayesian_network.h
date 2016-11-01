@@ -18,7 +18,7 @@
 
 namespace datastructures {
 
-	class Variable;
+	class Variable ;
 
 	class BayesianNetwork {
 		public:

@@ -15,7 +15,7 @@
 #include "permutation_set.h"
 
 namespace structureoptimizer {
-	class GreedySearch : public structureoptimizer::StructureOptimizer {
+	class GreedySearch : public StructureOptimizer {
 		public :
 			GreedySearch() ;
 			GreedySearch( initializers::Initializer* initializer ,
@@ -28,14 +28,14 @@ namespace structureoptimizer {
 		private :
 			void initialize() ;
 			datastructures::BNStructure search_internal() ;
-			structureoptimizer::PermutationSet* findBestNeighbour( structureoptimizer::PermutationSet* set ) ;
-			structureoptimizer::PermutationSet* perturbSet( structureoptimizer::PermutationSet* set ) ;
-			structureoptimizer::PermutationSet* doSwap( structureoptimizer::PermutationSet* set , int index ) ;
+			PermutationSet* findBestNeighbour( PermutationSet* set ) ;
+			PermutationSet* perturbSet( PermutationSet* set ) ;
+			PermutationSet* doSwap( PermutationSet* set , int index ) ;
 
 			void setDefaultParameters() ;
 			void setFileParameters( std::map<std::string,std::string> params ) ;
 
-			structureoptimizer::PermutationSet* current ;
+			PermutationSet* current ;
 
 			// Configurable Parameters
 			int maxIterations ;

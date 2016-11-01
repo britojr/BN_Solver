@@ -28,10 +28,10 @@ namespace structureoptimizer {
 		PermutationSet *set ;
 		switch( setType ){
 			case GREEDY_BEHAVIOR_SET :
-				set = new structureoptimizer::GreedyBehaviorSet( variableCount , bestScoreCalculators ) ;
+				set = new GreedyBehaviorSet( variableCount , bestScoreCalculators ) ;
 				break ;
 			case ACYCLIC_BEHAVIOR_SET :
-				set = new structureoptimizer::AcyclicBehaviorSet( variableCount , bestScoreCalculators ) ;
+				set = new AcyclicBehaviorSet( variableCount , bestScoreCalculators ) ;
 				break ;
 			default :
 				throw std::runtime_error( "Invalid permutation set type: " + TO_STRING( setType ) +

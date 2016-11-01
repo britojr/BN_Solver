@@ -24,17 +24,17 @@ namespace initializers {
 	
     static std::string initializerTypeString = "The type of solution initialization in greedy search [\"random\", \"dfs\", \"fas\"]" ;
 	
-    initializers::Initializer* create( std::string type ,
+    Initializer* create( std::string type ,
 									std::vector<bestscorecalculators::BestScoreCalculator*> bestScoreCalculator ){
-        initializers::Initializer* init = NULL ;
+        Initializer* init = NULL ;
 		if( type == "random" ){
-			init = new initializers::RandomInitializer( bestScoreCalculator ) ;
+			init = new RandomInitializer( bestScoreCalculator ) ;
 		}else if( type == "dfs" ){
-			init = new initializers::DFSInitializer( bestScoreCalculator ) ;
+			init = new DFSInitializer( bestScoreCalculator ) ;
 		}else if( type == "fas" ){
-			init = new initializers::FASInitializer( bestScoreCalculator ) ;
+			init = new FASInitializer( bestScoreCalculator ) ;
 		}else if( type == "bfirst" ){
-			init = new initializers::BFirstInitializer( bestScoreCalculator ) ;
+			init = new BFirstInitializer( bestScoreCalculator ) ;
 		}else{
 			throw std::runtime_error( "Invalid Initializer type: '" + type + "'.  Valid options are 'random', 'dfs' and 'fas'.");
         }

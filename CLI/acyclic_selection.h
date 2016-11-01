@@ -12,7 +12,7 @@
 #include "bn_structure.h"
 
 namespace structureoptimizer {
-	class AcyclicSelection : public structureoptimizer::StructureOptimizer {
+	class AcyclicSelection : public StructureOptimizer {
 		public :
 			AcyclicSelection() ;
 			AcyclicSelection( initializers::Initializer* initializer ,
@@ -25,13 +25,13 @@ namespace structureoptimizer {
 		private :
 			void initialize() ;
 			datastructures::BNStructure search_internal() ;
-			structureoptimizer::PermutationSet* findBestNeighbour( structureoptimizer::PermutationSet* set ) ;
-			structureoptimizer::PermutationSet* doSwap( structureoptimizer::PermutationSet* set , int index ) ;
+			PermutationSet* findBestNeighbour( PermutationSet* set ) ;
+			PermutationSet* doSwap( PermutationSet* set , int index ) ;
 
 			void setDefaultParameters() ;
 			void setFileParameters( std::map<std::string, std::string> params ) ;
 
-			structureoptimizer::PermutationSet* current ;
+			PermutationSet* current ;
 
 			// Configuration variables
 			int maxIterations ;

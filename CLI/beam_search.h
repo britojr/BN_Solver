@@ -19,7 +19,7 @@
 #include "beam_list.h"
 
 namespace structureoptimizer {
-	class BeamSearch : public structureoptimizer::StructureOptimizer {
+	class BeamSearch : public StructureOptimizer {
 		public :
 			BeamSearch() ;
 			BeamSearch( initializers::Initializer* initializer ,

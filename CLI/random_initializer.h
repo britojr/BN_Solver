@@ -15,7 +15,7 @@
 #include "best_score_calculator.h"
 
 namespace initializers {
-	class RandomInitializer : public initializers::Initializer {
+	class RandomInitializer : public Initializer {
 		public :
 			RandomInitializer() ;
 			RandomInitializer( std::vector<bestscorecalculators::BestScoreCalculator*> bestScoreCalculator ) ;

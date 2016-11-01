@@ -13,7 +13,7 @@
 #include "parent_set_selection.h"
 
 namespace parentselection {
-	class SequentialSelection : public parentselection::ParentSetSelection {
+	class SequentialSelection : public ParentSetSelection {
 		public :
 			SequentialSelection( scoring::ScoringFunction *scoringFunction ,
 								int maxParents , int variableCount ,

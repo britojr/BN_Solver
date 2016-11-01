@@ -21,17 +21,17 @@ namespace scoring {
     
 	static std::string scoringFunctionString = "The scoring function to use. [\"BIC\"]" ;
 
-	inline ScoringFunction* create( std::string sf , scoring::ADTree *adTree ,
+	inline ScoringFunction* create( std::string sf , ADTree *adTree ,
 									datastructures::BayesianNetwork &network ,
 									datastructures::RecordFile &recordFile ,
-									scoring::Constraints *constraints ,
+									Constraints *constraints ,
 									bool whileCalculatingPruning ){
 		ScoringFunction *scoringFunction ;
 		boost::algorithm::to_lower( sf ) ;
 		if( sf == "bic" ){
-			std::vector<float> ilogi = scoring::LogLikelihoodCalculator::getLogCache( recordFile.size() ) ;
-			scoring::LogLikelihoodCalculator *llc = new scoring::LogLikelihoodCalculator( adTree , network , ilogi ) ;
-			scoringFunction = new scoring::BICScoringFunction( network , recordFile , llc , constraints , whileCalculatingPruning ) ;
+			std::vector<float> ilogi = LogLikelihoodCalculator::getLogCache( recordFile.size() ) ;
+			LogLikelihoodCalculator *llc = new LogLikelihoodCalculator( adTree , network , ilogi ) ;
+			scoringFunction = new BICScoringFunction( network , recordFile , llc , constraints , whileCalculatingPruning ) ;
 		}else{
 			throw std::runtime_error( "Invalid PS selection: '" + sf + "'.  Valid options are 'sequential', 'greedy' and 'independence'.");
 		}
