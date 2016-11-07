@@ -7,11 +7,8 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="2"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/home/nonwhite/IME/BN_Solver/CLI/simulated_annealing.cpp</file>
-            <file>file:/home/nonwhite/IME/BN_Solver/CLI/tabu_search.cpp</file>
-            <file>file:/home/nonwhite/IME/BN_Solver/CLI/tabu_list.h</file>
+            <file>file:/home/nonwhite/IME/BN_Solver/CLI/acyclic_behavior_set.h</file>
             <file>file:/home/nonwhite/IME/BN_Solver/CLI/learner.cpp</file>
-            <file>file:/home/nonwhite/IME/BN_Solver/CLI/tabu_search.h</file>
         </group>
     </open-files>
 </project-private>

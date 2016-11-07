@@ -15,6 +15,7 @@
 #include "simulated_annealing.h"
 #include "tabu_search.h"
 #include "beam_search.h"
+#include "variable_neighborhood.h"
 
 namespace structureoptimizer {
 	static std::string structureOptimizerString = "The method for structure learning. [\"greedy_search\", \"acyclic_selection\"]";
@@ -33,10 +34,12 @@ namespace structureoptimizer {
 			sto = new TabuSearch( initializer , bestScoreCalculators , structureParameterFile ) ;
 		}else if( type == "beam_search" ){
 			sto = new BeamSearch( initializer , bestScoreCalculators , structureParameterFile ) ;
+		}else if( type == "variable_neighborhood" ){
+			sto = new VariableNeighborhood( initializer , bestScoreCalculators , structureParameterFile ) ;
 		}else{
 			throw std::runtime_error( "Invalid algorithm selection: '" + type + 
 					"'.  Valid options are 'greedy_search', " +
-					"'acyclic_selection', 'simulated_annealing', 'tabu_search' and 'beam_search" ) ;
+					"'acyclic_selection', 'simulated_annealing', 'tabu_search', 'beam_search' and 'variable_neighborhood'" ) ;
 		}
 		return sto ;
 	}

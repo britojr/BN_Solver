@@ -16,10 +16,12 @@
       </logicalFolder>
       <logicalFolder name="f1" displayName="datastructures" projectFiles="true">
         <itemPath>bayesian_network.h</itemPath>
+        <itemPath>beam_list.h</itemPath>
         <itemPath>bn_structure.h</itemPath>
         <itemPath>dynamic_bitset_hash.h</itemPath>
         <itemPath>record.h</itemPath>
         <itemPath>record_file.h</itemPath>
+        <itemPath>tabu_list.h</itemPath>
         <itemPath>variable.h</itemPath>
       </logicalFolder>
       <logicalFolder name="f9" displayName="initializers" projectFiles="true">
@@ -56,15 +58,21 @@
         <itemPath>vary_node.h</itemPath>
       </logicalFolder>
       <logicalFolder name="f8" displayName="structureoptimizer" projectFiles="true">
+        <logicalFolder name="f1" displayName="variableorder" projectFiles="true">
+          <itemPath>acyclic_behavior_set.h</itemPath>
+          <itemPath>greedy_behavior_set.h</itemPath>
+          <itemPath>permutation_set.h</itemPath>
+          <itemPath>permutation_set_creator.h</itemPath>
+        </logicalFolder>
         <itemPath>acyclic_selection.h</itemPath>
+        <itemPath>beam_search.h</itemPath>
         <itemPath>greedy_search.h</itemPath>
         <itemPath>node.h</itemPath>
-        <itemPath>permutation_set.h</itemPath>
         <itemPath>simulated_annealing.h</itemPath>
         <itemPath>structure_optimizer.h</itemPath>
         <itemPath>structure_optimizer_creator.h</itemPath>
-        <itemPath>tabu_list.h</itemPath>
         <itemPath>tabu_search.h</itemPath>
+        <itemPath>variable_neighborhood.h</itemPath>
       </logicalFolder>
       <itemPath>files.h</itemPath>
       <itemPath>typedefs.h</itemPath>
@@ -110,11 +118,13 @@
       </logicalFolder>
       <logicalFolder name="f14" displayName="structureoptimizer" projectFiles="true">
         <itemPath>acyclic_selection.cpp</itemPath>
+        <itemPath>beam_search.cpp</itemPath>
         <itemPath>greedy_search.cpp</itemPath>
         <itemPath>permutation_set.cpp</itemPath>
         <itemPath>simulated_annealing.cpp</itemPath>
         <itemPath>structure_optimizer.cpp</itemPath>
         <itemPath>tabu_search.cpp</itemPath>
+        <itemPath>variable_neighborhood.cpp</itemPath>
       </logicalFolder>
       <itemPath>learner.cpp</itemPath>
     </logicalFolder>
@@ -173,6 +183,8 @@
           </linkerLibItems>
         </linkerTool>
       </compileType>
+      <item path="acyclic_behavior_set.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="acyclic_selection.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="acyclic_selection.h" ex="false" tool="3" flavor2="0">
@@ -188,6 +200,12 @@
       <item path="bayesian_network.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="bayesian_network.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="beam_list.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="beam_search.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="beam_search.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="best_score_calculator.h" ex="false" tool="3" flavor2="0">
       </item>
@@ -222,6 +240,8 @@
       <item path="fas_solver.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="files.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="greedy_behavior_set.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="greedy_search.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -262,6 +282,8 @@
       <item path="permutation_set.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="permutation_set.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="permutation_set_creator.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="random_initializer.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -318,6 +340,10 @@
       <item path="utils.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="variable.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="variable_neighborhood.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="variable_neighborhood.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="vary_node.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -362,6 +388,8 @@
           </linkerLibItems>
         </linkerTool>
       </compileType>
+      <item path="acyclic_behavior_set.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="acyclic_selection.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="acyclic_selection.h" ex="false" tool="3" flavor2="0">
@@ -377,6 +405,12 @@
       <item path="bayesian_network.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="bayesian_network.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="beam_list.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="beam_search.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="beam_search.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="best_score_calculator.h" ex="false" tool="3" flavor2="0">
       </item>
@@ -411,6 +445,8 @@
       <item path="fas_solver.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="files.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="greedy_behavior_set.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="greedy_search.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -451,6 +487,8 @@
       <item path="permutation_set.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="permutation_set.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="permutation_set_creator.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="random_initializer.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -508,6 +546,10 @@
       </item>
       <item path="variable.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="variable_neighborhood.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="variable_neighborhood.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="vary_node.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="vary_node.h" ex="false" tool="3" flavor2="0">
@@ -550,6 +592,8 @@
           </linkerLibItems>
         </linkerTool>
       </compileType>
+      <item path="acyclic_behavior_set.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="acyclic_selection.cpp" ex="false" tool="1" flavor2="9">
       </item>
       <item path="acyclic_selection.h" ex="false" tool="3" flavor2="0">
@@ -565,6 +609,12 @@
       <item path="bayesian_network.cpp" ex="false" tool="1" flavor2="9">
       </item>
       <item path="bayesian_network.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="beam_list.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="beam_search.cpp" ex="false" tool="1" flavor2="9">
+      </item>
+      <item path="beam_search.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="best_score_calculator.h" ex="false" tool="3" flavor2="0">
       </item>
@@ -599,6 +649,8 @@
       <item path="fas_solver.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="files.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="greedy_behavior_set.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="greedy_search.cpp" ex="false" tool="1" flavor2="9">
       </item>
@@ -639,6 +691,8 @@
       <item path="permutation_set.cpp" ex="false" tool="1" flavor2="9">
       </item>
       <item path="permutation_set.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="permutation_set_creator.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="random_initializer.cpp" ex="false" tool="1" flavor2="9">
       </item>
@@ -695,6 +749,10 @@
       <item path="utils.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="variable.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="variable_neighborhood.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="variable_neighborhood.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="vary_node.cpp" ex="false" tool="1" flavor2="9">
       </item>

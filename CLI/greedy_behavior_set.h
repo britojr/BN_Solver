@@ -37,17 +37,6 @@ namespace structureoptimizer {
 				updateScore() ;
 			}
 
-			void print( bool printPermutation ){
-				if( printPermutation ){
-					for(int i = 0 ; i < permutation.size() ; i++){
-						if( i ) printf(" " ) ;
-						printf("%d" , permutation[ i ] ) ;
-					}
-					printf("\n" ) ;
-				}
-				printf("Score = %.6f\n" , score ) ;
-			}
-
 			PermutationSet* clone() {
 				GreedyBehaviorSet* set ;
 				set = new GreedyBehaviorSet( permutation.size() , bestScoreCalculator ) ;

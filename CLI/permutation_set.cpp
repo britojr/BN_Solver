@@ -82,6 +82,17 @@ varset structureoptimizer::PermutationSet::getVarset( int index ){
 	return vset ;
 }
 
+void structureoptimizer::PermutationSet::print( bool printPermutation ){
+	if( printPermutation ){
+		for(int i = 0 ; i < permutation.size() ; i++){
+			if( i ) printf(" " ) ;
+			printf("%d" , permutation[ i ] ) ;
+		}
+		printf("\n" ) ;
+	}
+	printf("Score = %.6f\n" , score ) ;
+}
+
 std::vector<bestscorecalculators::BestScoreCalculator*> structureoptimizer::PermutationSet::getBestScoreCalculators() const {
 	return bestScoreCalculator ;
 }

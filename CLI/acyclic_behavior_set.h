@@ -32,21 +32,11 @@ namespace structureoptimizer {
 				permutation = shuffle( permutation , gen ) ;
 				this->bestScoreCalculator = bestScoreCalculator ;
 				structure = new datastructures::BNStructure( size ) ;
+				ancestors = VARSET( size ) ;
+				empty = VARSET( size ) ;
 				updateScore() ;
 			}
-			
-			void print( bool printPermutation ){
-				// TODO: Check if changes needed
-				if( printPermutation ){
-					for(int i = 0 ; i < permutation.size() ; i++){
-						if( i ) printf(" " ) ;
-						printf("%d" , permutation[ i ] ) ;
-					}
-					printf("\n" ) ;
-				}
-				printf("Score = %.6f\n" , score ) ;
-			}
-			
+
 			PermutationSet* clone() {
 				// TODO: Do not recalculate structure
 				AcyclicBehaviorSet* set ;
@@ -54,29 +44,13 @@ namespace structureoptimizer {
 				set->setPermutation( permutation ) ;
 				return set ;
 			}
-			
+
 			datastructures::BNStructure* getStructure(){
 				return structure ;
 			}
-			
+
 		private :
 			void updateScore( int adjacentPos = -1 ){
-				// TODO: implement this efficiently
-				
-				for(int j = size() - 1 ; j >= 0 ; j--){
-					// Extract variable at position j in initial
-					int v_j = permutation[ j ] ;
-
-					// Pick best parent set with no descendants of V_j
-					varset descendants = getDescendants( v_j ) ;
-					float score = bestScoreCalculator[ v_j ]->getScore( VARSET_NOT( descendants ) ) ;
-					varset parents = bestScoreCalculator[ v_j ]->getParents() ;
-					structure->setParents( v_j , parents , score ) ;
-				}
-				score = structure->getScore() ;
-			}
-
-			void updateScoreEfficient( int adjacentPos = -1 ){
 				int variableCount = size() ;
 				m = std::vector<varset>( variableCount , VARSET( variableCount ) ) ;
 				todo = std::vector<varset>( variableCount , VARSET( variableCount ) ) ;
@@ -92,7 +66,7 @@ namespace structureoptimizer {
 					structure->setParents( v_j , parents , score ) ;
 
 					// (a2) Update matrix representation and get ancestors of V_j
-					VARSET_NEW( ancestors , variableCount ) ;
+					ancestors = VARSET( variableCount ) ;
 					for(int i = 0 ; i < variableCount  ; i++){
 						if( VARSET_GET( parents , i ) )
 							VARSET_SET( m[ i ] , v_j ) ;
@@ -100,11 +74,7 @@ namespace structureoptimizer {
 							VARSET_SET( ancestors , i ) ;
 					}
 
-					// (b1) Build a TODO list with descendants of V_j
-					todo[ v_j ] = m[ v_j ] ;
-
-					// (b2) Start an empty TODO list to all ancestors of V_j
-					VARSET_OR( ancestors , parents ) ;
+					// (b) Start an empty TODO list to all ancestors of V_j
 					for(int i = 0 ; i < variableCount ; i++)
 						if( VARSET_GET( ancestors , i ) )
 							todo[ i ] = VARSET( variableCount ) ;
@@ -115,46 +85,49 @@ namespace structureoptimizer {
 							todo[ i ] = m[ v_j ] ;
 
 					// (d) For each ancestor X of V_j
-					// TODO: implement this
+					for(int i = 0 ; i < variableCount ; i++){
+						if( VARSET_GET( ancestors , i ) )
+							if( (*structure)[ i ]->getInGrade() == 0 ){
+								visit( i ) ;
+							}
+					}
 				}
-			}
-			
-			varset getDescendants( int index ){
-				VARSET_NEW( visited , size() ) ;
-				VARSET_SET( visited , index ) ;
-				std::vector<int> children = (*structure)[ index ]->getChildrenVector() ;
-				for(int i = 0 ; i < children.size() ; i++){
-					varset chVisited = getDescendants( children[ i ] ) ;
-					VARSET_OR( visited , chVisited ) ;
-				}
-				return visited ;
+				score = structure->getScore() ;
 			}
 
 			void visit( int x ){
+				if( ancestors == empty ) return ;
+				VARSET_CLEAR( ancestors , x ) ;
 				int variableCount = size() ;
-				for(int i = 0 ; i < todo[ x ].size() ; i++){
-					int y = todo[ x ][ i ] ;
+				std::vector<int> children = (*structure)[ x ]->getChildrenVector() ;
+				for( int i = 0 ; i < children.size() ; i++){
+					int ch = children[ i ] ;
+					if( VARSET_GET( ancestors , ch ) ){
+						VARSET_CLEAR( ancestors , ch ) ;
+						visit( ch ) ;
+					}
+				}
+				int y ;
+				while( ( y = VARSET_FIND_FIRST_SET( todo[ x ] ) ) != -1 ){
 					// if m(X, Y ) is true, then ignore Y and move on;
-					if( VARSET_GET( m[ x ] , y ) ) continue ;
-					// otherwise set m(X, Y ) to true
-					VARSET_SET( m[ x ] , y ) ;
-					varset parents = (*structure)[ x ]->getParents() ;
-					// add Y to the todo of parents of X.
-					for(int j = 0 ; j < variableCount ; j++)
-						if( VARSET_GET( parents , j ) ){
-							bool in_todo = false ;
-							for(int k = 0 ; k < todo[ j ].size() ; k++)
-								if( todo[ j ][ k ] == y ){
-									in_todo = true ;
-									break ;
-								}
-							if( !in_todo ) todo[ j ].push_back( y ) ;
-						}
+					if( !VARSET_GET( m[ x ] , y ) ){
+						// otherwise set m(X, Y ) to true
+						VARSET_SET( m[ x ] , y ) ;
+
+						varset parents = (*structure)[ x ]->getParents() ;
+						// add Y to the todo of parents of X.
+						for(int i = 0 ; i < variableCount ; i++)
+							if( VARSET_GET( parents , i ) )
+								VARSET_SET( todo[ i ] , y ) ;
+					}
+					VARSET_CLEAR( todo[ x ] , y ) ;
 				}
 			}
 
 			std::vector<varset> m ; // Descendants
 			std::vector<varset> todo ; // To-Do lists
+			varset empty ;
+			varset ancestors ;
 	} ;
 }
 

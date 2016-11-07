@@ -42,8 +42,9 @@ namespace structureoptimizer {
 
 			std::vector<bestscorecalculators::BestScoreCalculator*> getBestScoreCalculators() const ;
 
+			void print( bool printPermutation = false ) ;
+
 			// Abstract methods
-			virtual void print( bool printPermutation = false ) = 0 ;
 			virtual PermutationSet* clone() = 0 ;
 			virtual datastructures::BNStructure* getStructure() = 0 ;
 
