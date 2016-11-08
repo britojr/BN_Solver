@@ -61,6 +61,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/sparse_parent_tree.o \
 	${OBJECTDIR}/structure_optimizer.o \
 	${OBJECTDIR}/tabu_search.o \
+	${OBJECTDIR}/variable_neighborhood.o \
 	${OBJECTDIR}/vary_node.o
 
 
@@ -217,6 +218,11 @@ ${OBJECTDIR}/tabu_search.o: tabu_search.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -O3 -s -I/opt/apps/programas/gnu/old_boost.1.58.0/include -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/tabu_search.o tabu_search.cpp
+
+${OBJECTDIR}/variable_neighborhood.o: variable_neighborhood.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O3 -s -I/opt/apps/programas/gnu/old_boost.1.58.0/include -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/variable_neighborhood.o variable_neighborhood.cpp
 
 ${OBJECTDIR}/vary_node.o: vary_node.cpp 
 	${MKDIR} -p ${OBJECTDIR}
