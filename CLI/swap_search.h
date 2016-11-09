@@ -21,13 +21,13 @@
 #include "permutation_set.h"
 
 namespace structureoptimizer {
-	class VariableNeighborhood : public StructureOptimizer {
+	class SwapSearch : public StructureOptimizer {
 		public :
-			VariableNeighborhood() ;
-			VariableNeighborhood( initializers::Initializer* initializer ,
+			SwapSearch() ;
+			SwapSearch( initializers::Initializer* initializer ,
 						std::vector<bestscorecalculators::BestScoreCalculator*> bestScoreCalculator ,
 						std::string parametersFile ) ;
-			~VariableNeighborhood() ;
+			~SwapSearch() ;
 
 			void printParameters() ;
 

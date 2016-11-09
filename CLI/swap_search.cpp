@@ -13,15 +13,15 @@
 
 #include <boost/timer/timer.hpp>
 
-#include "variable_neighborhood.h"
+#include "swap_search.h"
 #include "utils.h"
 #include "permutation_set_creator.h"
 
-structureoptimizer::VariableNeighborhood::VariableNeighborhood(){
+structureoptimizer::SwapSearch::SwapSearch(){
 	// Do nothing
 }
 
-structureoptimizer::VariableNeighborhood::VariableNeighborhood( initializers::Initializer* initializer ,
+structureoptimizer::SwapSearch::SwapSearch( initializers::Initializer* initializer ,
 										std::vector<bestscorecalculators::BestScoreCalculator*> bestScoreCalculator ,
 										std::string parametersFile ){
 	this->initializer = initializer ;
@@ -32,55 +32,57 @@ structureoptimizer::VariableNeighborhood::VariableNeighborhood( initializers::In
 	setParameters( parametersFile ) ;
 }
 
-structureoptimizer::VariableNeighborhood::~VariableNeighborhood(){
+structureoptimizer::SwapSearch::~SwapSearch(){
 	// Do nothing
 }
 
-void structureoptimizer::VariableNeighborhood::setDefaultParameters(){
+void structureoptimizer::SwapSearch::setDefaultParameters(){
 	this->maxIterations = 500 ;
 }
 
-void structureoptimizer::VariableNeighborhood::setFileParameters( std::map<std::string,std::string> params ){
+void structureoptimizer::SwapSearch::setFileParameters( std::map<std::string,std::string> params ){
 	if( params.count( "max_iterations" ) )
 		sscanf( params[ "max_iterations" ].c_str() , "%d" , &maxIterations ) ;
 }
 
-void structureoptimizer::VariableNeighborhood::printParameters(){
+void structureoptimizer::SwapSearch::printParameters(){
 	printf( "Max number of iterations: %d\n" , maxIterations ) ;
 }
 
-void structureoptimizer::VariableNeighborhood::initialize(){
-	current = initializer->generate() ;
-	printf( " ======== Greedy Search ======== \n" ) ;
+void structureoptimizer::SwapSearch::initialize(){
+	current = initializer->generate( structureoptimizer::GREEDY_BEHAVIOR_SET ) ;
+	printf( " ======== Swap Search ======== \n" ) ;
 	printf(" === Iteration %d ===\n" , 0 ) ;
 	current->print( true ) ;
 }
 
-datastructures::BNStructure structureoptimizer::VariableNeighborhood::search_internal(){
+datastructures::BNStructure structureoptimizer::SwapSearch::search_internal(){
 	boost::timer::auto_cpu_timer cpu( 6 , "CPU time = %w\n" ) ; // TODO: Rethink location of timer
 
 	int numIterations = 0 ;
 	int setType = 0 ;
+	structureoptimizer::PermutationSet* bestSol = NULL ;
 	for(int i = 0 ; i < maxIterations && !outOfTime ; i++){
 		structureoptimizer::PermutationSet* bestNeighbour = findBestNeighbour( current ) ;
 		if( !bestNeighbour->isBetter( *current ) ){
-			// TODO: Swap from acyclic_behavior to greedy_behavior or viceversa
-			printf("<------------------------- Swap from %d to %d\n" , setType , 1 - setType ) ;
+			printf("Swap = %s\n" , setType == 0 ? "Greedy -> Acyclic" : "Acyclic -> Greedy" ) ;
 			setType = 1 - setType ;
 			current = createSet( setType , variableCount , bestScoreCalculators ) ;
-			i-- ;
+		}else{
+			current = bestNeighbour->clone() ;
 		}
 		printf(" === Iteration %d ===\n" , i+1 ) ;
-		current = bestNeighbour->clone() ;
 		current->print() ;
 		numIterations += 1 ;
+		if( bestSol == NULL || current->isBetter( *bestSol ) )
+			bestSol = current->clone() ;
 	}
 	printf("Iterations = %d\n" , numIterations ) ;
 	t->cancel() ;
-	return *(current->getStructure()) ;
+	return *(bestSol->getStructure()) ;
 }
 
-structureoptimizer::PermutationSet* structureoptimizer::VariableNeighborhood::findBestNeighbour( structureoptimizer::PermutationSet* set ){
+structureoptimizer::PermutationSet* structureoptimizer::SwapSearch::findBestNeighbour( structureoptimizer::PermutationSet* set ){
 	structureoptimizer::PermutationSet* bestN = set->clone() ;
 	for(int i = 0 ; i < variableCount - 1 ; i++){
 		structureoptimizer::PermutationSet* neighbour = doSwap( set , i ) ;
@@ -90,7 +92,7 @@ structureoptimizer::PermutationSet* structureoptimizer::VariableNeighborhood::fi
 	return bestN ;
 }
 
-structureoptimizer::PermutationSet* structureoptimizer::VariableNeighborhood::doSwap( structureoptimizer::PermutationSet* set , int index ){
+structureoptimizer::PermutationSet* structureoptimizer::SwapSearch::doSwap( structureoptimizer::PermutationSet* set , int index ){
 	structureoptimizer::PermutationSet* newSet = set->clone();
 	newSet->swap( index , index + 1 ) ;
 	return newSet ;

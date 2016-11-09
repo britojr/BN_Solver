@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configurationDescriptor version="97">
+<configurationDescriptor version="95">
   <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
@@ -71,8 +71,8 @@
         <itemPath>simulated_annealing.h</itemPath>
         <itemPath>structure_optimizer.h</itemPath>
         <itemPath>structure_optimizer_creator.h</itemPath>
+        <itemPath>swap_search.h</itemPath>
         <itemPath>tabu_search.h</itemPath>
-        <itemPath>variable_neighborhood.h</itemPath>
       </logicalFolder>
       <itemPath>files.h</itemPath>
       <itemPath>typedefs.h</itemPath>
@@ -123,8 +123,8 @@
         <itemPath>permutation_set.cpp</itemPath>
         <itemPath>simulated_annealing.cpp</itemPath>
         <itemPath>structure_optimizer.cpp</itemPath>
+        <itemPath>swap_search.cpp</itemPath>
         <itemPath>tabu_search.cpp</itemPath>
-        <itemPath>variable_neighborhood.cpp</itemPath>
       </logicalFolder>
       <itemPath>learner.cpp</itemPath>
     </logicalFolder>
@@ -329,6 +329,10 @@
       </item>
       <item path="structure_optimizer_creator.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="swap_search.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="swap_search.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="tabu_list.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="tabu_search.cpp" ex="false" tool="1" flavor2="0">
@@ -340,10 +344,6 @@
       <item path="utils.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="variable.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="variable_neighborhood.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="variable_neighborhood.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="vary_node.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -534,6 +534,10 @@
       </item>
       <item path="structure_optimizer_creator.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="swap_search.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="swap_search.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="tabu_list.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="tabu_search.cpp" ex="false" tool="1" flavor2="0">
@@ -545,10 +549,6 @@
       <item path="utils.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="variable.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="variable_neighborhood.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="variable_neighborhood.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="vary_node.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -738,6 +738,10 @@
       </item>
       <item path="structure_optimizer_creator.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="swap_search.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="swap_search.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="tabu_list.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="tabu_search.cpp" ex="false" tool="1" flavor2="0">
@@ -749,10 +753,6 @@
       <item path="utils.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="variable.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="variable_neighborhood.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="variable_neighborhood.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="vary_node.cpp" ex="false" tool="1" flavor2="9">
       </item>

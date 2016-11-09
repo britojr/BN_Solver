@@ -39,6 +39,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/ad_node.o \
 	${OBJECTDIR}/ad_tree.o \
 	${OBJECTDIR}/bayesian_network.o \
+	${OBJECTDIR}/beam_search.o \
 	${OBJECTDIR}/bfirst_initializer.o \
 	${OBJECTDIR}/bic_scoring_function.o \
 	${OBJECTDIR}/bn_structure.o \
@@ -59,6 +60,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/sparse_parent_list.o \
 	${OBJECTDIR}/sparse_parent_tree.o \
 	${OBJECTDIR}/structure_optimizer.o \
+	${OBJECTDIR}/swap_search.o \
 	${OBJECTDIR}/tabu_search.o \
 	${OBJECTDIR}/vary_node.o
 
@@ -106,6 +108,11 @@ ${OBJECTDIR}/bayesian_network.o: bayesian_network.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -O3 -s -I/usr/local/include -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/bayesian_network.o bayesian_network.cpp
+
+${OBJECTDIR}/beam_search.o: beam_search.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O3 -s -I/usr/local/include -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/beam_search.o beam_search.cpp
 
 ${OBJECTDIR}/bfirst_initializer.o: bfirst_initializer.cpp 
 	${MKDIR} -p ${OBJECTDIR}
@@ -206,6 +213,11 @@ ${OBJECTDIR}/structure_optimizer.o: structure_optimizer.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -O3 -s -I/usr/local/include -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/structure_optimizer.o structure_optimizer.cpp
+
+${OBJECTDIR}/swap_search.o: swap_search.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O3 -s -I/usr/local/include -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/swap_search.o swap_search.cpp
 
 ${OBJECTDIR}/tabu_search.o: tabu_search.cpp 
 	${MKDIR} -p ${OBJECTDIR}
