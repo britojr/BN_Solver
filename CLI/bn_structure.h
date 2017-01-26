@@ -1,4 +1,4 @@
-/* 
+/*
  * File:   bn_structure.h
  * Author: nonwhite
  *
@@ -7,6 +7,8 @@
 
 #ifndef BNSTRUCTURE_H
 #define	BNSTRUCTURE_H
+
+#include <stack>
 
 #include "node.h"
 #include "permutation_set.h"
@@ -36,6 +38,10 @@ namespace datastructures {
 
 			float getMeanInDegree() ;
 			int getMaxInDegree() ;
+
+			std::vector<int> getTopologic() ;
+
+			bool hasCycle() ;
 
 		private :
 			std::vector<structureoptimizer::Node*> nodes ;

@@ -1,7 +1,7 @@
-/* 
+/*
  * File:   bn_structure.cpp
  * Author: nonwhite
- * 
+ *
  * Created on 7 de junio de 2016, 13:26
  */
 
@@ -121,4 +121,70 @@ void datastructures::BNStructure::print(){
 		printf("\n" ) ;
 	}
 	printf("\n" ) ;
+}
+
+std::vector<int> datastructures::BNStructure::getTopologic(){
+	varset gray = VARSET( variableCount ), black = VARSET( variableCount ) ;
+	std::vector<int> topSort(variableCount) ;
+	int n = variableCount ;
+	std::stack<int> stk ;
+	for( int j = 0 ; j < variableCount ; j++ ){
+		varset parents = nodes[ j ]->getParents() ;
+		if( cardinality( parents ) != 0 ) continue ;
+		stk.push( j ) ;
+		while( !stk.empty() ){
+			int v = stk.top() ;
+			if( !VARSET_GET( gray , v ) ){
+				VARSET_SET( gray , v ) ;
+				std::vector<int> children = nodes[ v ]->getChildrenVector() ;
+				for(int i = 0 ; i < children.size() ; i++ ){
+					if( VARSET_GET( black , children[ i ] ) ) continue ;
+					if( !VARSET_GET( gray , children[ i ] ) )
+						stk.push( children[ i ] ) ;
+					else
+						throw std::runtime_error("Structure is not acyclic!") ;
+				}
+			} else {
+				if( !VARSET_GET( black, v ) ){
+					VARSET_SET( black , v ) ;
+					topSort[--n] = v ;
+				}
+				stk.pop() ;
+			}
+		}
+	}
+	if( n != 0 ) throw std::runtime_error("Structure is not acyclic!") ;
+	return topSort ;
+}
+
+// TODO: remove this
+bool datastructures::BNStructure::hasCycle(){
+	varset gray = VARSET( variableCount ), black = VARSET( variableCount ) ;
+	std::stack<varset::size_type> stk ;
+	while( !black.all() ){
+		varset::size_type v = (~gray).find_first() ;
+		stk.push( v ) ;
+		while( !stk.empty() ){
+			v = stk.top() ;
+			if( !gray[ v ] ){
+				gray.set( v ) ;
+				varset children = nodes[ v ]->getChildren() ;
+				for(varset::size_type i = children.find_first() ; i != varset::npos ; i = children.find_next(i) ){
+					if ( black[ i ] )
+						continue ;
+					if( !gray[ i ] ){
+						stk.push( i ) ;
+					} else {
+						// pointing to a gray children means a cycle
+						std::cout << v << " is parent of " << i << std::endl;
+						return true ;
+					}
+				}
+			} else {
+				black.set( v ) ;
+				stk.pop() ;
+			}
+		}
+	}
+	return false ;
 }
