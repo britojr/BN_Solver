@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-/* 
+/*
  * File:   acyclic_behavior_set.h
  * Author: nonwhite
  *
@@ -93,6 +93,11 @@ namespace structureoptimizer {
 					}
 				}
 				score = structure->getScore() ;
+				// TODO: remove this
+				if( structure->hasCycle() ){
+					structure->print() ;
+					throw std::runtime_error("Structure has a cycle!") ;
+				}
 			}
 
 			void visit( int x ){
