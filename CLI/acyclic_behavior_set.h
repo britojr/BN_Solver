@@ -93,7 +93,7 @@ namespace structureoptimizer {
 					}
 				}
 				score = structure->getScore() ;
-				// TODO: remove this
+				// TODO: remove this check for acyclicity
 				if( structure->hasCycle() ){
 					structure->print() ;
 					throw std::runtime_error("Structure has a cycle!") ;
@@ -108,7 +108,6 @@ namespace structureoptimizer {
 				for( int i = 0 ; i < children.size() ; i++){
 					int ch = children[ i ] ;
 					if( VARSET_GET( ancestors , ch ) ){
-						VARSET_CLEAR( ancestors , ch ) ;
 						visit( ch ) ;
 					}
 				}
