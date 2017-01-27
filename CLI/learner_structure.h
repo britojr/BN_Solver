@@ -1,4 +1,4 @@
-/* 
+/*
  * File:   structure_optimizer_main.h
  * Author: nonwhite
  *
@@ -71,12 +71,12 @@ inline void printSolution( std::string bnetFile , datastructures::BNStructure &s
 	if( bnetFile.size() == 0 ) return ;
 	FILE *out = fopen( bnetFile.c_str() , "w" ) ;
 	datastructures::BayesianNetwork* network = cache.getNetwork() ;
-	
+
 	fprintf( out , "META variables = %d\n" , solution.size() ) ;
 	fprintf( out , "META maxInDegree = %d\n" , solution.getMaxInDegree() ) ;
 	fprintf( out , "META meanInDegree = %.3f\n" , solution.getMeanInDegree() ) ;
 	fprintf( out , "META score = %.6f\n" , -solution.getScore() ) ;
-	
+
 	for(int i = 0 ; i < solution.size() ; i++){
 		fprintf( out , "%s:" , network->get( i )->getName().c_str() ) ;
 		std::vector<int> children = solution[ i ]->getChildrenVector() ;
@@ -110,6 +110,11 @@ void structureLearning(){
 	structureoptimizer::StructureOptimizer* algorithm = structureoptimizer::create( structureOptimizerType , initializer , bestScCalc , structureParametersFile ) ;
 	algorithm->printParameters() ;
 	datastructures::BNStructure solution = algorithm->search( numSolutions , timePerSolution ) ;
+	// TODO: remove this check for acyclicity
+	if( solution.hasCycle() ){
+		solution.print() ;
+		throw std::runtime_error("Solution has a cycle!") ;
+	}
 	printSolution( bnetFile , solution ) ;
 }
 
