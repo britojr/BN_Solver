@@ -103,7 +103,6 @@ namespace structureoptimizer {
 				for( int i = 0 ; i < children.size() ; i++){
 					int ch = children[ i ] ;
 					if( VARSET_GET( ancestors , ch ) ){
-						VARSET_CLEAR( ancestors , ch ) ;
 						visit( ch ) ;
 					}
 				}
