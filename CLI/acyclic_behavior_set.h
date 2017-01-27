@@ -84,6 +84,49 @@ namespace structureoptimizer {
 						if( VARSET_GET( parents , i ) )
 							todo[ i ] = m[ v_j ] ;
 
+					// TODO: remove this
+					std::cout << "--------------------------------------------------------------" << std::endl ;
+					std::cout << "IT=" << variableCount - j << "; v_j = " << v_j << std::endl ;
+					if( ( (*structure)[ v_j ]->getParents() & m[ v_j ] ).any() ){
+						throw std::runtime_error("Chose descendant parents!") ;
+					}
+					std::cout << "     parents  : " ;
+					for (int i = 0; i < variableCount; i++) {
+						if( VARSET_GET( parents , i ) )
+						std::cout << i << ' ';
+					}
+					std::cout << std::endl ;
+
+					varset ca, na ;
+					na = (*structure)[ v_j ]->getParents() ;
+					ca = (*structure)[ v_j ]->getParents() ;
+					do {
+						ca = ( ca | na ) ;
+						for(int i = 0; i < variableCount; i++){
+							if( VARSET_GET( ca , i ) ){
+								na = ( na | (*structure)[ i ]->getParents() ) ;
+							}
+						}
+					} while( ca != na ) ;
+
+					std::cout << "calc ancestors: " ;
+					for (int i = 0; i < variableCount; i++) {
+						if( VARSET_GET( ca , i ) )
+						std::cout << i << ' ';
+					}
+					std::cout << std::endl ;
+					if( ca != ancestors ){
+						std::cout << "     ancestors: " ;
+						for (int i = 0; i < variableCount; i++) {
+							if( VARSET_GET( ancestors , i ) )
+							std::cout << i << ' ';
+						}
+						std::cout << "<<<" << std::endl ;
+					}
+
+					// TODO: remove
+					std::cout << "beg visits of: " << v_j << std::endl ;
+
 					// (d) For each ancestor X of V_j
 					for(int i = 0 ; i < variableCount ; i++){
 						if( VARSET_GET( ancestors , i ) )
@@ -91,9 +134,47 @@ namespace structureoptimizer {
 								visit( i ) ;
 							}
 					}
+					// TODO: remove
+					std::cout << "end visits of: " << v_j << std::endl ;
+
+					// check descendants for each variable
+					for(int k = 0; k < variableCount; k++){
+						varset cd, nd ;
+						nd = (*structure)[ k ]->getChildren() ;
+						cd = (*structure)[ k ]->getChildren() ;
+						do {
+							cd = ( cd | nd ) ;
+							for(int i = 0; i < variableCount; i++){
+								if( VARSET_GET( cd , i ) ){
+									nd = ( nd | (*structure)[ i ]->getChildren() ) ;
+								}
+							}
+						} while(cd != nd) ;
+
+						varset auxd = m[ k ] ;
+						if( cd != auxd ){
+							std::cout << "var: " << k << std::endl ;
+							std::cout << "calculated descendants: " ;
+							for (int i = 0; i < variableCount; i++) {
+								if( VARSET_GET( cd , i ) )
+								std::cout << i << ' ';
+							}
+							std::cout << std::endl ;
+
+							std::cout << "m[k]       descendants: " ;
+							for (int i = 0; i < variableCount; i++) {
+								if( VARSET_GET( auxd , i ) )
+								std::cout << i << ' ';
+							}
+							std::cout << std::endl ;
+							structure->print() ;
+							throw std::runtime_error("wrong descendants update!") ;
+						}
+					}
+
 					// TODO: remove this check for acyclicity
-					if( current->getStructure()->hasCycle() ){
-						current->getStructure()->print() ;
+					if( structure->hasCycle() ){
+						structure->print() ;
 						throw std::runtime_error("structure has a cycle!") ;
 					}
 				}
@@ -102,16 +183,22 @@ namespace structureoptimizer {
 
 			void visit( int x ){
 				if( ancestors == empty ) return ;
+				// TODO: remove
+				std::cout << " enter: " << x << std::endl ;
 				VARSET_CLEAR( ancestors , x ) ;
 				int variableCount = size() ;
 				std::vector<int> children = (*structure)[ x ]->getChildrenVector() ;
 				for( int i = 0 ; i < children.size() ; i++){
 					int ch = children[ i ] ;
 					if( VARSET_GET( ancestors , ch ) ){
-						VARSET_CLEAR( ancestors , ch ) ;
+						// VARSET_CLEAR( ancestors , ch ) ;
+						// TODO: remove
+						std::cout << "    >>: " << ch << std::endl ;
 						visit( ch ) ;
 					}
 				}
+				// TODO: remove
+				std::cout << " process: " << x << std::endl ;
 				int y ;
 				while( ( y = VARSET_FIND_FIRST_SET( todo[ x ] ) ) != -1 ){
 					// if m(X, Y ) is true, then ignore Y and move on;
