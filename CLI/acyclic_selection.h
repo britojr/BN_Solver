@@ -1,4 +1,4 @@
-/* 
+/*
  * File:   acyclic_selection.h
  * Author: nonwhite
  *
@@ -25,7 +25,9 @@ namespace structureoptimizer {
 		private :
 			void initialize() ;
 			datastructures::BNStructure search_internal() ;
+			PermutationSet* chooseNeighbour( PermutationSet* set ) ;
 			PermutationSet* findBestNeighbour( PermutationSet* set ) ;
+			PermutationSet* getTopologicNeighbour( PermutationSet* set ) ;
 			PermutationSet* doSwap( PermutationSet* set , int index ) ;
 
 			void setDefaultParameters() ;
@@ -36,6 +38,7 @@ namespace structureoptimizer {
 			// Configuration variables
 			int maxIterations ;
 			bool testFlag ;
+			bool useTopologicalSort ;
 	} ;
 }
 

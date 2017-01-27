@@ -1,13 +1,14 @@
-/* 
+/*
  * File:   GreedySearch.cpp
  * Author: nonwhite
- * 
+ *
  * Created on 26 de enero de 2016, 03:37 PM
  */
 
 #include <boost/timer/timer.hpp>
 #include <cstdlib>
 #include <cstdio>
+#include <limits>
 
 #include "greedy_search.h"
 #include "utils.h"
@@ -23,7 +24,7 @@ structureoptimizer::GreedySearch::GreedySearch( initializers::Initializer* initi
 	this->bestScoreCalculators = bestScoreCalculator ;
 	this->variableCount = bestScoreCalculator.size() ;
 	this->gen = boost::mt19937( time( NULL ) ) ;
-	
+
 	setParameters( parametersFile ) ;
 }
 
@@ -43,12 +44,15 @@ void structureoptimizer::GreedySearch::setFileParameters( std::map<std::string,s
 		sscanf( params[ "perturb_solution" ].c_str() , "%d" , &p ) ;
 		performSolutionPerturbation = ( p > 0 ) ;
 	}
-	
+
 	if( params.count( "num_swaps" ) )
 		sscanf( params[ "num_swaps" ].c_str() , "%d" , &numPerturbationSwaps ) ;
-	
-	if( params.count( "max_iterations" ) )
+
+	if( params.count( "max_iterations" ) ){
 		sscanf( params[ "max_iterations" ].c_str() , "%d" , &maxIterations ) ;
+		if ( maxIterations <= 0 )
+			maxIterations = std::numeric_limits<int>::max() ;
+	}
 }
 
 void structureoptimizer::GreedySearch::printParameters(){

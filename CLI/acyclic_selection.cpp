@@ -1,10 +1,11 @@
-/* 
+/*
  * File:   acyclic_selection.cpp
  * Author: nonwhite
- * 
+ *
  * Created on 28 de mayo de 2016, 13:07
  */
 #include <boost/timer/timer.hpp>
+#include <limits>
 
 #include "acyclic_selection.h"
 #include "bn_structure.h"
@@ -33,12 +34,22 @@ void structureoptimizer::AcyclicSelection::setDefaultParameters(){
 }
 
 void structureoptimizer::AcyclicSelection::setFileParameters( std::map<std::string,std::string> params ){
-	if( params.count( "max_iterations" ) )
+	if( params.count( "max_iterations" ) ){
 		sscanf( params[ "max_iterations" ].c_str() , "%d" , &maxIterations ) ;
+		if ( maxIterations <= 0 )
+			maxIterations = std::numeric_limits<int>::max() ;
+	}
+
+	if( params.count( "topologic_sort" ) ){
+		int t ;
+		sscanf( params[ "topologic_sort" ].c_str() , "%d" , &t ) ;
+		useTopologicalSort = ( t > 0 ) ;
+	}
 }
 
 void structureoptimizer::AcyclicSelection::printParameters(){
 	printf( "Max number of iterations: %d\n" , maxIterations ) ;
+	printf( "Use topological sort as next neighbour: %s\n" , useTopologicalSort ? "true" : "false" ) ;
 }
 
 void structureoptimizer::AcyclicSelection::initialize(){
@@ -53,7 +64,7 @@ datastructures::BNStructure structureoptimizer::AcyclicSelection::search_interna
 
 	int numIterations = 0 ;
 	for(int i = 0 ; i < maxIterations && !outOfTime ; i++,numIterations++){
-		structureoptimizer::PermutationSet* bestNeighbour = findBestNeighbour( current ) ;
+		structureoptimizer::PermutationSet* bestNeighbour = chooseNeighbour( current ) ;
 		if( !bestNeighbour->isBetter( *current ) ) break ;
 		printf(" === Iteration %d ===\n" , i+1 ) ;
 		current = bestNeighbour->clone() ;
@@ -78,4 +89,17 @@ structureoptimizer::PermutationSet* structureoptimizer::AcyclicSelection::doSwap
 	structureoptimizer::PermutationSet* newSet = set->clone();
 	newSet->swap( index , index + 1 ) ;
 	return newSet ;
+}
+
+structureoptimizer::PermutationSet* structureoptimizer::AcyclicSelection::chooseNeighbour( structureoptimizer::PermutationSet* set ){
+	if(useTopologicalSort){
+		return getTopologicNeighbour( set ) ;
+	}
+	return findBestNeighbour( set ) ;
+}
+
+structureoptimizer::PermutationSet* structureoptimizer::AcyclicSelection::getTopologicNeighbour( structureoptimizer::PermutationSet* set ){
+	structureoptimizer::PermutationSet* topN = set->clone() ;
+	topN->setPermutation( set->getStructure()->getTopologic() ) ;
+	return topN ;
 }
