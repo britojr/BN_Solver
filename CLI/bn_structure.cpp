@@ -124,25 +124,29 @@ void datastructures::BNStructure::print(){
 }
 
 std::vector<int> datastructures::BNStructure::getTopologic(){
+	boost::mt19937 gen( time( NULL ) ) ;
 	varset gray = VARSET( variableCount ), black = VARSET( variableCount ) ;
-	std::vector<int> topSort(variableCount) ;
 	int n = variableCount ;
+	std::vector<int> topSort(variableCount), r ;
 	std::stack<int> stk ;
 	for( int j = 0 ; j < variableCount ; j++ ){
 		varset parents = nodes[ j ]->getParents() ;
 		if( cardinality( parents ) != 0 ) continue ;
-		stk.push( j ) ;
+		r.push_back( j ) ;
+	}
+	r = shuffle( r , gen ) ;
+	for( int j = 0 ; j < r.size() ; j++ ){
+		stk.push( r[j] ) ;
 		while( !stk.empty() ){
 			int v = stk.top() ;
 			if( !VARSET_GET( gray , v ) ){
 				VARSET_SET( gray , v ) ;
-				varset children = nodes[ v ]->getChildren() ;
-				int i ;
-				while( ( i = VARSET_FIND_FIRST_SET( children ) ) != -1 ){
-					VARSET_CLEAR( children, i ) ;
-					if( VARSET_GET( black , i ) ) continue ;
-					if( !VARSET_GET( gray , i ) )
-						stk.push( i ) ;
+				std::vector<int> children = nodes[ v ]->getChildrenVector() ;
+				children = shuffle( children , gen ) ;
+				for( int i = children.size() - 1 ; i >= 0 ; i-- ){
+					if( VARSET_GET( black , children[ i ] ) ) continue ;
+					if( !VARSET_GET( gray , children[ i ] ) )
+						stk.push( children[ i ] ) ;
 					else
 						throw std::runtime_error("Structure is not acyclic!") ;
 				}
