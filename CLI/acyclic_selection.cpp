@@ -1,7 +1,7 @@
-/* 
+/*
  * File:   acyclic_selection.cpp
  * Author: nonwhite
- * 
+ *
  * Created on 28 de mayo de 2016, 13:07
  */
 #include <boost/timer/timer.hpp>
@@ -58,6 +58,11 @@ datastructures::BNStructure structureoptimizer::AcyclicSelection::search_interna
 		printf(" === Iteration %d ===\n" , i+1 ) ;
 		current = bestNeighbour->clone() ;
 		current->print() ;
+		// TODO: remove this check for acyclicity
+		if( current->getStructure()->hasCycle() ){
+			current->getStructure()->print() ;
+			throw std::runtime_error("structure has a cycle!") ;
+		}
 	}
 	printf("Iterations = %d\n" , numIterations ) ;
 	t->cancel() ;
