@@ -136,11 +136,13 @@ std::vector<int> datastructures::BNStructure::getTopologic(){
 			int v = stk.top() ;
 			if( !VARSET_GET( gray , v ) ){
 				VARSET_SET( gray , v ) ;
-				std::vector<int> children = nodes[ v ]->getChildrenVector() ;
-				for(int i = 0 ; i < children.size() ; i++ ){
-					if( VARSET_GET( black , children[ i ] ) ) continue ;
-					if( !VARSET_GET( gray , children[ i ] ) )
-						stk.push( children[ i ] ) ;
+				varset children = nodes[ v ]->getChildren() ;
+				int i ;
+				while( ( i = VARSET_FIND_FIRST_SET( children ) ) != -1 ){
+					VARSET_CLEAR( children, i ) ;
+					if( VARSET_GET( black , i ) ) continue ;
+					if( !VARSET_GET( gray , i ) )
+						stk.push( i ) ;
 					else
 						throw std::runtime_error("Structure is not acyclic!") ;
 				}
