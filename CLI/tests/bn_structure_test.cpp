@@ -38,6 +38,8 @@ struct Initilize {
 		for(int i = 0 ; i < s ; i++){
 			cyclic->setParents( i , p[i] , 0. ) ;
 		}
+
+		structures.push_back( structure );
 	}
 	~Initilize(){
 
@@ -46,6 +48,7 @@ struct Initilize {
 	std::vector<varset> parents ;
 	datastructures::BNStructure* structure ;
 	datastructures::BNStructure* cyclic ;
+	std::vector<datastructures::BNStructure*> structures ;
 };
 
 BOOST_FIXTURE_TEST_SUITE( bn_structure_suite, Initilize )
@@ -56,23 +59,25 @@ BOOST_AUTO_TEST_CASE( structure_size ){
 }
 
 BOOST_AUTO_TEST_CASE( topological_order ){
-	bool correct = true ;
-	std::vector<int> got = structure->getTopologic() ;
-	for(int i = 0 ; i < size ; i++){
-		for(int j = i+1 ; j < size ; j++){
-			if( VARSET_GET( parents[got[i]] , got[j] ) ){
-				correct = false ;
-				break ;
+	for(int j = 0 ; j < structures.size(); j++ ){
+		bool correct = true ;
+		std::vector<int> got = structures[ j ]->getTopologic() ;
+		for(int i = 0 ; i < size ; i++){
+			for(int j = i+1 ; j < size ; j++){
+				if( VARSET_GET( parents[got[i]] , got[j] ) ){
+					correct = false ;
+					break ;
+				}
 			}
 		}
+		std::stringstream ss ;
+		for(int i = 0 ; i < size ; i++){
+			ss << got[i] ;
+			ss << ' ' ;
+		}
+		ss << "is not a topologic sort for structure #" << j ;
+		BOOST_CHECK_MESSAGE( correct , ss.str() ) ;
 	}
-	std::stringstream ss ;
-	for(int i = 0 ; i < size ; i++){
-		ss << got[i] ;
-		ss << ' ' ;
-	}
-	ss << "is not a topologic sort" ;
-	BOOST_CHECK_MESSAGE( correct , ss.str() ) ;
 }
 
 BOOST_AUTO_TEST_CASE( no_cycle ){
