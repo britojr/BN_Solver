@@ -93,7 +93,13 @@ structureoptimizer::PermutationSet* structureoptimizer::AcyclicSelection::doSwap
 
 structureoptimizer::PermutationSet* structureoptimizer::AcyclicSelection::chooseNeighbour( structureoptimizer::PermutationSet* set ){
 	if(useTopologicalSort){
-		return getTopologicNeighbour( set ) ;
+		structureoptimizer::PermutationSet* bestN = findBestNeighbour( set ) ;
+		structureoptimizer::PermutationSet* topN = getTopologicNeighbour( set ) ;
+		if ( topN->isBetter( *bestN ) ) {
+			throw std::runtime_error("Topolical is better!") ;
+			return topN ;
+		}
+		return bestN ;
 	}
 	return findBestNeighbour( set ) ;
 }
