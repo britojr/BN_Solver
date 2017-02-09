@@ -93,11 +93,6 @@ namespace structureoptimizer {
 					}
 				}
 				score = structure->getScore() ;
-				// TODO: remove this check for acyclicity
-				if( structure->hasCycle() ){
-					structure->print() ;
-					throw std::runtime_error("Structure has a cycle!") ;
-				}
 			}
 
 			void visit( int x ){

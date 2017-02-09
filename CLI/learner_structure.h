@@ -110,11 +110,6 @@ void structureLearning(){
 	structureoptimizer::StructureOptimizer* algorithm = structureoptimizer::create( structureOptimizerType , initializer , bestScCalc , structureParametersFile ) ;
 	algorithm->printParameters() ;
 	datastructures::BNStructure solution = algorithm->search( numSolutions , timePerSolution ) ;
-	// TODO: remove this check for acyclicity
-	if( solution.hasCycle() ){
-		solution.print() ;
-		throw std::runtime_error("Solution has a cycle!") ;
-	}
 	printSolution( bnetFile , solution ) ;
 }
 
