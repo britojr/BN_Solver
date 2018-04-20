@@ -6,9 +6,14 @@ This requires [Boost](http://www.boost.org), check installation instructions [he
 
 After boost libs are properly installed, move to CLI directory and run make to compile bnsolver
 
-options:
-	CONF=[Learner-Mac|Learner-Linux|Learner-Cluster]
+### Compiling:
+		cd CLI
+		make help
+		make CONF=Learner-Linux clean
+		make CONF=Learner-Linux
 
-example:
-	make CONF=Learner-Linux
+### Running:
+		cd CLI/dist/Learner/GNU-Linux
+		./bn_learning --help
+		./bn_learning outfile.bnet --dataset data.csv
 
