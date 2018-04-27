@@ -79,7 +79,7 @@ FFLAGS=
 ASFLAGS=
 
 # Link Libraries and Options
-LDLIBSOPTIONS=-L/usr/local/lib -lboost_system -lboost_thread -lboost_chrono -lboost_timer -lboost_program_options -lboost_serialization
+LDLIBSOPTIONS=-L/usr/local/lib -lboost_system -lboost_thread -lboost_chrono -lboost_timer -lboost_program_options -lboost_serialization -lpthread
 
 # Build Targets
 .build-conf: ${BUILD_SUBPROJECTS}
